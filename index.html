@@ -1,0 +1,1556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cohort — School Management System, UI/UX Redesign</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+
+/* ============================================================
+   COHORT — DESIGN TOKENS
+   A single source of truth for color, type, radius, spacing.
+   Everything in every screen below is built only from these.
+   ============================================================ */
+:root{
+  /* --- Core palette -------------------------------------------------- */
+  --ink:        #14213D;   /* primary text, sidebar surface            */
+  --ink-soft:   #2A3B63;   /* sidebar surface, secondary dark          */
+  --paper:      #F5F6F9;   /* app background                           */
+  --surface:    #FFFFFF;   /* card / panel surface                     */
+  --slate:      #5B6478;   /* secondary text                           */
+  --slate-dim:  #8A93A6;   /* tertiary text / placeholders             */
+  --line:       #E4E7EE;   /* hairline borders                         */
+  --line-soft:  #EEF0F5;   /* table row dividers                       */
+
+  /* --- Signal accent (core brand accent, used for primary actions) --- */
+  --amber:      #E8A33D;
+  --amber-ink:  #7A4E10;
+  --amber-tint: #FCF1DF;
+
+  /* --- Portal identity accents (same system, distinct lens) ---------- */
+  --teal:       #2E8C82;   /* Teacher portal identity  */
+  --teal-tint:  #E4F3F1;
+  --plum:       #8B5FA8;   /* Parent portal identity   */
+  --plum-tint:  #F2EAF6;
+
+  /* --- Semantic status colors ----------------------------------------*/
+  --success:    #2F9E68;
+  --success-tint:#E4F5EC;
+  --danger:     #E0523F;
+  --danger-tint:#FBE7E3;
+  --info:       #3D7FE0;
+  --info-tint:  #E6EFFC;
+  --warn:       #E8A33D;
+  --warn-tint:  #FCF1DF;
+
+  /* --- Radius & shadow -------------------------------------------------*/
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 18px;
+  --shadow-card: 0 1px 2px rgba(20,33,61,0.04), 0 8px 24px -12px rgba(20,33,61,0.10);
+  --shadow-pop:  0 12px 32px -8px rgba(20,33,61,0.22);
+
+  /* --- Type -------------------------------------------------------------*/
+  --font-display: 'Fraunces', serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+*{box-sizing:border-box; margin:0; padding:0;}
+body{
+  font-family: var(--font-body);
+  background: var(--paper);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  overflow-x:hidden;
+}
+img{max-width:100%; display:block;}
+button{font-family:inherit; cursor:pointer;}
+a{color:inherit; text-decoration:none;}
+::selection{ background: var(--amber-tint); color: var(--amber-ink); }
+
+/* Focus visibility (accessibility floor) */
+button:focus-visible, a:focus-visible, input:focus-visible, .navlink:focus-visible{
+  outline: 2px solid var(--info);
+  outline-offset: 2px;
+}
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}
+
+/* ============================================================
+   META NAV — switches between "Design System" and the 3 portals
+   (This bar is part of this prototype file only; it is not part
+   of the product UI itself.)
+   ============================================================ */
+.meta-nav{
+  position: sticky; top:0; z-index:50;
+  display:flex; align-items:center; gap:4px;
+  background: var(--ink);
+  padding: 10px 20px;
+  overflow-x:auto;
+}
+.meta-nav .brand{
+  font-family: var(--font-display);
+  font-weight:600; font-size:17px; color:#fff;
+  margin-right:18px; white-space:nowrap;
+  display:flex; align-items:center; gap:8px;
+}
+.meta-nav .brand .mark{
+  width:22px; height:22px; border-radius:6px;
+  background: linear-gradient(135deg, var(--amber), #C97F1F);
+  flex-shrink:0;
+}
+.meta-btn{
+  background:transparent; border:1px solid transparent; color:#B9C0D4;
+  font-size:13px; font-weight:600; padding:8px 14px; border-radius:20px;
+  white-space:nowrap; transition: background .15s, color .15s;
+}
+.meta-btn:hover{ background: rgba(255,255,255,0.08); color:#fff; }
+.meta-btn.active{ background:#fff; color:var(--ink); }
+
+/* ============================================================
+   APP SHELL — shared by all three portals
+   ============================================================ */
+.view{ display:none; }
+.view.active{ display:block; }
+
+.shell{ display:flex; min-height: calc(100vh - 45px); }
+
+.sidebar{
+  width:248px; flex-shrink:0;
+  background: var(--ink);
+  color:#fff;
+  padding:22px 14px;
+  display:flex; flex-direction:column; gap:22px;
+  position:sticky; top:45px; height:calc(100vh - 45px);
+}
+.sidebar .id-ribbon{
+  height:4px; border-radius:4px; margin:-22px -14px 0;
+}
+.sidebar .lockup{ display:flex; align-items:center; gap:10px; padding:0 6px;}
+.sidebar .lockup .mark{ width:30px; height:30px; border-radius:8px; flex-shrink:0; }
+.sidebar .lockup .name{ font-family:var(--font-display); font-weight:600; font-size:18px; }
+.sidebar .lockup .role{ font-size:11px; color:#9AA3BC; text-transform:uppercase; letter-spacing:.06em; }
+
+.nav-group{ display:flex; flex-direction:column; gap:2px; }
+.nav-label{ font-size:11px; color:#7C86A3; text-transform:uppercase; letter-spacing:.08em; padding:10px 12px 6px; }
+.navlink{
+  display:flex; align-items:center; gap:11px;
+  padding:10px 12px; border-radius:10px;
+  color:#C6CCE0; font-size:14px; font-weight:500;
+  transition: background .15s, color .15s;
+}
+.navlink svg{ width:18px; height:18px; flex-shrink:0; opacity:.85; }
+.navlink:hover{ background: rgba(255,255,255,0.06); color:#fff; }
+.navlink.current{ background: rgba(255,255,255,0.1); color:#fff; }
+.navlink.current.accent-admin{ background: var(--amber); color: var(--ink); font-weight:700;}
+.navlink.current.accent-teacher{ background: var(--teal); color: #fff; font-weight:700;}
+.navlink.current.accent-parent{ background: var(--plum); color: #fff; font-weight:700;}
+
+.sidebar-foot{ margin-top:auto; padding:12px; border-top:1px solid rgba(255,255,255,0.08); }
+.sidebar-user{ display:flex; align-items:center; gap:10px; }
+.avatar{
+  width:34px; height:34px; border-radius:50%; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--font-display); font-weight:600; font-size:13px; color:#fff;
+}
+.sidebar-user .who .name{ font-size:13px; font-weight:600; color:#fff; }
+.sidebar-user .who .sub{ font-size:11.5px; color:#9AA3BC; }
+
+.main{ flex:1; min-width:0; }
+.topbar{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:16px 28px; background:var(--surface); border-bottom:1px solid var(--line);
+  position:sticky; top:45px; z-index:10;
+}
+.search{
+  display:flex; align-items:center; gap:8px;
+  background: var(--paper); border:1px solid var(--line);
+  padding:9px 14px; border-radius:10px; width:320px; max-width:40vw;
+  color: var(--slate-dim); font-size:13.5px;
+}
+.search svg{ width:16px; height:16px; flex-shrink:0; }
+.topbar-actions{ display:flex; align-items:center; gap:16px; }
+.icon-btn{
+  width:36px; height:36px; border-radius:10px; border:1px solid var(--line);
+  background:var(--surface); display:flex; align-items:center; justify-content:center;
+  position:relative;
+}
+.icon-btn svg{ width:17px; height:17px; color:var(--slate); }
+.icon-btn .dot{ position:absolute; top:7px; right:7px; width:7px; height:7px; border-radius:50%; background:var(--danger); border:1.5px solid #fff;}
+
+.content{ padding:28px; max-width:1360px; }
+
+.page-head{ display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:24px; gap:16px; flex-wrap:wrap;}
+.page-head h1{ font-family:var(--font-display); font-weight:500; font-size:26px; }
+.page-head h1 em{ font-style:italic; color:var(--slate); font-weight:400; }
+.page-head p{ color:var(--slate); font-size:14px; margin-top:4px; }
+
+/* ---------- Buttons ---------- */
+.btn{
+  display:inline-flex; align-items:center; gap:8px;
+  font-size:13.5px; font-weight:600; padding:10px 16px; border-radius:10px;
+  border:1px solid transparent; transition: transform .1s, box-shadow .15s, background .15s;
+}
+.btn svg{ width:15px; height:15px; }
+.btn:active{ transform: scale(0.97); }
+.btn-primary{ background:var(--ink); color:#fff; }
+.btn-primary:hover{ background:var(--ink-soft); }
+.btn-primary.accent-admin{ background: var(--amber); color:var(--ink); }
+.btn-primary.accent-teacher{ background: var(--teal); color:#fff; }
+.btn-primary.accent-parent{ background: var(--plum); color:#fff; }
+.btn-ghost{ background:var(--surface); color:var(--ink); border-color:var(--line); }
+.btn-ghost:hover{ background: var(--paper); }
+.btn-sm{ padding:7px 12px; font-size:12.5px; border-radius:8px; }
+
+/* ---------- Cards / Stats ---------- */
+.grid{ display:grid; gap:18px; }
+.grid-4{ grid-template-columns: repeat(4,1fr); }
+.grid-3{ grid-template-columns: repeat(3,1fr); }
+.grid-2{ grid-template-columns: 1.6fr 1fr; }
+@media (max-width: 1000px){ .grid-4{grid-template-columns:repeat(2,1fr);} .grid-3{grid-template-columns:repeat(2,1fr);} .grid-2{grid-template-columns:1fr;} }
+@media (max-width: 620px){ .grid-4, .grid-3{grid-template-columns:1fr;} }
+
+.card{
+  background: var(--surface); border:1px solid var(--line); border-radius: var(--r-lg);
+  box-shadow: var(--shadow-card);
+}
+.card-pad{ padding:20px; }
+.card-head{ display:flex; align-items:center; justify-content:space-between; padding:18px 20px 0; }
+.card-head h3{ font-size:15px; font-weight:700; }
+.card-head .sub{ font-size:12.5px; color:var(--slate-dim); }
+
+.stat-card{ padding:18px 20px; display:flex; flex-direction:column; gap:10px; transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+.stat-card:not(.compact){ min-height:120px; justify-content:space-between; }
+.stat-card:hover{ transform: translateY(-4px); box-shadow: var(--shadow-pop); }
+.stat-card.accent-left{ border-left-width:4px; border-left-style:solid; }
+.stat-card.compact{ flex-direction:row; align-items:center; gap:12px; padding:13px 18px; }
+.stat-card.compact .stat-icon{ flex-shrink:0; }
+.stat-card.compact .txt{ display:flex; flex-direction:column; gap:1px; min-width:0; }
+.stat-card.compact .stat-value{ font-size:19px; line-height:1.15; }
+.stat-card.compact .stat-label{ font-size:11.5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.stat-card.compact .stat-delta{ margin-left:auto; flex-shrink:0; }
+.kpi-group-head{ display:flex; align-items:center; justify-content:space-between; margin:0 0 12px; }
+.kpi-group-head h3{ font-size:14px; font-weight:700; color:var(--slate); text-transform:uppercase; letter-spacing:.04em; }
+
+/* ---------- Student record search panel ---------- */
+.search-panel{
+  display:flex; gap:20px; align-items:center;
+  background: linear-gradient(135deg, var(--amber-tint) 0%, var(--surface) 65%);
+  border:1.5px solid var(--amber); border-radius: var(--r-lg);
+  padding:22px 26px; margin-bottom:18px; box-shadow: var(--shadow-card);
+}
+.search-panel-icon{
+  width:48px; height:48px; border-radius:12px; background:var(--amber);
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+}
+.search-panel-icon svg{ width:22px; height:22px; color:var(--ink); }
+.search-panel-body{ flex:1; min-width:0; }
+.search-panel-body h3{ font-family:var(--font-display); font-size:18px; font-weight:600; }
+.search-panel-body p{ font-size:12.5px; color:var(--slate); margin:3px 0 14px; }
+.search-panel-fields{ display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end; }
+.search-panel-fields .field{ flex:1; min-width:200px; }
+.search-panel-fields button{ flex-shrink:0; }
+@media (max-width:700px){
+  .search-panel{ flex-direction:column; align-items:flex-start; }
+}
+.stat-top{ display:flex; align-items:center; justify-content:space-between; }
+.stat-icon{ width:36px; height:36px; border-radius:10px; display:flex; align-items:center; justify-content:center; }
+.stat-icon svg{ width:18px; height:18px; }
+.stat-value{ font-family:var(--font-mono); font-size:26px; font-weight:600; letter-spacing:-0.02em; }
+.stat-label{ font-size:13px; color:var(--slate); }
+.stat-delta{ font-size:11.5px; font-weight:700; padding:2px 7px; border-radius:20px; }
+.up{ color:var(--success); background:var(--success-tint); }
+.down{ color:var(--danger); background:var(--danger-tint); }
+
+/* ---------- Tables ---------- */
+.table-wrap{ overflow-x:auto; }
+table{ width:100%; border-collapse:collapse; font-size:13.5px; min-width:640px; }
+thead th{
+  text-align:left; font-size:11.5px; text-transform:uppercase; letter-spacing:.05em;
+  color:var(--slate-dim); font-weight:700; padding:12px 20px; border-bottom:1px solid var(--line);
+  white-space:nowrap;
+}
+tbody td{ padding:14px 20px; border-bottom:1px solid var(--line-soft); color:var(--ink); vertical-align:middle;}
+tbody tr:last-child td{ border-bottom:none; }
+tbody tr:hover{ background: var(--paper); }
+.cell-person{ display:flex; align-items:center; gap:10px; }
+.cell-person .meta{ line-height:1.3; }
+.cell-person .meta .n{ font-weight:600; font-size:13.5px; }
+.cell-person .meta .s{ font-size:12px; color:var(--slate-dim); }
+
+.pill{ display:inline-flex; align-items:center; gap:5px; font-size:11.5px; font-weight:700; padding:4px 10px; border-radius:20px; }
+.pill::before{ content:''; width:6px; height:6px; border-radius:50%; background:currentColor; }
+.pill-success{ background:var(--success-tint); color:var(--success); }
+.pill-danger{ background:var(--danger-tint); color:var(--danger); }
+.pill-warn{ background:var(--warn-tint); color:var(--amber-ink); }
+.pill-info{ background:var(--info-tint); color:var(--info); }
+.pill-neutral{ background:var(--line-soft); color:var(--slate); }
+
+.progress{ height:6px; border-radius:6px; background:var(--line-soft); overflow:hidden; width:100%; }
+.progress > span{ display:block; height:100%; border-radius:6px; }
+
+.mini-tabs{ display:flex; gap:4px; background:var(--paper); padding:4px; border-radius:10px; border:1px solid var(--line); }
+.mini-tab{ padding:7px 14px; font-size:12.5px; font-weight:600; color:var(--slate); border-radius:7px; }
+.mini-tab.active{ background:var(--surface); color:var(--ink); box-shadow:var(--shadow-card); }
+
+/* ---------- Forms ---------- */
+.field{ display:flex; flex-direction:column; gap:6px; margin-bottom:16px; }
+.field label{ font-size:12.5px; font-weight:600; color:var(--slate); }
+.field input, .field select, .field textarea{
+  font-family:inherit; font-size:13.5px; padding:10px 13px; border-radius:9px;
+  border:1px solid var(--line); background:var(--surface); color:var(--ink);
+}
+.field input:focus, .field select:focus, .field textarea:focus{ outline:none; border-color:var(--info); box-shadow:0 0 0 3px var(--info-tint); }
+.field input[readonly]{ background:var(--paper); color:var(--slate); font-family:var(--font-mono); cursor:default; }
+.field .hint{ font-size:11.5px; color:var(--slate-dim); }
+
+/* ---------- Attendance grid (Teacher) ---------- */
+.roll{ display:flex; flex-direction:column; }
+.roll-row{ display:flex; align-items:center; gap:14px; padding:12px 20px; border-bottom:1px solid var(--line-soft); }
+.roll-row:last-child{ border-bottom:none; }
+.roll-row .name{ flex:1; font-weight:600; font-size:13.5px; }
+.roll-row .id{ font-size:12px; color:var(--slate-dim); font-family:var(--font-mono); }
+.seg{ display:flex; border:1px solid var(--line); border-radius:9px; overflow:hidden; }
+.seg button{ border:none; background:var(--surface); padding:7px 13px; font-size:12px; font-weight:700; color:var(--slate); border-right:1px solid var(--line); }
+.seg button:last-child{ border-right:none; }
+.seg button.sel-present{ background:var(--success); color:#fff; }
+.seg button.sel-absent{ background:var(--danger); color:#fff; }
+.seg button.sel-late{ background:var(--warn); color:var(--ink); }
+
+/* ---------- Chart placeholders (pure CSS/SVG, no libs) ---------- */
+.bars{ display:flex; align-items:flex-end; gap:10px; height:160px; padding:10px 4px 0; }
+.bars .bar{ flex:1; border-radius:6px 6px 2px 2px; position:relative; }
+.bars .bar span{ position:absolute; bottom:-20px; left:0; right:0; text-align:center; font-size:11px; color:var(--slate-dim); }
+.donut-wrap{ display:flex; align-items:center; gap:20px; }
+.legend{ display:flex; flex-direction:column; gap:9px; }
+.legend .li{ display:flex; align-items:center; gap:8px; font-size:12.5px; }
+.legend .sw{ width:9px; height:9px; border-radius:3px; flex-shrink:0; }
+
+.timeline{ display:flex; flex-direction:column; }
+.tl-item{ display:flex; gap:12px; padding:13px 0; border-bottom:1px solid var(--line-soft); }
+.tl-item:last-child{ border-bottom:none; }
+.tl-dot{ width:8px; height:8px; border-radius:50%; margin-top:6px; flex-shrink:0; }
+.tl-item .t{ font-size:13.5px; font-weight:600; }
+.tl-item .d{ font-size:12px; color:var(--slate-dim); margin-top:2px; }
+.tl-item .time{ margin-left:auto; font-size:11.5px; color:var(--slate-dim); font-family:var(--font-mono); white-space:nowrap; }
+
+.notice{ border-radius:var(--r-md); padding:14px 16px; display:flex; gap:12px; align-items:flex-start; }
+.notice svg{ width:18px; height:18px; flex-shrink:0; margin-top:1px; }
+.notice .t{ font-size:13.5px; font-weight:700; }
+.notice .d{ font-size:12.5px; margin-top:2px; opacity:.85; }
+
+/* ---------- Login ---------- */
+.login-shell{ display:flex; min-height: calc(100vh - 45px); }
+.login-art{
+  flex:1.15; position:relative; overflow:hidden;
+  background: radial-gradient(120% 140% at 15% 15%, #24345C 0%, var(--ink) 55%, #0E1730 100%);
+  color:#fff; padding:56px; display:flex; flex-direction:column; justify-content:space-between;
+}
+.login-art .brand{ display:flex; align-items:center; gap:10px; font-family:var(--font-display); font-size:19px; font-weight:600; }
+.login-art .brand .mark{ width:26px; height:26px; border-radius:7px; background:linear-gradient(135deg, var(--amber), #C97F1F); flex-shrink:0; }
+.login-art h1{ font-family:var(--font-display); font-weight:500; font-size:38px; line-height:1.18; max-width:460px; margin:auto 0; }
+.login-art h1 em{ font-style:italic; color:var(--amber); }
+.login-art .stats{ display:flex; gap:32px; }
+.login-art .stats .st .v{ font-family:var(--font-mono); font-size:22px; font-weight:600; }
+.login-art .stats .st .l{ font-size:12px; color:#9AA3BC; margin-top:2px; }
+.login-art .orb{ position:absolute; border-radius:50%; filter:blur(2px); opacity:.35; }
+
+.login-panel{ flex:1; display:flex; align-items:center; justify-content:center; padding:40px 24px; background:var(--paper); }
+.login-card{ width:100%; max-width:392px; background:var(--surface); border:1px solid var(--line); border-radius:var(--r-lg); box-shadow:var(--shadow-card); padding:34px 30px; }
+.login-card .head{ margin-bottom:22px; }
+.login-card .head h2{ font-family:var(--font-display); font-size:24px; font-weight:500; }
+.login-card .head p{ font-size:13.5px; color:var(--slate); margin-top:4px; }
+
+.role-seg{ display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:20px; }
+.role-btn{
+  display:flex; flex-direction:column; align-items:center; gap:6px;
+  padding:12px 6px; border-radius:10px; border:1px solid var(--line); background:var(--surface);
+  font-size:12px; font-weight:700; color:var(--slate); transition:all .15s;
+}
+.role-btn svg{ width:18px; height:18px; }
+.role-btn.role-active[data-role="teacher"]{ background:var(--teal-tint); border-color:var(--teal); color:var(--teal); }
+.role-btn.role-active[data-role="parent"]{ background:var(--plum-tint); border-color:var(--plum); color:var(--plum); }
+.role-btn.role-active[data-role="student"]{ background:var(--info-tint); border-color:var(--info); color:var(--info); }
+
+.pw-wrap{ position:relative; }
+.pw-wrap input{ width:100%; padding-right:42px; }
+.pw-toggle{
+  position:absolute; right:6px; top:50%; transform:translateY(-50%);
+  width:30px; height:30px; border-radius:7px; border:none; background:transparent;
+  display:flex; align-items:center; justify-content:center; color:var(--slate-dim);
+}
+.pw-toggle:hover{ background:var(--paper); color:var(--ink); }
+.pw-toggle svg{ width:17px; height:17px; }
+
+.login-row-between{ display:flex; justify-content:space-between; align-items:center; margin:-6px 0 18px; }
+.login-row-between label{ display:flex; align-items:center; gap:7px; font-size:12.5px; color:var(--slate); }
+.login-row-between a{ font-size:12.5px; font-weight:600; color:var(--info); }
+
+.btn-login{ width:100%; justify-content:center; padding:12px; font-size:14px; }
+.admin-note{
+  margin-top:22px; padding-top:18px; border-top:1px solid var(--line);
+  font-size:12px; color:var(--slate-dim); line-height:1.6; text-align:center;
+}
+.admin-note code{ font-family:var(--font-mono); background:var(--paper); padding:2px 6px; border-radius:5px; color:var(--slate); }
+
+/* ---------- Admin sub-sections (Dashboard / Students / Staff) ---------- */
+.admin-section{ display:none; }
+.admin-section.active{ display:block; }
+
+.stat-pill{
+  display:flex; align-items:center; gap:8px;
+  background:var(--surface); border:1px solid var(--line); border-radius:10px;
+  padding:9px 14px; font-size:13px; color:var(--slate); white-space:nowrap;
+}
+.stat-pill svg{ width:16px; height:16px; color:var(--slate-dim); flex-shrink:0; }
+.stat-pill strong{ color:var(--ink); font-family:var(--font-mono); font-weight:600; }
+
+.toolbar{ display:flex; flex-wrap:wrap; align-items:center; gap:10px; padding-bottom:16px; }
+
+.table-foot{
+  display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;
+  padding:14px 20px; border-top:1px solid var(--line); font-size:12.5px; color:var(--slate-dim);
+}
+.pager{ display:flex; gap:6px; }
+
+/* ---------- Admission Modal ---------- */
+.modal-overlay{
+  position:fixed; inset:0; z-index:200; display:none; align-items:center; justify-content:center;
+  background:rgba(20,33,61,0.55); backdrop-filter:blur(3px); padding:24px;
+}
+.modal-overlay.open{ display:flex; }
+.modal-card{
+  background:var(--surface); border-radius:var(--r-lg); box-shadow:var(--shadow-pop);
+  width:100%; max-width:660px; max-height:88vh; overflow-y:auto;
+  animation: modalIn .18s ease;
+}
+@keyframes modalIn{ from{opacity:0; transform:translateY(10px) scale(.98);} to{opacity:1; transform:translateY(0) scale(1);} }
+.modal-head{
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  padding:22px 26px; border-bottom:1px solid var(--line);
+  position:sticky; top:0; background:var(--surface); z-index:2; border-radius:var(--r-lg) var(--r-lg) 0 0;
+}
+.modal-head h2{ font-family:var(--font-display); font-size:20px; font-weight:600; }
+.modal-head p{ font-size:12.5px; color:var(--slate); margin-top:2px; }
+.modal-close{
+  width:32px; height:32px; border-radius:8px; border:1px solid var(--line); background:var(--surface);
+  display:flex; align-items:center; justify-content:center; flex-shrink:0; color:var(--slate);
+}
+.modal-close:hover{ background:var(--paper); color:var(--ink); }
+.modal-close svg{ width:16px; height:16px; }
+.modal-body{ padding:24px 26px; }
+.form-section-title{
+  font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.06em;
+  color:var(--amber-ink); margin:24px 0 14px; display:flex; align-items:center; gap:8px;
+}
+.form-section-title::before{ content:''; width:6px; height:6px; border-radius:50%; background:var(--amber); }
+.form-section-title.first{ margin-top:0; }
+.form-grid{ display:grid; grid-template-columns:1fr 1fr; gap:0 16px; }
+.form-grid .field.full{ grid-column: 1 / -1; }
+@media (max-width:560px){ .form-grid{ grid-template-columns:1fr; } }
+.checklist{ display:flex; flex-wrap:wrap; gap:16px; }
+.checklist label{ display:flex; align-items:center; gap:7px; font-size:13px; color:var(--slate); }
+.checklist input{ width:auto; padding:0; accent-color: var(--amber-ink); }
+.modal-foot{
+  display:flex; justify-content:flex-end; gap:10px; padding:18px 26px;
+  border-top:1px solid var(--line); position:sticky; bottom:0; background:var(--surface);
+  border-radius:0 0 var(--r-lg) var(--r-lg);
+}
+.success-banner{
+  display:none; align-items:center; gap:10px; background:var(--success-tint); color:var(--success);
+  border-radius:10px; padding:12px 16px; font-size:13.5px; font-weight:600; margin-bottom:20px;
+}
+.success-banner.show{ display:flex; }
+.success-banner svg{ width:18px; height:18px; flex-shrink:0; }
+
+/* ---- Admission wizard stepper ---- */
+.stepper{ display:flex; align-items:center; padding:16px 26px 4px; }
+.step-item{ display:flex; align-items:center; gap:8px; flex-shrink:0; }
+.step-item .dot{
+  width:26px; height:26px; border-radius:50%; background:var(--line-soft); color:var(--slate-dim);
+  display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700;
+  transition: background .2s, color .2s;
+}
+.step-item .lbl{ font-size:12.5px; font-weight:600; color:var(--slate-dim); white-space:nowrap; transition:color .2s; }
+.step-item.active .dot{ background:var(--amber); color:var(--ink); }
+.step-item.active .lbl{ color:var(--ink); }
+.step-item.done .dot{ background:var(--success); color:#fff; }
+.step-item.done .lbl{ color:var(--ink); }
+.step-line{ flex:1; height:2px; background:var(--line); margin:0 10px; transition:background .2s; }
+.step-line.done{ background:var(--success); }
+.admission-step{ display:none; }
+.admission-step.active{ display:block; }
+
+/* ---------- Responsive shell ---------- */
+.mobile-topbar{ display:none; }
+@media (max-width: 880px){
+  .sidebar{ position:fixed; left:0; top:45px; z-index:40; transform:translateX(-100%); transition:transform .2s; box-shadow:var(--shadow-pop); }
+  .sidebar.open{ transform:translateX(0); }
+  .search{ display:none; }
+  .content{ padding:18px 16px; }
+  .page-head{ align-items:flex-start; }
+  .mobile-topbar{ display:flex; }
+  .grid-2{ grid-template-columns:1fr; }
+  .login-art{ display:none; }
+  .login-panel{ padding:28px 16px; }
+}
+.hamburger{ width:36px; height:36px; border-radius:10px; border:1px solid var(--line); background:var(--surface); display:flex; align-items:center; justify-content:center; }
+.hamburger svg{ width:18px; height:18px; }
+
+/* ---------- Design system page ---------- */
+.ds-wrap{ max-width:1100px; margin:0 auto; padding:48px 24px 100px; }
+.ds-hero{ margin-bottom:56px; }
+.ds-hero .eyebrow{ font-size:12px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--amber-ink); background:var(--amber-tint); display:inline-block; padding:5px 12px; border-radius:20px; margin-bottom:16px;}
+.ds-hero h1{ font-family:var(--font-display); font-size:44px; font-weight:500; line-height:1.1; max-width:720px; }
+.ds-hero h1 em{ font-style:italic; color:var(--amber-ink); }
+.ds-hero p{ margin-top:16px; font-size:16px; color:var(--slate); max-width:600px; line-height:1.6; }
+.ds-section{ margin-bottom:56px; }
+.ds-section h2{ font-family:var(--font-display); font-size:22px; font-weight:500; margin-bottom:6px; }
+.ds-section .lead{ color:var(--slate); font-size:14px; margin-bottom:22px; max-width:640px; }
+.swatch-row{ display:grid; grid-template-columns:repeat(6,1fr); gap:12px; }
+@media (max-width:760px){ .swatch-row{ grid-template-columns:repeat(3,1fr);} }
+.swatch{ border-radius:12px; overflow:hidden; border:1px solid var(--line); }
+.swatch .fill{ height:64px; }
+.swatch .lbl{ background:var(--surface); padding:9px 10px; }
+.swatch .lbl .n{ font-size:12px; font-weight:700; }
+.swatch .lbl .h{ font-size:11px; color:var(--slate-dim); font-family:var(--font-mono); }
+.type-row{ display:flex; align-items:baseline; gap:20px; padding:18px 0; border-bottom:1px solid var(--line); }
+.type-row .lbl{ width:150px; flex-shrink:0; font-size:12px; color:var(--slate-dim); font-family:var(--font-mono); }
+.component-demo{ display:flex; flex-wrap:wrap; gap:12px; align-items:center; padding:20px; background:var(--surface); border:1px solid var(--line); border-radius:var(--r-lg); }
+.identity-row{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+@media (max-width:760px){ .identity-row{grid-template-columns:1fr;} }
+.identity-card{ border-radius:var(--r-lg); padding:20px; color:#fff; }
+.identity-card .role{ font-size:12px; text-transform:uppercase; letter-spacing:.08em; opacity:.85; }
+.identity-card h3{ font-family:var(--font-display); font-size:22px; font-weight:500; margin:6px 0 10px; }
+.identity-card p{ font-size:13px; opacity:.9; line-height:1.5; }
+
+</style>
+</head>
+<body>
+
+<!-- ================= META NAV (prototype switcher only) ================= -->
+<nav class="meta-nav">
+  <div class="brand"><span class="mark"></span> Cohort — Redesign</div>
+  <button class="meta-btn active" onclick="showView('ds')">Design System</button>
+  <button class="meta-btn" onclick="showView('login')">Login</button>
+  <button class="meta-btn" onclick="showView('admin')">Admin Portal</button>
+  <button class="meta-btn" onclick="showView('teacher')">Teacher Portal</button>
+  <button class="meta-btn" onclick="showView('parent')">Parent Portal</button>
+</nav>
+
+<!-- ============================================================
+     VIEW 0 — LOGIN
+     One shared sign-in screen for Teachers, Parents, and Students.
+     Admin does not sign in here — see note on the card.
+     ============================================================ -->
+<section class="view" id="view-login">
+  <div class="login-shell">
+    <div class="login-art">
+      <div class="brand"><span class="mark"></span> Cohort</div>
+      <h1>Everything your school runs on, <em>in one calm place.</em></h1>
+      <div class="stats">
+        <div class="st"><div class="v">1,284</div><div class="l">Students</div></div>
+        <div class="st"><div class="v">86</div><div class="l">Teachers</div></div>
+        <div class="st"><div class="v">96.1%</div><div class="l">Attendance</div></div>
+      </div>
+      <div class="orb" style="width:280px; height:280px; background:var(--amber); top:-80px; right:-80px;"></div>
+      <div class="orb" style="width:200px; height:200px; background:var(--teal); bottom:-60px; left:-40px;"></div>
+    </div>
+
+    <div class="login-panel">
+      <div class="login-card">
+        <div class="head">
+          <h2>Welcome back</h2>
+          <p>Sign in to see your classes, attendance, and updates.</p>
+        </div>
+
+        <div class="role-seg" id="roleSeg">
+          <button type="button" class="role-btn role-active" data-role="teacher" onclick="selectRole('teacher', this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            Teacher
+          </button>
+          <button type="button" class="role-btn" data-role="parent" onclick="selectRole('parent', this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 20v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M22 20v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            Parent
+          </button>
+          <button type="button" class="role-btn" data-role="student" onclick="selectRole('student', this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5-10-5z"/><path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/></svg>
+            Student
+          </button>
+        </div>
+
+        <div class="field">
+          <label for="loginId">User ID</label>
+          <input id="loginId" type="text" placeholder="e.g. TCH-8021 or your registered ID">
+        </div>
+
+        <div class="field">
+          <label for="loginPw">Password</label>
+          <div class="pw-wrap">
+            <input id="loginPw" type="password" placeholder="Enter your password">
+            <button type="button" class="pw-toggle" onclick="togglePw()" id="pwToggleBtn" aria-label="Show password">
+              <svg id="eyeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="login-row-between">
+          <label><input type="checkbox" style="width:auto; padding:0;"> Keep me signed in</label>
+          <a href="#">Forgot password?</a>
+        </div>
+
+        <button class="btn btn-primary btn-login accent-teacher" id="loginSubmit">Sign in as Teacher</button>
+
+        <div class="admin-note">
+          Administrator? Admin doesn't use this screen — go to<br><code>yourschool.cohortapp.com/admin</code> to sign in.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     VIEW 1 — DESIGN SYSTEM
+     ============================================================ -->
+<section class="view active" id="view-ds">
+  <div class="ds-wrap">
+    <div class="ds-hero">
+      <span class="eyebrow">Cohort Design System · v1.0</span>
+      <h1>One quiet system, <em>three points of view.</em></h1>
+      <p>Admin, Teacher, and Parent all run on the same components, type, and spacing — each portal only changes its accent, never its structure. That's what makes the redesign feel premium and learnable at once: once you know one screen, you know them all.</p>
+    </div>
+
+    <div class="ds-section">
+      <h2>Color</h2>
+      <p class="lead">A near-navy ink, a warm paper background, and one confident amber signal for primary actions. Semantic colors are reserved strictly for status — never decoration.</p>
+      <div class="swatch-row">
+        <div class="swatch"><div class="fill" style="background:#14213D"></div><div class="lbl"><div class="n">Ink</div><div class="h">#14213D</div></div></div>
+        <div class="swatch"><div class="fill" style="background:#F5F6F9"></div><div class="lbl"><div class="n">Paper</div><div class="h">#F5F6F9</div></div></div>
+        <div class="swatch"><div class="fill" style="background:#E8A33D"></div><div class="lbl"><div class="n">Signal Amber</div><div class="h">#E8A33D</div></div></div>
+        <div class="swatch"><div class="fill" style="background:#2E8C82"></div><div class="lbl"><div class="n">Teacher Teal</div><div class="h">#2E8C82</div></div></div>
+        <div class="swatch"><div class="fill" style="background:#8B5FA8"></div><div class="lbl"><div class="n">Parent Plum</div><div class="h">#8B5FA8</div></div></div>
+        <div class="swatch"><div class="fill" style="background:#5B6478"></div><div class="lbl"><div class="n">Slate</div><div class="h">#5B6478</div></div></div>
+        <div class="swatch"><div class="fill" style="background:#2F9E68"></div><div class="lbl"><div class="n">Success</div><div class="h">#2F9E68</div></div></div>
+        <div class="swatch"><div class="fill" style="background:#E0523F"></div><div class="lbl"><div class="n">Danger</div><div class="h">#E0523F</div></div></div>
+        <div class="swatch"><div class="fill" style="background:#3D7FE0"></div><div class="lbl"><div class="n">Info</div><div class="h">#3D7FE0</div></div></div>
+        <div class="swatch"><div class="fill" style="background:#E4E7EE"></div><div class="lbl"><div class="n">Line</div><div class="h">#E4E7EE</div></div></div>
+      </div>
+    </div>
+
+    <div class="ds-section">
+      <h2>Type</h2>
+      <p class="lead">Fraunces (display) carries warmth in headings and greetings — the one place the system allows personality. Inter runs every interface label and paragraph. JetBrains Mono sets every number, so data always reads as data.</p>
+      <div class="type-row"><div class="lbl">Display / 32</div><div style="font-family:var(--font-display); font-size:32px; font-weight:500;">Good morning, <em style="font-style:italic;">Sarah</em></div></div>
+      <div class="type-row"><div class="lbl">Heading / 20</div><div style="font-family:var(--font-body); font-size:20px; font-weight:700;">Attendance overview</div></div>
+      <div class="type-row"><div class="lbl">Body / 14</div><div style="font-family:var(--font-body); font-size:14px;">Grade 8B has 3 unexcused absences this week.</div></div>
+      <div class="type-row"><div class="lbl">Caption / 12</div><div style="font-family:var(--font-body); font-size:12px; color:var(--slate-dim);">Updated 2 minutes ago</div></div>
+      <div class="type-row"><div class="lbl">Data / Mono 22</div><div style="font-family:var(--font-mono); font-size:22px; font-weight:600;">94.2%</div></div>
+    </div>
+
+    <div class="ds-section">
+      <h2>Portal identity</h2>
+      <p class="lead">Every portal shares layout and components. Identity lives only in the sidebar accent, the active nav state, and the avatar ring — enough to orient, never enough to fragment the system.</p>
+      <div class="identity-row">
+        <div class="identity-card" style="background:linear-gradient(160deg, var(--ink), var(--amber-ink));"><div class="role">Admin</div><h3>Runs the school</h3><p>Enrollment, staffing, fees, and school-wide reporting. Accent: Signal Amber.</p></div>
+        <div class="identity-card" style="background:linear-gradient(160deg, var(--ink), #1E6862);"><div class="role">Teacher</div><h3>Runs the classroom</h3><p>Attendance, gradebook, and lesson-day tools. Accent: Teacher Teal.</p></div>
+        <div class="identity-card" style="background:linear-gradient(160deg, var(--ink), #5E3E78);"><div class="role">Parent</div><h3>Follows the child</h3><p>Progress, attendance, fees, and announcements. Accent: Parent Plum.</p></div>
+      </div>
+    </div>
+
+    <div class="ds-section">
+      <h2>Components</h2>
+      <p class="lead">A sample of the shared building blocks used across every screen in the three portals that follow.</p>
+      <div class="component-demo" style="margin-bottom:12px;">
+        <button class="btn btn-primary">Save changes</button>
+        <button class="btn btn-primary accent-teacher">Mark attendance</button>
+        <button class="btn btn-primary accent-parent">Pay fees</button>
+        <button class="btn btn-ghost">Cancel</button>
+        <span class="pill pill-success">Present</span>
+        <span class="pill pill-danger">Absent</span>
+        <span class="pill pill-warn">Due soon</span>
+        <span class="pill pill-info">Info</span>
+      </div>
+      <div class="component-demo">
+        <div class="field" style="margin:0; width:220px;"><label>Search students</label><input placeholder="Type a name…"></div>
+        <div class="field" style="margin:0; width:180px;"><label>Class</label><select><option>Grade 8B</option></select></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     VIEW 2 — ADMIN PORTAL
+     ============================================================ -->
+<section class="view" id="view-admin">
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="id-ribbon" style="background:var(--amber);"></div>
+      <div class="lockup">
+        <div class="mark" style="background:linear-gradient(135deg, var(--amber), #C97F1F);"></div>
+        <div><div class="name">Cohort</div><div class="role">Admin</div></div>
+      </div>
+      <div class="nav-group">
+        <div class="nav-label">Overview</div>
+        <a class="navlink current accent-admin" data-admin-nav="dashboard" onclick="showAdmin('dashboard', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg> Dashboard</a>
+      </div>
+      <div class="nav-group">
+        <div class="nav-label">School</div>
+        <a class="navlink" data-admin-nav="students" onclick="showAdmin('students', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5-10-5z"/><path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/></svg> Students</a>
+        <a class="navlink" data-admin-nav="staff" onclick="showAdmin('staff', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 20v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M22 20v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> Staff</a>
+        <a class="navlink" data-admin-nav="accounts" onclick="showAdmin('accounts', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7z"/><circle cx="12" cy="12" r="3"/><path d="M6 9h.01M18 15h.01"/></svg> Accounts</a>
+        <a class="navlink"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg> Timetable</a>
+        <a class="navlink"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7z"/><circle cx="12" cy="12" r="3"/><path d="M6 9h.01M18 15h.01"/></svg> Fees</a>
+        <a class="navlink"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l18-5v12L3 14v-3z"/><path d="M11 12v6a2 2 0 0 0 4 0"/></svg> Announcements</a>
+      </div>
+      <div class="nav-group">
+        <div class="nav-label">System</div>
+        <a class="navlink"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg> Settings</a>
+      </div>
+      <div class="sidebar-foot">
+        <div class="sidebar-user">
+          <div class="avatar" style="background:var(--amber); color:var(--ink);">RH</div>
+          <div class="who"><div class="name">Rina Haque</div><div class="sub">Principal · Admin</div></div>
+        </div>
+      </div>
+    </aside>
+
+    <div class="main">
+      <div class="topbar">
+        <button class="hamburger" onclick="toggleSidebar('admin')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg></button>
+        <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/></svg> Search students, staff, invoices…</div>
+        <div class="topbar-actions">
+          <button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="dot"></span></button>
+          <div class="avatar" style="width:32px;height:32px;font-size:12px;background:var(--amber);color:var(--ink);">RH</div>
+        </div>
+      </div>
+
+      <div class="content" onclick="closeSidebar('admin')">
+
+        <!-- ===================== ADMIN / DASHBOARD ===================== -->
+        <div class="admin-section active" data-admin="dashboard">
+        <div class="page-head">
+          <div>
+            <h1>Good morning, <em>Rina</em></h1>
+            <p>Here's how Cohort Academy is doing today, Tuesday 7 July.</p>
+          </div>
+          <button class="btn btn-primary accent-admin" onclick="openAdmissionModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg> New enrollment</button>
+        </div>
+
+        <div class="grid grid-4" style="margin-bottom:28px;">
+          <div class="card stat-card compact">
+            <div class="stat-icon" style="background:var(--amber-tint);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber-ink)" stroke-width="2"><path d="M17 20v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/></svg></div>
+            <div class="txt"><div class="stat-value">1,284</div><div class="stat-label">Enrolled students</div></div>
+            <span class="stat-delta up">+2.4%</span>
+          </div>
+          <div class="card stat-card compact">
+            <div class="stat-icon" style="background:var(--info-tint);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--info)" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5-10-5z"/><path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/></svg></div>
+            <div class="txt"><div class="stat-value">86</div><div class="stat-label">Teaching staff</div></div>
+            <span class="stat-delta up">+3</span>
+          </div>
+          <div class="card stat-card compact">
+            <div class="stat-icon" style="background:var(--success-tint);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.9-9.1"/><path d="M22 4L12 14.01l-3-3"/></svg></div>
+            <div class="txt"><div class="stat-value">96.1%</div><div class="stat-label">Attendance today</div></div>
+            <span class="stat-delta up">+0.6%</span>
+          </div>
+          <div class="card stat-card compact">
+            <div class="stat-icon" style="background:var(--danger-tint);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--danger)" stroke-width="2"><path d="M2 7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7z"/><circle cx="12" cy="12" r="3"/><path d="M6 9h.01M18 15h.01"/></svg></div>
+            <div class="txt"><div class="stat-value">Rs 4.28M</div><div class="stat-label">Fees outstanding</div></div>
+            <span class="stat-delta down">-1.2%</span>
+          </div>
+        </div>
+
+        <div class="kpi-group-head">
+          <h3>Students</h3>
+          <button class="btn btn-ghost btn-sm" onclick="showAdmin('students', document.querySelector('[data-admin-nav=students]'))">Manage students →</button>
+        </div>
+        <div class="grid grid-3" style="margin-bottom:28px;">
+          <div class="card stat-card accent-left" style="border-left-color:var(--success);">
+            <div class="stat-top"><div class="stat-icon" style="background:var(--success-tint);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2"><circle cx="9" cy="7" r="4"/><path d="M2 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><path d="M19 8v6M22 11h-6"/></svg></div><span class="stat-delta up">+18 this term</span></div>
+            <div class="stat-value">1,284</div><div class="stat-label">Enrolled Students</div>
+          </div>
+          <div class="card stat-card accent-left" style="border-left-color:var(--danger);">
+            <div class="stat-top"><div class="stat-icon" style="background:var(--danger-tint);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--danger)" stroke-width="2"><circle cx="9" cy="7" r="4"/><path d="M2 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><path d="M17 8l6 6M23 8l-6 6"/></svg></div><span class="stat-delta down">+2 this term</span></div>
+            <div class="stat-value">6</div><div class="stat-label">Expelled Students</div>
+          </div>
+          <div class="card stat-card accent-left" style="border-left-color:var(--info);">
+            <div class="stat-top"><div class="stat-icon" style="background:var(--info-tint);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--info)" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div></div>
+            <div class="stat-value">1,290</div><div class="stat-label">Total Students</div>
+          </div>
+        </div>
+
+        <div class="kpi-group-head">
+          <h3>Teachers</h3>
+          <button class="btn btn-ghost btn-sm" onclick="showAdmin('staff', document.querySelector('[data-admin-nav=staff]'))">Manage staff →</button>
+        </div>
+        <div class="grid grid-4" style="margin-bottom:18px;">
+          <div class="card stat-card accent-left" style="border-left-color:var(--teal);">
+            <div class="stat-top"><div class="stat-icon" style="background:var(--teal-tint);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><polyline points="17 11 19 13 23 9"/></svg></div><span class="stat-delta up">+5 this term</span></div>
+            <div class="stat-value">5</div><div class="stat-label">Appoint Teachers</div>
+          </div>
+          <div class="card stat-card accent-left" style="border-left-color:var(--danger);">
+            <div class="stat-top"><div class="stat-icon" style="background:var(--danger-tint);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--danger)" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="18" y1="8" x2="23" y2="13"/><line x1="23" y1="8" x2="18" y2="13"/></svg></div><span class="stat-delta down">+2 this term</span></div>
+            <div class="stat-value">2</div><div class="stat-label">Terminate / Resign</div>
+          </div>
+          <div class="card stat-card accent-left" style="border-left-color:var(--amber);">
+            <div class="stat-top"><div class="stat-icon" style="background:var(--amber-tint);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber-ink)" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div></div>
+            <div class="stat-value">86</div><div class="stat-label">Nos of Teachers</div>
+          </div>
+          <div class="card stat-card accent-left" style="border-left-color:var(--plum);">
+            <div class="stat-top"><div class="stat-icon" style="background:var(--plum-tint);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--plum)" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div><span class="pill pill-info" style="margin:0;">4 open</span></div>
+            <div class="stat-value">4</div><div class="stat-label">Required Teachers</div>
+          </div>
+        </div>
+
+        <div class="grid grid-2" style="margin-bottom:18px;">
+          <div class="card">
+            <div class="card-head"><h3>Attendance, last 7 days</h3><span class="sub">School-wide</span></div>
+            <div class="card-pad">
+              <div class="bars">
+                <div class="bar" style="height:78%; background:var(--amber-tint);"><span>Wed</span></div>
+                <div class="bar" style="height:84%; background:var(--amber-tint);"><span>Thu</span></div>
+                <div class="bar" style="height:70%; background:var(--amber-tint);"><span>Fri</span></div>
+                <div class="bar" style="height:0%;"><span>Sat</span></div>
+                <div class="bar" style="height:0%;"><span>Sun</span></div>
+                <div class="bar" style="height:88%; background:var(--amber-tint);"><span>Mon</span></div>
+                <div class="bar" style="height:96%; background:var(--amber);"><span>Tue</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="card card-pad">
+            <div class="card-head" style="padding:0 0 14px;"><h3>Fee collection</h3></div>
+            <div class="donut-wrap">
+              <svg width="110" height="110" viewBox="0 0 36 36">
+                <circle cx="18" cy="18" r="15.9" fill="none" stroke="var(--line-soft)" stroke-width="4"/>
+                <circle cx="18" cy="18" r="15.9" fill="none" stroke="var(--amber)" stroke-width="4" stroke-dasharray="72 100" stroke-linecap="round" transform="rotate(-90 18 18)"/>
+              </svg>
+              <div class="legend">
+                <div class="li"><span class="sw" style="background:var(--amber);"></span> Collected · 72%</div>
+                <div class="li"><span class="sw" style="background:var(--line-soft);"></span> Outstanding · 28%</div>
+                <div style="font-family:var(--font-mono); font-size:20px; font-weight:600; margin-top:4px;">Rs 15.42M</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><h3>Recent admissions</h3><button class="btn btn-ghost btn-sm" onclick="showAdmin('students', document.querySelector('[data-admin-nav=students]'))">View all</button></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Student</th><th>Class</th><th>Guardian</th><th>Fee status</th><th>Joined</th><th></th></tr></thead>
+              <tbody>
+                <tr><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--info-tint);color:var(--info);">AK</div><div class="meta"><div class="n">Amina Khan</div><div class="s">ID 20481</div></div></div></td><td>Grade 6A</td><td>Farhan Khan</td><td><span class="pill pill-success">Paid</span></td><td>3 Jul</td><td><button class="btn btn-ghost btn-sm">View</button></td></tr>
+                <tr><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--plum-tint);color:var(--plum);">DS</div><div class="meta"><div class="n">Daniyal Siddiqui</div><div class="s">ID 20482</div></div></div></td><td>Grade 3C</td><td>Nadia Siddiqui</td><td><span class="pill pill-warn">Due soon</span></td><td>2 Jul</td><td><button class="btn btn-ghost btn-sm">View</button></td></tr>
+                <tr><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--teal-tint);color:var(--teal);">ZM</div><div class="meta"><div class="n">Zoya Mirza</div><div class="s">ID 20483</div></div></div></td><td>Grade 9B</td><td>Imran Mirza</td><td><span class="pill pill-danger">Overdue</span></td><td>30 Jun</td><td><button class="btn btn-ghost btn-sm">View</button></td></tr>
+                <tr><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--amber-tint);color:var(--amber-ink);">HB</div><div class="meta"><div class="n">Hassan Baig</div><div class="s">ID 20484</div></div></div></td><td>Grade 1B</td><td>Sana Baig</td><td><span class="pill pill-success">Paid</span></td><td>29 Jun</td><td><button class="btn btn-ghost btn-sm">View</button></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        </div>
+        <!-- ===================== /ADMIN / DASHBOARD ===================== -->
+
+        <!-- ===================== ADMIN / STUDENTS ===================== -->
+        <div class="admin-section" data-admin="students">
+          <div class="page-head">
+            <div>
+              <h1>Students</h1>
+              <p>1,284 students across 42 classes, Grade 1 – Grade 12.</p>
+            </div>
+            <div style="display:flex; gap:10px; align-items:center;">
+              <div class="stat-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 20v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/></svg> Total Students <strong>1,284</strong></div>
+              <button class="btn btn-primary accent-admin" onclick="openAdmissionModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg> New Admission</button>
+            </div>
+          </div>
+
+          <div class="grid grid-4" style="margin-bottom:18px;">
+            <div class="card stat-card compact">
+              <div class="stat-icon" style="background:var(--amber-tint);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber-ink)" stroke-width="2"><path d="M17 20v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/></svg></div>
+              <div class="txt"><div class="stat-value">1,284</div><div class="stat-label">Total students</div></div>
+            </div>
+            <div class="card stat-card compact">
+              <div class="stat-icon" style="background:var(--success-tint);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></div>
+              <div class="txt"><div class="stat-value">34</div><div class="stat-label">New admissions this term</div></div>
+              <span class="stat-delta up">+18</span>
+            </div>
+            <div class="card stat-card compact">
+              <div class="stat-icon" style="background:var(--warn-tint);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber-ink)" stroke-width="2"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg></div>
+              <div class="txt"><div class="stat-value">7</div><div class="stat-label">Pending admissions</div></div>
+            </div>
+            <div class="card stat-card compact">
+              <div class="stat-icon" style="background:var(--info-tint);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--info)" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.9-9.1"/><path d="M22 4L12 14.01l-3-3"/></svg></div>
+              <div class="txt"><div class="stat-value">96.1%</div><div class="stat-label">Average attendance</div></div>
+            </div>
+          </div>
+
+          <div class="search-panel">
+            <div class="search-panel-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/></svg>
+            </div>
+            <div class="search-panel-body">
+              <h3>Find a student record</h3>
+              <p>Every record is tied to its auto-generated Student ID — search by name or ID to pull it up instantly.</p>
+              <form class="search-panel-fields" onsubmit="event.preventDefault();">
+                <div class="field" style="margin:0;"><label for="recSearchName">Student full name</label><input id="recSearchName" type="text" placeholder="e.g. Ayesha Tariq"></div>
+                <div class="field" style="margin:0;"><label for="recSearchId">Student ID No.</label><input id="recSearchId" type="text" placeholder="e.g. STU-20481"></div>
+                <button type="submit" class="btn btn-primary accent-admin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/></svg> Search</button>
+              </form>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-pad" style="padding-bottom:0;">
+              <div class="toolbar">
+                <div class="search" style="width:260px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/></svg> Search by name or ID…</div>
+                <div class="field" style="margin:0; width:150px;"><select><option>All classes</option><option>Grade 1</option><option>Grade 6</option><option>Grade 8</option><option>Grade 9</option></select></div>
+                <div class="field" style="margin:0; width:130px;"><select><option>All sections</option><option>A</option><option>B</option><option>C</option></select></div>
+                <div class="mini-tabs" style="margin-left:auto;">
+                  <button class="mini-tab active">All</button>
+                  <button class="mini-tab">Active</button>
+                  <button class="mini-tab">Pending</button>
+                  <button class="mini-tab">Alumni</button>
+                </div>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Student</th><th>Class</th><th>Guardian</th><th>Contact</th><th>Attendance</th><th>Fee status</th><th>Status</th><th></th></tr></thead>
+                <tbody>
+                  <tr><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--info-tint);color:var(--info);">AK</div><div class="meta"><div class="n">Amina Khan</div><div class="s">ID 20481</div></div></div></td><td>Grade 6A</td><td>Farhan Khan</td><td>+92 300 111 2233</td><td>97%</td><td><span class="pill pill-success">Paid</span></td><td><span class="pill pill-neutral">Active</span></td><td><button class="btn btn-ghost btn-sm">View</button></td></tr>
+                  <tr><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--plum-tint);color:var(--plum);">DS</div><div class="meta"><div class="n">Daniyal Siddiqui</div><div class="s">ID 20482</div></div></div></td><td>Grade 3C</td><td>Nadia Siddiqui</td><td>+92 301 222 3344</td><td>97%</td><td><span class="pill pill-warn">Due soon</span></td><td><span class="pill pill-neutral">Active</span></td><td><button class="btn btn-ghost btn-sm">View</button></td></tr>
+                  <tr><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--teal-tint);color:var(--teal);">ZM</div><div class="meta"><div class="n">Zoya Mirza</div><div class="s">ID 20483</div></div></div></td><td>Grade 9B</td><td>Imran Mirza</td><td>+92 302 333 4455</td><td>89%</td><td><span class="pill pill-danger">Overdue</span></td><td><span class="pill pill-neutral">Active</span></td><td><button class="btn btn-ghost btn-sm">View</button></td></tr>
+                  <tr><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--amber-tint);color:var(--amber-ink);">HB</div><div class="meta"><div class="n">Hassan Baig</div><div class="s">ID 20484</div></div></div></td><td>Grade 1B</td><td>Sana Baig</td><td>+92 303 444 5566</td><td>99%</td><td><span class="pill pill-success">Paid</span></td><td><span class="pill pill-neutral">Active</span></td><td><button class="btn btn-ghost btn-sm">View</button></td></tr>
+                  <tr><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--success-tint);color:var(--success);">TA</div><div class="meta"><div class="n">Tania Ahmed</div><div class="s">ID 20485</div></div></div></td><td>Grade 8A</td><td>Bilal Ahmed</td><td>+92 304 555 6677</td><td>93%</td><td><span class="pill pill-success">Paid</span></td><td><span class="pill pill-neutral">Active</span></td><td><button class="btn btn-ghost btn-sm">View</button></td></tr>
+                  <tr><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--info-tint);color:var(--info);">OW</div><div class="meta"><div class="n">Omar Waseem</div><div class="s">ID 20510</div></div></div></td><td>Grade 5C</td><td>Waseem Iqbal</td><td>+92 305 666 7788</td><td>—</td><td><span class="pill pill-neutral">—</span></td><td><span class="pill pill-warn">Pending</span></td><td><button class="btn btn-ghost btn-sm">Review</button></td></tr>
+                  <tr><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--plum-tint);color:var(--plum);">SR</div><div class="meta"><div class="n">Sana Riaz</div><div class="s">ID 19022</div></div></div></td><td>Alumni · 2025</td><td>Riaz Malik</td><td>+92 306 777 8899</td><td>—</td><td><span class="pill pill-success">Cleared</span></td><td><span class="pill pill-info">Alumni</span></td><td><button class="btn btn-ghost btn-sm">View</button></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="table-foot">
+              <span>Showing 1–7 of 1,284 students</span>
+              <div class="pager">
+                <button class="btn btn-ghost btn-sm" disabled>Prev</button>
+                <button class="btn btn-ghost btn-sm" style="background:var(--ink); color:#fff;">1</button>
+                <button class="btn btn-ghost btn-sm">2</button>
+                <button class="btn btn-ghost btn-sm">3</button>
+                <button class="btn btn-ghost btn-sm">Next</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- ===================== /ADMIN / STUDENTS ===================== -->
+
+        <!-- ===================== ADMIN / STAFF ===================== -->
+        <div class="admin-section" data-admin="staff">
+          <div class="page-head">
+            <div>
+              <h1>Staff</h1>
+              <p>86 teaching and non-teaching staff members.</p>
+            </div>
+            <div style="display:flex; gap:10px; align-items:center;">
+              <div class="stat-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg> Total Staff <strong>86</strong></div>
+              <button class="btn btn-primary accent-admin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg> Add Staff</button>
+            </div>
+          </div>
+
+          <div class="grid grid-4" style="margin-bottom:18px;">
+            <div class="card stat-card compact">
+              <div class="stat-icon" style="background:var(--amber-tint);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber-ink)" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg></div>
+              <div class="txt"><div class="stat-value">86</div><div class="stat-label">Total staff</div></div>
+            </div>
+            <div class="card stat-card compact">
+              <div class="stat-icon" style="background:var(--info-tint);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--info)" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+              <div class="txt"><div class="stat-value">62</div><div class="stat-label">Teaching staff</div></div>
+            </div>
+            <div class="card stat-card compact">
+              <div class="stat-icon" style="background:var(--success-tint);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2"><path d="M17 20v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/></svg></div>
+              <div class="txt"><div class="stat-value">24</div><div class="stat-label">Non-teaching staff</div></div>
+            </div>
+            <div class="card stat-card compact">
+              <div class="stat-icon" style="background:var(--warn-tint);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber-ink)" stroke-width="2"><path d="M2 7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7z"/><circle cx="12" cy="12" r="3"/><path d="M6 9h.01M18 15h.01"/></svg></div>
+              <div class="txt"><div class="stat-value">Rs 6.4M</div><div class="stat-label">Monthly payroll</div></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-pad" style="padding-bottom:0;">
+              <div class="toolbar">
+                <div class="search" style="width:260px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/></svg> Search by name or ID…</div>
+                <div class="field" style="margin:0; width:170px;"><select><option>All departments</option><option>Mathematics</option><option>Science</option><option>Administration</option></select></div>
+                <div class="field" style="margin:0; width:160px;"><select><option>Salary — any</option><option>Below Rs 50k</option><option>Rs 50k – 100k</option><option>Above Rs 100k</option></select></div>
+                <div class="mini-tabs" style="margin-left:auto;">
+                  <button class="mini-tab active">All</button>
+                  <button class="mini-tab">Teaching</button>
+                  <button class="mini-tab">Non-teaching</button>
+                  <button class="mini-tab">On leave</button>
+                </div>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Staff member</th><th>Role</th><th>Department</th><th>Contact</th><th>Salary / month</th><th>Status</th><th></th></tr></thead>
+                <tbody>
+                  <tr><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--teal-tint);color:var(--teal);">MF</div><div class="meta"><div class="n">Mehreen Farooq</div><div class="s">ID T-8021</div></div></div></td><td>Class Teacher</td><td>Grade 8</td><td>+92 300 900 1122</td><td style="font-family:var(--font-mono);">Rs 95,000</td><td><span class="pill pill-success">Active</span></td><td><button class="btn btn-ghost btn-sm">View</button></td></tr>
+                  <tr><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--info-tint);color:var(--info);">AR</div><div class="meta"><div class="n">Asad Raza</div><div class="s">ID T-7744</div></div></div></td><td>Subject Teacher</td><td>Mathematics</td><td>+92 301 900 2233</td><td style="font-family:var(--font-mono);">Rs 88,000</td><td><span class="pill pill-success">Active</span></td><td><button class="btn btn-ghost btn-sm">View</button></td></tr>
+                  <tr><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--plum-tint);color:var(--plum);">SB</div><div class="meta"><div class="n">Sadia Bano</div><div class="s">ID T-6698</div></div></div></td><td>Subject Teacher</td><td>Science</td><td>+92 302 900 3344</td><td style="font-family:var(--font-mono);">Rs 82,000</td><td><span class="pill pill-warn">On leave</span></td><td><button class="btn btn-ghost btn-sm">View</button></td></tr>
+                  <tr><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--amber-tint);color:var(--amber-ink);">KJ</div><div class="meta"><div class="n">Kamran Javed</div><div class="s">ID S-1120</div></div></div></td><td>Accountant</td><td>Administration</td><td>+92 303 900 4455</td><td style="font-family:var(--font-mono);">Rs 68,000</td><td><span class="pill pill-success">Active</span></td><td><button class="btn btn-ghost btn-sm">View</button></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="table-foot">
+              <span>Showing 1–4 of 86 staff</span>
+              <div class="pager">
+                <button class="btn btn-ghost btn-sm" disabled>Prev</button>
+                <button class="btn btn-ghost btn-sm" style="background:var(--ink); color:#fff;">1</button>
+                <button class="btn btn-ghost btn-sm">2</button>
+                <button class="btn btn-ghost btn-sm">Next</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- ===================== /ADMIN / STAFF ===================== -->
+
+        <!-- ===================== ADMIN / ACCOUNTS ===================== -->
+        <div class="admin-section" data-admin="accounts">
+          <div class="page-head">
+            <div>
+              <h1>Accounts</h1>
+              <p>School-wide income, expenses, and payroll ledger.</p>
+            </div>
+            <div style="display:flex; gap:10px; align-items:center;">
+              <div class="stat-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7z"/><circle cx="12" cy="12" r="3"/><path d="M6 9h.01M18 15h.01"/></svg> Net Balance <strong>Rs 9.02M</strong></div>
+              <button class="btn btn-primary accent-admin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg> Add Transaction</button>
+            </div>
+          </div>
+
+          <div class="grid grid-4" style="margin-bottom:18px;">
+            <div class="card stat-card compact">
+              <div class="stat-icon" style="background:var(--success-tint);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></svg></div>
+              <div class="txt"><div class="stat-value">Rs 15.42M</div><div class="stat-label">Total income</div></div>
+              <span class="stat-delta up">+6.1%</span>
+            </div>
+            <div class="card stat-card compact">
+              <div class="stat-icon" style="background:var(--danger-tint);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--danger)" stroke-width="2"><path d="M23 18l-9.5-9.5-5 5L1 6"/><path d="M17 18h6v-6"/></svg></div>
+              <div class="txt"><div class="stat-value">Rs 6.4M</div><div class="stat-label">Total expenses</div></div>
+              <span class="stat-delta down">+2.8%</span>
+            </div>
+            <div class="card stat-card compact">
+              <div class="stat-icon" style="background:var(--info-tint);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--info)" stroke-width="2"><path d="M2 7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7z"/><circle cx="12" cy="12" r="3"/><path d="M6 9h.01M18 15h.01"/></svg></div>
+              <div class="txt"><div class="stat-value">Rs 9.02M</div><div class="stat-label">Net balance</div></div>
+            </div>
+            <div class="card stat-card compact">
+              <div class="stat-icon" style="background:var(--warn-tint);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber-ink)" stroke-width="2"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg></div>
+              <div class="txt"><div class="stat-value">Rs 4.28M</div><div class="stat-label">Pending fee dues</div></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-pad" style="padding-bottom:0;">
+              <div class="toolbar">
+                <div class="search" style="width:260px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/></svg> Search transactions…</div>
+                <div class="field" style="margin:0; width:170px;"><select><option>All categories</option><option>Student fees</option><option>Payroll</option><option>Utilities</option><option>Maintenance</option></select></div>
+                <div class="mini-tabs" style="margin-left:auto;">
+                  <button class="mini-tab active">All</button>
+                  <button class="mini-tab">Income</button>
+                  <button class="mini-tab">Expense</button>
+                </div>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Date</th><th>Description</th><th>Category</th><th>Type</th><th>Amount</th><th>Status</th></tr></thead>
+                <tbody>
+                  <tr><td>7 Jul</td><td>Term 2 fee collection — Grade 6A</td><td>Student fees</td><td><span class="pill pill-success">Income</span></td><td style="font-family:var(--font-mono);">Rs 1,260,000</td><td><span class="pill pill-success">Cleared</span></td></tr>
+                  <tr><td>5 Jul</td><td>Teaching staff payroll — July</td><td>Payroll</td><td><span class="pill pill-danger">Expense</span></td><td style="font-family:var(--font-mono);">Rs 6,020,000</td><td><span class="pill pill-success">Paid</span></td></tr>
+                  <tr><td>3 Jul</td><td>Electricity &amp; utilities</td><td>Utilities</td><td><span class="pill pill-danger">Expense</span></td><td style="font-family:var(--font-mono);">Rs 184,000</td><td><span class="pill pill-success">Paid</span></td></tr>
+                  <tr><td>2 Jul</td><td>Term 2 fee collection — Grade 3C</td><td>Student fees</td><td><span class="pill pill-success">Income</span></td><td style="font-family:var(--font-mono);">Rs 890,000</td><td><span class="pill pill-warn">Processing</span></td></tr>
+                  <tr><td>30 Jun</td><td>Lab equipment maintenance</td><td>Maintenance</td><td><span class="pill pill-danger">Expense</span></td><td style="font-family:var(--font-mono);">Rs 96,000</td><td><span class="pill pill-success">Paid</span></td></tr>
+                  <tr><td>28 Jun</td><td>Term 2 fee collection — Grade 9B</td><td>Student fees</td><td><span class="pill pill-success">Income</span></td><td style="font-family:var(--font-mono);">Rs 1,050,000</td><td><span class="pill pill-danger">Overdue</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="table-foot">
+              <span>Showing 1–6 of 214 transactions</span>
+              <div class="pager">
+                <button class="btn btn-ghost btn-sm" disabled>Prev</button>
+                <button class="btn btn-ghost btn-sm" style="background:var(--ink); color:#fff;">1</button>
+                <button class="btn btn-ghost btn-sm">2</button>
+                <button class="btn btn-ghost btn-sm">3</button>
+                <button class="btn btn-ghost btn-sm">Next</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- ===================== /ADMIN / ACCOUNTS ===================== -->
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     VIEW 3 — TEACHER PORTAL
+     ============================================================ -->
+<section class="view" id="view-teacher">
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="id-ribbon" style="background:var(--teal);"></div>
+      <div class="lockup">
+        <div class="mark" style="background:linear-gradient(135deg, var(--teal), #1E6862);"></div>
+        <div><div class="name">Cohort</div><div class="role">Teacher</div></div>
+      </div>
+      <div class="nav-group">
+        <div class="nav-label">Overview</div>
+        <a class="navlink current accent-teacher"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg> Dashboard</a>
+      </div>
+      <div class="nav-group">
+        <div class="nav-label">Classroom</div>
+        <a class="navlink"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.9-9.1"/><path d="M22 4L12 14.01l-3-3"/></svg> Attendance</a>
+        <a class="navlink"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> Gradebook</a>
+        <a class="navlink"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg> Timetable</a>
+      </div>
+      <div class="nav-group">
+        <div class="nav-label">Communication</div>
+        <a class="navlink"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4A8.5 8.5 0 1 1 21 11.5z"/></svg> Messages</a>
+        <a class="navlink"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l18-5v12L3 14v-3z"/><path d="M11 12v6a2 2 0 0 0 4 0"/></svg> Announcements</a>
+      </div>
+      <div class="sidebar-foot">
+        <div class="sidebar-user">
+          <div class="avatar" style="background:var(--teal);">MF</div>
+          <div class="who"><div class="name">Mehreen Farooq</div><div class="sub">Grade 8B · Teacher</div></div>
+        </div>
+      </div>
+    </aside>
+
+    <div class="main">
+      <div class="topbar">
+        <button class="hamburger" onclick="toggleSidebar('teacher')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg></button>
+        <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/></svg> Search your students…</div>
+        <div class="topbar-actions">
+          <button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="dot"></span></button>
+          <div class="avatar" style="width:32px;height:32px;font-size:12px;background:var(--teal);">MF</div>
+        </div>
+      </div>
+
+      <div class="content" onclick="closeSidebar('teacher')">
+        <div class="page-head">
+          <div>
+            <h1>Take attendance — <em>Grade 8B</em></h1>
+            <p>Tuesday 7 July · Period 2 · 28 students</p>
+          </div>
+          <div style="display:flex; gap:10px;">
+            <button class="btn btn-ghost">Mark all present</button>
+            <button class="btn btn-primary accent-teacher"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Save attendance</button>
+          </div>
+        </div>
+
+        <div class="grid grid-2">
+          <div class="card">
+            <div class="card-head"><h3>Class roll</h3><span class="sub">25 present · 2 absent · 1 late</span></div>
+            <div class="roll">
+              <div class="roll-row"><div class="avatar" style="width:32px;height:32px;font-size:11px;background:var(--teal-tint);color:var(--teal);">BA</div><div class="name">Bilal Anwar <span class="id">#8021</span></div><div class="seg"><button class="sel-present">P</button><button>A</button><button>L</button></div></div>
+              <div class="roll-row"><div class="avatar" style="width:32px;height:32px;font-size:11px;background:var(--plum-tint);color:var(--plum);">FR</div><div class="name">Fatima Raza <span class="id">#8022</span></div><div class="seg"><button class="sel-present">P</button><button>A</button><button>L</button></div></div>
+              <div class="roll-row"><div class="avatar" style="width:32px;height:32px;font-size:11px;background:var(--amber-tint);color:var(--amber-ink);">HN</div><div class="name">Hamza Nadeem <span class="id">#8023</span></div><div class="seg"><button>P</button><button class="sel-absent">A</button><button>L</button></div></div>
+              <div class="roll-row"><div class="avatar" style="width:32px;height:32px;font-size:11px;background:var(--info-tint);color:var(--info);">IJ</div><div class="name">Iman Jaffer <span class="id">#8024</span></div><div class="seg"><button>P</button><button>A</button><button class="sel-late">L</button></div></div>
+              <div class="roll-row"><div class="avatar" style="width:32px;height:32px;font-size:11px;background:var(--success-tint);color:var(--success);">KS</div><div class="name">Kashif Saleem <span class="id">#8025</span></div><div class="seg"><button class="sel-present">P</button><button>A</button><button>L</button></div></div>
+              <div class="roll-row"><div class="avatar" style="width:32px;height:32px;font-size:11px;background:var(--teal-tint);color:var(--teal);">LR</div><div class="name">Laiba Rehman <span class="id">#8026</span></div><div class="seg"><button>P</button><button class="sel-absent">A</button><button>L</button></div></div>
+            </div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:18px;">
+            <div class="card card-pad">
+              <div class="card-head" style="padding:0 0 14px;"><h3>This week</h3></div>
+              <div class="donut-wrap">
+                <svg width="96" height="96" viewBox="0 0 36 36">
+                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="var(--line-soft)" stroke-width="4"/>
+                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="var(--teal)" stroke-width="4" stroke-dasharray="91 100" stroke-linecap="round" transform="rotate(-90 18 18)"/>
+                </svg>
+                <div class="legend">
+                  <div class="li"><span class="sw" style="background:var(--teal);"></span> Present · 91%</div>
+                  <div class="li"><span class="sw" style="background:var(--danger);"></span> Absent · 6%</div>
+                  <div class="li"><span class="sw" style="background:var(--warn);"></span> Late · 3%</div>
+                </div>
+              </div>
+            </div>
+            <div class="card card-pad">
+              <div class="card-head" style="padding:0 0 10px;"><h3>Gradebook status</h3></div>
+              <div style="display:flex; flex-direction:column; gap:14px;">
+                <div><div style="display:flex; justify-content:space-between; font-size:12.5px; margin-bottom:5px;"><span>Mid-term essays</span><span style="color:var(--slate-dim);">22 / 28</span></div><div class="progress"><span style="width:79%; background:var(--teal);"></span></div></div>
+                <div><div style="display:flex; justify-content:space-between; font-size:12.5px; margin-bottom:5px;"><span>Quiz 4 — Algebra</span><span style="color:var(--slate-dim);">28 / 28</span></div><div class="progress"><span style="width:100%; background:var(--success);"></span></div></div>
+                <div><div style="display:flex; justify-content:space-between; font-size:12.5px; margin-bottom:5px;"><span>Lab report</span><span style="color:var(--slate-dim);">6 / 28</span></div><div class="progress"><span style="width:21%; background:var(--warn);"></span></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     VIEW 4 — PARENT PORTAL
+     ============================================================ -->
+<section class="view" id="view-parent">
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="id-ribbon" style="background:var(--plum);"></div>
+      <div class="lockup">
+        <div class="mark" style="background:linear-gradient(135deg, var(--plum), #5E3E78);"></div>
+        <div><div class="name">Cohort</div><div class="role">Parent</div></div>
+      </div>
+      <div class="nav-group">
+        <div class="nav-label">Overview</div>
+        <a class="navlink current accent-parent"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg> Dashboard</a>
+      </div>
+      <div class="nav-group">
+        <div class="nav-label">Your child</div>
+        <a class="navlink"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.9-9.1"/><path d="M22 4L12 14.01l-3-3"/></svg> Attendance</a>
+        <a class="navlink"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> Grades &amp; reports</a>
+        <a class="navlink"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7z"/><circle cx="12" cy="12" r="3"/><path d="M6 9h.01M18 15h.01"/></svg> Fees</a>
+      </div>
+      <div class="nav-group">
+        <div class="nav-label">Stay in touch</div>
+        <a class="navlink"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l18-5v12L3 14v-3z"/><path d="M11 12v6a2 2 0 0 0 4 0"/></svg> Announcements</a>
+      </div>
+      <div class="sidebar-foot">
+        <div class="sidebar-user">
+          <div class="avatar" style="background:var(--plum);">NS</div>
+          <div class="who"><div class="name">Nadia Siddiqui</div><div class="sub">Parent of Daniyal</div></div>
+        </div>
+      </div>
+    </aside>
+
+    <div class="main">
+      <div class="topbar">
+        <button class="hamburger" onclick="toggleSidebar('parent')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg></button>
+        <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/></svg> Search announcements…</div>
+        <div class="topbar-actions">
+          <button class="icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="dot"></span></button>
+          <div class="avatar" style="width:32px;height:32px;font-size:12px;background:var(--plum);">NS</div>
+        </div>
+      </div>
+
+      <div class="content" onclick="closeSidebar('parent')">
+        <div class="page-head">
+          <div>
+            <h1>Hi Nadia — here's <em>Daniyal's</em> week</h1>
+            <p>Grade 3C · Cohort Academy</p>
+          </div>
+          <button class="btn btn-primary accent-parent"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7z"/><circle cx="12" cy="12" r="3"/><path d="M6 9h.01M18 15h.01"/></svg> Pay fees</button>
+        </div>
+
+        <div class="notice" style="background:var(--warn-tint); margin-bottom:18px;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--amber-ink)" stroke-width="2"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>
+          <div><div class="t" style="color:var(--amber-ink);">Term 2 fees due in 5 days</div><div class="d" style="color:var(--amber-ink);">Rs 42,000 outstanding for Daniyal Siddiqui.</div></div>
+        </div>
+
+        <div class="grid grid-3" style="margin-bottom:18px;">
+          <div class="card stat-card compact">
+            <div class="stat-icon" style="background:var(--plum-tint);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--plum)" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.9-9.1"/><path d="M22 4L12 14.01l-3-3"/></svg></div>
+            <div class="txt"><div class="stat-value">97%</div><div class="stat-label">Attendance this term</div></div>
+          </div>
+          <div class="card stat-card compact">
+            <div class="stat-icon" style="background:var(--success-tint);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+            <div class="txt"><div class="stat-value">A-</div><div class="stat-label">Current average grade</div></div>
+          </div>
+          <div class="card stat-card compact">
+            <div class="stat-icon" style="background:var(--warn-tint);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber-ink)" stroke-width="2"><path d="M2 7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7z"/><circle cx="12" cy="12" r="3"/><path d="M6 9h.01M18 15h.01"/></svg></div>
+            <div class="txt"><div class="stat-value">Rs 42k</div><div class="stat-label">Fees due 12 Jul</div></div>
+          </div>
+        </div>
+
+        <div class="grid grid-2">
+          <div class="card">
+            <div class="card-head"><h3>Recent grades</h3><span class="sub">Grade 3C</span></div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Subject</th><th>Assessment</th><th>Score</th><th>Grade</th></tr></thead>
+                <tbody>
+                  <tr><td>Mathematics</td><td>Unit test 3</td><td>88 / 100</td><td><span class="pill pill-success">A-</span></td></tr>
+                  <tr><td>English</td><td>Reading comprehension</td><td>76 / 100</td><td><span class="pill pill-info">B</span></td></tr>
+                  <tr><td>Science</td><td>Lab report</td><td>91 / 100</td><td><span class="pill pill-success">A</span></td></tr>
+                  <tr><td>Art</td><td>Term project</td><td>—</td><td><span class="pill pill-neutral">Pending</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="card card-pad">
+            <div class="card-head" style="padding:0 0 14px;"><h3>School announcements</h3></div>
+            <div class="timeline">
+              <div class="tl-item"><div class="tl-dot" style="background:var(--plum);"></div><div><div class="t">Term 2 fee deadline extended</div><div class="d">Payments now accepted through 12 July.</div></div><div class="time">1h ago</div></div>
+              <div class="tl-item"><div class="tl-dot" style="background:var(--info);"></div><div><div class="t">Parent-teacher meetings scheduled</div><div class="d">Book a slot for the week of 20 July.</div></div><div class="time">Yesterday</div></div>
+              <div class="tl-item"><div class="tl-dot" style="background:var(--success);"></div><div><div class="t">Sports day — 15 July</div><div class="d">Grade 3 events begin at 9:00am.</div></div><div class="time">2d ago</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     NEW ADMISSION MODAL
+     Opened from "New Admission" (Students) and "New enrollment"
+     (Dashboard) buttons in the Admin portal.
+     ============================================================ -->
+<div class="modal-overlay" id="admissionModal" onclick="if(event.target===this) closeAdmissionModal()">
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="admissionModalTitle">
+    <div class="modal-head">
+      <div>
+        <h2 id="admissionModalTitle">New Student Admission</h2>
+        <p>Enrol a new student at Cohort Academy.</p>
+      </div>
+      <button type="button" class="modal-close" onclick="closeAdmissionModal()" aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    <div class="stepper" id="admissionStepper">
+      <div class="step-item active" data-step-item="1"><span class="dot">1</span><span class="lbl">Student</span></div>
+      <div class="step-line" data-step-line="1"></div>
+      <div class="step-item" data-step-item="2"><span class="dot">2</span><span class="lbl">Guardian</span></div>
+      <div class="step-line" data-step-line="2"></div>
+      <div class="step-item" data-step-item="3"><span class="dot">3</span><span class="lbl">Admission</span></div>
+    </div>
+
+    <form id="admissionForm" onsubmit="handleAdmissionSubmit(event)" novalidate>
+      <div class="modal-body">
+
+        <div class="success-banner" id="admissionSuccess">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.9-9.1"/><path d="M22 4L12 14.01l-3-3"/></svg>
+          Admission submitted — Ayesha Tariq has been added to Grade 4A.
+        </div>
+
+        <!-- ===== STEP 1 — STUDENT INFORMATION ===== -->
+        <div class="admission-step active" data-step="1">
+          <div class="form-section-title first">Student information</div>
+          <div class="form-grid">
+            <div class="field"><label for="stFullName">Student full name</label><input id="stFullName" type="text" placeholder="e.g. Ayesha Tariq" required></div>
+            <div class="field"><label for="stStudentId">Student ID No. <span style="color:var(--slate-dim); font-weight:600; text-transform:none; letter-spacing:0;">(auto-generated)</span></label><input id="stStudentId" type="text" readonly></div>
+            <div class="field"><label for="stDob">Date of birth</label><input id="stDob" type="date" required></div>
+            <div class="field"><label for="stGender">Gender</label>
+              <select id="stGender" required>
+                <option value="">Select…</option>
+                <option>Female</option><option>Male</option><option>Other</option>
+              </select>
+            </div>
+            <div class="field"><label for="stClass">Class applying for</label>
+              <select id="stClass" required>
+                <option value="">Select class…</option>
+                <option>Grade 1</option><option>Grade 2</option><option>Grade 3</option>
+                <option>Grade 4</option><option>Grade 5</option><option>Grade 6</option>
+                <option>Grade 7</option><option>Grade 8</option><option>Grade 9</option>
+              </select>
+            </div>
+            <div class="field"><label for="stSection">Section (if known)</label>
+              <select id="stSection"><option>No preference</option><option>A</option><option>B</option><option>C</option></select>
+            </div>
+            <div class="field"><label for="stCnic">Student B-Form (CNIC No.)</label><input id="stCnic" type="text" placeholder="XXXXX-XXXXXXX-X"></div>
+          </div>
+        </div>
+
+        <!-- ===== STEP 2 — GUARDIAN INFORMATION ===== -->
+        <div class="admission-step" data-step="2">
+          <div class="form-section-title first">Guardian information</div>
+          <div class="form-grid">
+            <div class="field"><label for="fatherName">Father name</label><input id="fatherName" type="text" placeholder="e.g. Tariq Mahmood" required></div>
+            <div class="field"><label for="fatherCnic">Father's CNIC No.</label><input id="fatherCnic" type="text" placeholder="XXXXX-XXXXXXX-X"></div>
+            <div class="field"><label for="fatherMobile">Father's Mobile No.</label><input id="fatherMobile" type="tel" placeholder="+92 3XX XXX XXXX" oninput="updateEmergencyContact()"></div>
+            <div class="field"><label for="fatherEmail">Father's Email</label><input id="fatherEmail" type="email" placeholder="name@email.com"></div>
+
+            <div class="field"><label for="motherName">Mother name</label><input id="motherName" type="text" placeholder="e.g. Sana Mahmood"></div>
+            <div class="field"><label for="motherCnic">Mother's CNIC No.</label><input id="motherCnic" type="text" placeholder="XXXXX-XXXXXXX-X"></div>
+            <div class="field"><label for="motherMobile">Mother's Mobile No.</label><input id="motherMobile" type="tel" placeholder="+92 3XX XXX XXXX" oninput="updateEmergencyContact()"></div>
+            <div class="field"><label for="motherEmail">Mother's Email</label><input id="motherEmail" type="email" placeholder="name@email.com"></div>
+
+            <div class="field full"><label for="gAddress">Address</label><input id="gAddress" type="text" placeholder="House no., street, area, city"></div>
+
+            <div class="field"><label for="emgContact">Emergency contact (Father / Mother)</label>
+              <select id="emgContact" onchange="updateEmergencyContact()">
+                <option value="">Select…</option>
+                <option value="Father">Father</option>
+                <option value="Mother">Mother</option>
+              </select>
+            </div>
+            <div class="field"><label for="emgContactNo">Emergency contact no.</label><input id="emgContactNo" type="tel" placeholder="Auto-filled from selection above" readonly></div>
+          </div>
+        </div>
+
+        <!-- ===== STEP 3 — PREVIOUS SCHOOL / FEE PLAN / DOCUMENTS ===== -->
+        <div class="admission-step" data-step="3">
+          <div class="form-section-title first">Previous school <span style="color:var(--slate-dim); font-weight:600; text-transform:none; letter-spacing:0;">(optional)</span></div>
+          <div class="form-grid">
+            <div class="field"><label for="prevSchool">Previous school name</label><input id="prevSchool" type="text" placeholder="e.g. Bright Future School"></div>
+            <div class="field"><label for="prevClass">Last class attended</label><input id="prevClass" type="text" placeholder="e.g. Grade 3"></div>
+          </div>
+
+          <div class="form-section-title">Fee plan</div>
+          <div class="form-grid">
+            <div class="field"><label for="feePlan">Fee category</label>
+              <select id="feePlan"><option>Standard — Rs 42,000 / term</option><option>Sibling discount — Rs 36,000 / term</option><option>Scholarship — Rs 21,000 / term</option></select>
+            </div>
+            <div class="field"><label for="admitFee">Admission fee (one-time)</label><input id="admitFee" type="text" value="Rs 15,000" readonly></div>
+          </div>
+
+          <div class="form-section-title">Documents submitted</div>
+          <div class="checklist">
+            <label><input type="checkbox"> Birth certificate / B-Form</label>
+            <label><input type="checkbox"> School leaving certificate</label>
+            <label><input type="checkbox"> Passport-size photographs</label>
+            <label><input type="checkbox"> Guardian CNIC copy</label>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="modal-foot">
+        <button type="button" class="btn btn-ghost" id="admissionBackBtn" onclick="admissionStep(-1)" style="display:none;">Back</button>
+        <button type="button" class="btn btn-ghost" onclick="closeAdmissionModal()">Cancel</button>
+        <button type="button" class="btn btn-primary accent-admin" id="admissionNextBtn" onclick="admissionStep(1)">Next</button>
+        <button type="submit" class="btn btn-primary accent-admin" id="admissionSubmitBtn" style="display:none;">Submit Admission</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+function showView(name){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById('view-'+name).classList.add('active');
+  document.querySelectorAll('.meta-btn').forEach(b=>b.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  window.scrollTo(0,0);
+}
+function toggleSidebar(name){
+  document.querySelectorAll('#view-'+name+' .sidebar').forEach(s=>s.classList.toggle('open'));
+}
+function closeSidebar(name){
+  document.querySelectorAll('#view-'+name+' .sidebar').forEach(s=>s.classList.remove('open'));
+}
+
+/* ---- New Admission modal (3-step wizard) ---- */
+let admissionCurrentStep = 1;
+const ADMISSION_TOTAL_STEPS = 3;
+let nextStudentIdSeq = 20511; // continues on from the last record on file (ID 20510)
+
+function generateStudentId(){
+  const id = 'STU-' + nextStudentIdSeq;
+  document.getElementById('stStudentId').value = id;
+  return id;
+}
+function openAdmissionModal(){
+  document.getElementById('admissionModal').classList.add('open');
+  document.getElementById('admissionSuccess').classList.remove('show');
+  document.body.style.overflow = 'hidden';
+  goToAdmissionStep(1);
+  generateStudentId();
+}
+function closeAdmissionModal(){
+  document.getElementById('admissionModal').classList.remove('open');
+  document.body.style.overflow = '';
+  document.getElementById('admissionForm').reset();
+  document.getElementById('admissionSuccess').classList.remove('show');
+  goToAdmissionStep(1);
+}
+function admissionStep(direction){
+  if(direction > 0){
+    const current = document.querySelector('.admission-step[data-step="'+admissionCurrentStep+'"]');
+    const requiredFields = current.querySelectorAll('[required]');
+    for(const f of requiredFields){
+      if(!f.value){ f.reportValidity(); return; }
+    }
+  }
+  goToAdmissionStep(admissionCurrentStep + direction);
+}
+function goToAdmissionStep(step){
+  step = Math.max(1, Math.min(ADMISSION_TOTAL_STEPS, step));
+  admissionCurrentStep = step;
+
+  document.querySelectorAll('.admission-step').forEach(s=>{
+    s.classList.toggle('active', Number(s.dataset.step) === step);
+  });
+  document.querySelectorAll('[data-step-item]').forEach(el=>{
+    const n = Number(el.dataset.stepItem);
+    el.classList.toggle('active', n === step);
+    el.classList.toggle('done', n < step);
+  });
+  document.querySelectorAll('[data-step-line]').forEach(el=>{
+    el.classList.toggle('done', Number(el.dataset.stepLine) < step);
+  });
+
+  document.getElementById('admissionBackBtn').style.display = step === 1 ? 'none' : 'inline-flex';
+  document.getElementById('admissionNextBtn').style.display = step === ADMISSION_TOTAL_STEPS ? 'none' : 'inline-flex';
+  document.getElementById('admissionSubmitBtn').style.display = step === ADMISSION_TOTAL_STEPS ? 'inline-flex' : 'none';
+
+  document.querySelector('.modal-body').scrollTo({top:0, behavior:'smooth'});
+}
+function updateEmergencyContact(){
+  const choice = document.getElementById('emgContact').value;
+  const fatherPhone = document.getElementById('fatherMobile').value;
+  const motherPhone = document.getElementById('motherMobile').value;
+  const emgNo = document.getElementById('emgContactNo');
+  emgNo.value = choice === 'Father' ? fatherPhone : choice === 'Mother' ? motherPhone : '';
+}
+function handleAdmissionSubmit(e){
+  e.preventDefault();
+  const name = document.getElementById('stFullName').value || 'The student';
+  const cls = document.getElementById('stClass').value || 'their class';
+  const sid = document.getElementById('stStudentId').value;
+  const banner = document.getElementById('admissionSuccess');
+  banner.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.9-9.1"/><path d="M22 4L12 14.01l-3-3"/></svg> Admission submitted — '+name+' ('+sid+') has been added to '+cls+'.';
+  banner.classList.add('show');
+  nextStudentIdSeq++;
+  goToAdmissionStep(1);
+  document.querySelector('.modal-body').scrollTo({top:0, behavior:'smooth'});
+  setTimeout(closeAdmissionModal, 1800);
+}
+document.addEventListener('keydown', function(e){
+  if(e.key === 'Escape'){ closeAdmissionModal(); }
+});
+
+/* ---- Admin portal: Dashboard / Students / Staff switching ---- */
+function showAdmin(section, el){
+  document.querySelectorAll('#view-admin .admin-section').forEach(s=>s.classList.remove('active'));
+  document.querySelector('#view-admin .admin-section[data-admin="'+section+'"]').classList.add('active');
+  document.querySelectorAll('#view-admin [data-admin-nav]').forEach(n=>{
+    n.classList.remove('current','accent-admin');
+  });
+  if(el){ el.classList.add('current','accent-admin'); }
+  document.querySelector('#view-admin .content').scrollTo({top:0, behavior:'instant'});
+}
+
+/* ---- Login view interactions ---- */
+const roleAccent = { teacher:'accent-teacher', parent:'accent-parent', student:'' };
+const roleLabel  = { teacher:'Teacher', parent:'Parent', student:'Student' };
+function selectRole(role, el){
+  document.querySelectorAll('.role-btn').forEach(b=>b.classList.remove('role-active'));
+  el.classList.add('role-active');
+  const submit = document.getElementById('loginSubmit');
+  submit.classList.remove('accent-teacher','accent-parent');
+  if(roleAccent[role]) submit.classList.add(roleAccent[role]);
+  submit.textContent = 'Sign in as ' + roleLabel[role];
+  document.getElementById('loginId').placeholder = role === 'student'
+    ? 'e.g. STU-3341 or your registered ID'
+    : role === 'parent'
+      ? 'e.g. PAR-5502 or your registered ID'
+      : 'e.g. TCH-8021 or your registered ID';
+}
+function togglePw(){
+  const pw = document.getElementById('loginPw');
+  const eye = document.getElementById('eyeIcon');
+  const btn = document.getElementById('pwToggleBtn');
+  const showing = pw.type === 'text';
+  pw.type = showing ? 'password' : 'text';
+  btn.setAttribute('aria-label', showing ? 'Show password' : 'Hide password');
+  eye.innerHTML = showing
+    ? '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>'
+    : '<path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a21.6 21.6 0 0 1 5.06-6.06M9.9 4.24A10.94 10.94 0 0 1 12 4c7 0 11 8 11 8a21.6 21.6 0 0 1-2.16 3.19M14.12 14.12a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>';
+}
+</script>
+</body>
+</html>
