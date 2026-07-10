@@ -151,6 +151,80 @@ button:focus-visible, a:focus-visible, input:focus-visible, .navlink:focus-visib
 .navlink.current.accent-teacher{ background: var(--teal); color: #fff; font-weight:700;}
 .navlink.current.accent-parent{ background: var(--plum); color: #fff; font-weight:700;}
 
+/* ---- Collapsible sidebar submenu (Students module) ---- */
+.nav-parent{ cursor:pointer; }
+.nav-parent .chev{ width:14px; height:14px; flex-shrink:0; transition:transform .18s; }
+.nav-parent.open .chev{ transform:rotate(90deg); }
+.nav-submenu{ max-height:0; overflow:hidden; transition:max-height .2s ease; display:flex; flex-direction:column; gap:1px; }
+.nav-submenu.open{ max-height:400px; }
+.navlink.sub{ padding-left:38px; font-size:13px; }
+.navlink.sub.current{ background: rgba(255,255,255,0.1); color:#fff; font-weight:700; }
+.navlink.sub.current.accent-admin{ background: var(--amber); color: var(--ink); }
+
+/* ---- Wing status pills (Student Directory) ---- */
+.wing-row{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:18px; }
+.wing-pill{ font-size:12px; font-weight:700; padding:6px 12px; border-radius:20px; border:1px solid var(--line); background:var(--surface); color:var(--slate-dim); cursor:pointer; transition:all .15s; }
+.wing-pill:hover:not(.disabled){ border-color:var(--amber); color:var(--ink); }
+.wing-pill.active{ background:var(--amber); border-color:var(--amber); color:var(--ink); }
+.wing-pill.disabled{ cursor:not-allowed; opacity:.55; }
+.wing-content{ display:none; }
+.wing-content.active{ display:block; }
+
+/* ---- Quick action icons (Student Directory rows) ---- */
+.quick-actions{ display:flex; gap:4px; }
+.quick-actions button{
+  width:26px; height:26px; border-radius:7px; border:1px solid var(--line); background:var(--surface);
+  display:flex; align-items:center; justify-content:center; color:var(--slate-dim); transition:all .15s; flex-shrink:0;
+}
+.quick-actions button:hover{ background:var(--amber-tint); color:var(--amber-ink); border-color:var(--amber); }
+.quick-actions svg{ width:13px; height:13px; }
+
+/* ---- Admission sub-tab panels ---- */
+.atab-panel{ display:none; }
+.atab-panel.active{ display:block; }
+
+/* ---- Student Profile page ---- */
+.profile-tabs{
+  display:flex; gap:2px; overflow-x:auto; padding-bottom:0; border-bottom:1px solid var(--line);
+  margin-bottom:20px; scrollbar-width:thin;
+}
+.profile-tab{
+  flex-shrink:0; padding:10px 14px; font-size:12.5px; font-weight:600; color:var(--slate-dim);
+  border-bottom:2px solid transparent; white-space:nowrap; transition:color .15s, border-color .15s;
+}
+.profile-tab:hover{ color:var(--ink); }
+.profile-tab.active{ color:var(--ink); border-bottom-color:var(--amber); }
+.profile-panel{ display:none; }
+.profile-panel.active{ display:block; }
+
+.subhead{ font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--slate-dim); margin:26px 0 10px; }
+.subhead:first-child{ margin-top:0; }
+.detail-table td{ padding:11px 20px; font-size:13.5px; border-bottom:1px solid var(--line-soft); }
+.detail-table tr:last-child td{ border-bottom:none; }
+.detail-table td:first-child{ width:260px; font-weight:600; color:var(--slate); background:var(--paper); }
+.detail-table td:last-child{ color:var(--ink); }
+@media (max-width:620px){ .detail-table td:first-child{ width:150px; } }
+
+/* ---- Nested sidebar tree (Students module) ---- */
+.nav-branch{ display:flex; flex-direction:column; }
+.nav-branch-row{ display:flex; align-items:stretch; }
+.nav-branch-row .navlink{ flex:1; min-width:0; }
+.nav-chevron{
+  width:30px; flex-shrink:0; display:flex; align-items:center; justify-content:center;
+  border-radius:10px; color:#9AA3BC; background:transparent;
+}
+.nav-chevron:hover{ background:rgba(255,255,255,0.08); color:#fff; }
+.nav-chevron svg{ width:14px; height:14px; transition:transform .18s ease; }
+.nav-chevron.open svg{ transform:rotate(90deg); }
+.nav-children{ display:none; flex-direction:column; gap:1px; padding-left:14px; margin:2px 0 4px; border-left:1px solid rgba(255,255,255,0.1); }
+.nav-children.open{ display:flex; }
+.nav-children .navlink{ font-size:13px; padding:8px 10px; }
+.nav-children .nav-children{ padding-left:12px; }
+.nav-children .nav-children .navlink{ font-size:12.5px; color:#AEB5CA; }
+.nav-disabled{
+  font-size:12px; color:#6C7590; padding:8px 10px; font-style:italic; white-space:nowrap;
+}
+
 .sidebar-foot{ margin-top:auto; padding:12px; border-top:1px solid rgba(255,255,255,0.08); }
 .sidebar-user{ display:flex; align-items:center; gap:10px; }
 .avatar{
@@ -673,7 +747,26 @@ tbody tr:hover{ background: var(--paper); }
       </div>
       <div class="nav-group">
         <div class="nav-label">School</div>
-        <a class="navlink" data-admin-nav="students" onclick="showAdmin('students', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5-10-5z"/><path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/></svg> Students</a>
+        <div class="nav-collapsible">
+          <a class="navlink nav-parent" id="studentsMenuToggle" onclick="toggleStudentsMenu()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5-10-5z"/><path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/></svg>
+            <span style="flex:1;">Students</span>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+          </a>
+          <div class="nav-submenu" id="studentsSubmenu">
+            <a class="navlink sub" data-admin-nav="students" onclick="showAdmin('students', this)">Overview</a>
+            <a class="navlink sub" data-admin-nav="admission" onclick="showAdmin('admission', this)">Admission</a>
+            <a class="navlink sub" data-admin-nav="directory" onclick="showAdmin('directory', this)">Student Directory</a>
+            <a class="navlink sub" data-admin-nav="profile" onclick="showAdmin('profile', this)">Student Profile</a>
+            <a class="navlink sub" data-admin-nav="promotion" onclick="showAdmin('promotion', this)">Student Promotion</a>
+            <a class="navlink sub" data-admin-nav="tc" onclick="showAdmin('tc', this)">Transfer Certificate</a>
+            <a class="navlink sub" data-admin-nav="withdrawal" onclick="showAdmin('withdrawal', this)">Student Withdrawal</a>
+            <a class="navlink sub" data-admin-nav="charcert" onclick="showAdmin('charcert', this)">Character Certificate</a>
+            <a class="navlink sub" data-admin-nav="bonafide" onclick="showAdmin('bonafide', this)">Bonafide Certificate</a>
+            <a class="navlink sub" data-admin-nav="reports" onclick="showAdmin('reports', this)">Student Reports</a>
+          </div>
+        </div>
+        <a class="navlink" data-admin-nav="olevel" onclick="showAdmin('olevel', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/><path d="M22 10v6"/></svg> O Level</a>
         <a class="navlink" data-admin-nav="staff" onclick="showAdmin('staff', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 20v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M22 20v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> Staff</a>
         <a class="navlink" data-admin-nav="accounts" onclick="showAdmin('accounts', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7z"/><circle cx="12" cy="12" r="3"/><path d="M6 9h.01M18 15h.01"/></svg> Accounts</a>
         <a class="navlink"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg> Timetable</a>
@@ -832,10 +925,11 @@ tbody tr:hover{ background: var(--paper); }
           <div class="page-head">
             <div>
               <h1>Students</h1>
-              <p>1,284 students across 42 classes, Grade 1 – Grade 12.</p>
+              <p>1,284 students across 42 classes, Grade 1 – Grade 12 · O Level, Matric &amp; Federal boards.</p>
             </div>
             <div style="display:flex; gap:10px; align-items:center;">
               <div class="stat-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 20v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/></svg> Total Students <strong>1,284</strong></div>
+              <button class="btn btn-ghost" onclick="showAdmin('profile', document.querySelector('[data-admin-nav=profile]'))"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Student Profile</button>
               <button class="btn btn-primary accent-admin" onclick="openAdmissionModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg> New Admission</button>
             </div>
           </div>
@@ -857,6 +951,21 @@ tbody tr:hover{ background: var(--paper); }
             <div class="card stat-card compact">
               <div class="stat-icon" style="background:var(--info-tint);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--info)" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.9-9.1"/><path d="M22 4L12 14.01l-3-3"/></svg></div>
               <div class="txt"><div class="stat-value">96.1%</div><div class="stat-label">Average attendance</div></div>
+            </div>
+          </div>
+
+          <div class="grid grid-3" style="margin-bottom:18px;">
+            <div class="card stat-card compact">
+              <div class="stat-icon" style="background:var(--success-tint);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2"><path d="M2 7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7z"/><circle cx="12" cy="12" r="3"/><path d="M6 9h.01M18 15h.01"/></svg></div>
+              <div class="txt"><div class="stat-value">1,190</div><div class="stat-label">Fees submitted this term</div></div>
+            </div>
+            <div class="card stat-card compact">
+              <div class="stat-icon" style="background:var(--danger-tint);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--danger)" stroke-width="2"><path d="M2 7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7z"/><circle cx="12" cy="12" r="3"/><path d="M6 9h.01M18 15h.01"/></svg></div>
+              <div class="txt"><div class="stat-value">94</div><div class="stat-label">Fees pending this term</div></div>
+            </div>
+            <div class="card stat-card compact">
+              <div class="stat-icon" style="background:var(--plum-tint);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--plum)" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M8 2v4M16 2v4M3 10h18"/><path d="M9 15l2 2 4-4"/></svg></div>
+              <div class="txt"><div class="stat-value">342</div><div class="stat-label">Admit cards issued</div></div>
             </div>
           </div>
 
@@ -916,6 +1025,738 @@ tbody tr:hover{ background: var(--paper); }
           </div>
         </div>
         <!-- ===================== /ADMIN / STUDENTS ===================== -->
+
+        <!-- ===================== ADMIN / ADMISSION ===================== -->
+        <div class="admin-section" data-admin="admission">
+          <div class="page-head">
+            <div>
+              <h1>Admission</h1>
+              <p>Inquiries, entrance tests, and the full pipeline before a student is enrolled.</p>
+            </div>
+            <button class="btn btn-primary accent-admin" onclick="openAdmissionModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg> New Admission</button>
+          </div>
+
+          <div class="card">
+            <div class="card-pad" style="padding-bottom:0;">
+              <div class="toolbar" id="atabs-admission">
+                <div class="mini-tabs">
+                  <button class="mini-tab active" onclick="showAtab('admission','inquiry',this)">Admission Inquiry</button>
+                  <button class="mini-tab" onclick="showAtab('admission','new',this)">New Admission</button>
+                  <button class="mini-tab" onclick="showAtab('admission','test',this)">Admission Test</button>
+                  <button class="mini-tab" onclick="showAtab('admission','waiting',this)">Waiting List</button>
+                  <button class="mini-tab" onclick="showAtab('admission','approval',this)">Admission Approval</button>
+                  <button class="mini-tab" onclick="showAtab('admission','registration',this)">Student Registration</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="atab-panel active" id="atab-admission-inquiry">
+              <div class="table-wrap"><table>
+                <thead><tr><th>Inquiry date</th><th>Applicant name</th><th>Grade interested</th><th>Parent contact</th><th>Source</th><th>Status</th></tr></thead>
+                <tbody>
+                  <tr><td>7 Jul</td><td>Areeba Noor</td><td>Grade 2</td><td>+92 300 555 1010</td><td>Walk-in</td><td><span class="pill pill-info">New</span></td></tr>
+                  <tr><td>5 Jul</td><td>Hassan Ali</td><td>Grade 6</td><td>+92 301 555 2020</td><td>Referral</td><td><span class="pill pill-warn">Contacted</span></td></tr>
+                  <tr><td>1 Jul</td><td>Meher Fatima</td><td>Grade 9 · O Level</td><td>+92 302 555 3030</td><td>Website</td><td><span class="pill pill-success">Converted</span></td></tr>
+                </tbody>
+              </table></div>
+            </div>
+
+            <div class="atab-panel" id="atab-admission-new">
+              <div class="card-pad">
+                <p style="font-size:13.5px; color:var(--slate); margin-bottom:14px; max-width:520px;">Start the full Student Admission form — student details, guardian information, previous school, fee plan, and documents — across a guided 3-step flow.</p>
+                <button class="btn btn-primary accent-admin" onclick="openAdmissionModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg> Start New Admission</button>
+              </div>
+              <div class="table-wrap"><table>
+                <thead><tr><th>Student</th><th>Class</th><th>Guardian</th><th>Fee status</th><th>Joined</th></tr></thead>
+                <tbody>
+                  <tr><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--info-tint);color:var(--info);">AK</div><div class="meta"><div class="n">Amina Khan</div><div class="s">STU-20481</div></div></div></td><td>Grade 6A</td><td>Farhan Khan</td><td><span class="pill pill-success">Paid</span></td><td>3 Jul</td></tr>
+                  <tr><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--plum-tint);color:var(--plum);">DS</div><div class="meta"><div class="n">Daniyal Siddiqui</div><div class="s">STU-20482</div></div></div></td><td>Grade 3C</td><td>Nadia Siddiqui</td><td><span class="pill pill-warn">Due soon</span></td><td>2 Jul</td></tr>
+                </tbody>
+              </table></div>
+            </div>
+
+            <div class="atab-panel" id="atab-admission-test">
+              <div class="table-wrap"><table>
+                <thead><tr><th>Applicant</th><th>Grade</th><th>Test date</th><th>Subjects</th><th>Score</th><th>Result</th></tr></thead>
+                <tbody>
+                  <tr><td>Areeba Noor</td><td>Grade 2</td><td>10 Jul</td><td>English &amp; Maths</td><td>82%</td><td><span class="pill pill-success">Pass</span></td></tr>
+                  <tr><td>Hassan Ali</td><td>Grade 6</td><td>10 Jul</td><td>Science &amp; Maths</td><td>58%</td><td><span class="pill pill-warn">Borderline</span></td></tr>
+                  <tr><td>Fahad Sheikh</td><td>Grade 9 · Matric</td><td>9 Jul</td><td>Maths &amp; English</td><td>91%</td><td><span class="pill pill-success">Pass</span></td></tr>
+                </tbody>
+              </table></div>
+            </div>
+
+            <div class="atab-panel" id="atab-admission-waiting">
+              <div class="table-wrap"><table>
+                <thead><tr><th>Applicant</th><th>Grade</th><th>Application date</th><th>Position</th><th>Status</th></tr></thead>
+                <tbody>
+                  <tr><td>Zara Hameed</td><td>Grade 1</td><td>28 Jun</td><td>#3</td><td><span class="pill pill-neutral">Waiting</span></td></tr>
+                  <tr><td>Ibrahim Qadir</td><td>Grade 4</td><td>30 Jun</td><td>#1</td><td><span class="pill pill-warn">Offer sent</span></td></tr>
+                  <tr><td>Noor Fatima</td><td>Grade 9 · Matric</td><td>2 Jul</td><td>#5</td><td><span class="pill pill-neutral">Waiting</span></td></tr>
+                </tbody>
+              </table></div>
+            </div>
+
+            <div class="atab-panel" id="atab-admission-approval">
+              <div class="table-wrap"><table>
+                <thead><tr><th>Applicant</th><th>Grade</th><th>Reviewed by</th><th>Decision</th><th>Date</th></tr></thead>
+                <tbody>
+                  <tr><td>Areeba Noor</td><td>Grade 2</td><td>Rina Haque</td><td><span class="pill pill-success">Approved</span></td><td>11 Jul</td></tr>
+                  <tr><td>Hassan Ali</td><td>Grade 6</td><td>Rina Haque</td><td><span class="pill pill-warn">On hold</span></td><td>11 Jul</td></tr>
+                  <tr><td>Kamil Tariq</td><td>Grade 9 · Federal</td><td>Rina Haque</td><td><span class="pill pill-danger">Rejected</span></td><td>10 Jul</td></tr>
+                </tbody>
+              </table></div>
+            </div>
+
+            <div class="atab-panel" id="atab-admission-registration">
+              <div class="table-wrap"><table>
+                <thead><tr><th>Applicant</th><th>Grade</th><th>Registration fee</th><th>Documents</th><th>Status</th></tr></thead>
+                <tbody>
+                  <tr><td>Areeba Noor</td><td>Grade 2</td><td>Rs 15,000</td><td><span class="pill pill-success">Complete</span></td><td><span class="pill pill-success">Registered</span></td></tr>
+                  <tr><td>Ibrahim Qadir</td><td>Grade 4</td><td>Rs 15,000</td><td><span class="pill pill-warn">Pending docs</span></td><td><span class="pill pill-warn">Incomplete</span></td></tr>
+                </tbody>
+              </table></div>
+              <div class="table-foot"><span>Showing 1–2 of 7 pending registrations</span></div>
+            </div>
+          </div>
+        </div>
+        <!-- ===================== /ADMIN / ADMISSION ===================== -->
+
+        <!-- ===================== ADMIN / STUDENT DIRECTORY ===================== -->
+        <div class="admin-section" data-admin="directory">
+          <div class="page-head">
+            <div>
+              <h1>Student Directory</h1>
+              <p>Primary, Middle &amp; Secondary (Matric) wings. O Level students are kept in their own separate module.</p>
+            </div>
+            <div class="stat-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5-10-5z"/><path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/></svg> Total in Directory <strong>929</strong></div>
+          </div>
+
+          <div class="wing-row" id="wingRow">
+            <button type="button" class="wing-pill active" onclick="switchWing('primary', this)">Primary Wing · Grade 1–5</button>
+            <button type="button" class="wing-pill" onclick="switchWing('middle', this)">Middle Wing · Grade 6–8</button>
+            <button type="button" class="wing-pill" onclick="switchWing('secondary', this)">Secondary Wing · Matric (IX–X)</button>
+            <button type="button" class="wing-pill" onclick="showAdmin('olevel', document.querySelector('[data-admin-nav=olevel]'))" title="O Level is managed as its own separate module">O Level students → separate module</button>
+          </div>
+
+          <!-- ===== PRIMARY WING ===== -->
+          <div class="wing-content active" data-wing="primary">
+            <div class="card">
+              <div class="card-pad" style="padding-bottom:0;">
+                <div class="toolbar">
+                  <div class="search" style="width:240px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/></svg> Search by name or ID…</div>
+                  <div class="mini-tabs" style="margin-left:auto;">
+                    <button class="mini-tab active" onclick="filterWingTable('directoryTable','all', this)">All grades</button>
+                    <button class="mini-tab" onclick="filterWingTable('directoryTable','1', this)">Grade 1</button>
+                    <button class="mini-tab" onclick="filterWingTable('directoryTable','2', this)">Grade 2</button>
+                    <button class="mini-tab" onclick="filterWingTable('directoryTable','3', this)">Grade 3</button>
+                    <button class="mini-tab" onclick="filterWingTable('directoryTable','4', this)">Grade 4</button>
+                    <button class="mini-tab" onclick="filterWingTable('directoryTable','5', this)">Grade 5</button>
+                  </div>
+                </div>
+              </div>
+              <div class="table-wrap">
+                <table id="directoryTable">
+                  <thead><tr><th>Student</th><th>Section</th><th>Guardian</th><th>Attendance</th><th>Quick actions</th></tr></thead>
+                  <tbody>
+                    <tr data-grade="1"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--amber-tint);color:var(--amber-ink);">HB</div><div class="meta"><div class="n">Hassan Baig</div><div class="s">STU-20484</div></div></div></td><td>Grade 1B</td><td>Sana Baig</td><td>99%</td><td class="qa-cell"></td></tr>
+                    <tr data-grade="1"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--plum-tint);color:var(--plum);">MA</div><div class="meta"><div class="n">Mahnoor Aziz</div><div class="s">STU-20512</div></div></div></td><td>Grade 1A</td><td>Aziz-ur-Rehman</td><td>96%</td><td class="qa-cell"></td></tr>
+                    <tr data-grade="2"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--info-tint);color:var(--info);">AN</div><div class="meta"><div class="n">Areeba Noor</div><div class="s">STU-20513</div></div></div></td><td>Grade 2A</td><td>Noor-ul-Haq</td><td>94%</td><td class="qa-cell"></td></tr>
+                    <tr data-grade="2"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--success-tint);color:var(--success);">BS</div><div class="meta"><div class="n">Bilal Sattar</div><div class="s">STU-20514</div></div></div></td><td>Grade 2B</td><td>Sattar Mehmood</td><td>91%</td><td class="qa-cell"></td></tr>
+                    <tr data-grade="3"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--plum-tint);color:var(--plum);">DS</div><div class="meta"><div class="n">Daniyal Siddiqui</div><div class="s">STU-20482</div></div></div></td><td>Grade 3C</td><td>Nadia Siddiqui</td><td>97%</td><td class="qa-cell"></td></tr>
+                    <tr data-grade="3"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--teal-tint);color:var(--teal);">RK</div><div class="meta"><div class="n">Rida Kamal</div><div class="s">STU-20515</div></div></div></td><td>Grade 3A</td><td>Kamal Yousuf</td><td>95%</td><td class="qa-cell"></td></tr>
+                    <tr data-grade="4"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--info-tint);color:var(--info);">IQ</div><div class="meta"><div class="n">Ibrahim Qadir</div><div class="s">STU-20516</div></div></div></td><td>Grade 4B</td><td>Qadir Baksh</td><td>90%</td><td class="qa-cell"></td></tr>
+                    <tr data-grade="4"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--amber-tint);color:var(--amber-ink);">SY</div><div class="meta"><div class="n">Sadia Yousuf</div><div class="s">STU-20517</div></div></div></td><td>Grade 4A</td><td>Yousuf Raza</td><td>93%</td><td class="qa-cell"></td></tr>
+                    <tr data-grade="5"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--info-tint);color:var(--info);">OW</div><div class="meta"><div class="n">Omar Waseem</div><div class="s">STU-20510</div></div></div></td><td>Grade 5C</td><td>Waseem Iqbal</td><td>92%</td><td class="qa-cell"></td></tr>
+                    <tr data-grade="5"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--success-tint);color:var(--success);">HN</div><div class="meta"><div class="n">Hira Naveed</div><div class="s">STU-20518</div></div></div></td><td>Grade 5B</td><td>Naveed Anjum</td><td>98%</td><td class="qa-cell"></td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="table-foot"><span>Showing 1–10 of 412 Primary Wing students</span></div>
+            </div>
+          </div>
+
+          <!-- ===== MIDDLE WING ===== -->
+          <div class="wing-content" data-wing="middle">
+            <div class="card">
+              <div class="card-pad" style="padding-bottom:0;">
+                <div class="toolbar">
+                  <div class="search" style="width:240px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/></svg> Search by name or ID…</div>
+                  <div class="mini-tabs" style="margin-left:auto;">
+                    <button class="mini-tab active" onclick="filterWingTable('middleTable','all', this)">All grades</button>
+                    <button class="mini-tab" onclick="filterWingTable('middleTable','6', this)">Grade 6</button>
+                    <button class="mini-tab" onclick="filterWingTable('middleTable','7', this)">Grade 7</button>
+                    <button class="mini-tab" onclick="filterWingTable('middleTable','8', this)">Grade 8</button>
+                  </div>
+                </div>
+              </div>
+              <div class="table-wrap">
+                <table id="middleTable">
+                  <thead><tr><th>Student</th><th>Section</th><th>House</th><th>Subject group</th><th>Exam avg.</th><th>Attendance</th><th>Quick actions</th></tr></thead>
+                  <tbody>
+                    <tr data-grade="6"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--info-tint);color:var(--info);">AK</div><div class="meta"><div class="n">Amina Khan</div><div class="s">STU-20481</div></div></div></td><td>Grade 6A</td><td><span class="pill pill-info">Falcon House</span></td><td>General</td><td>91%</td><td>97%</td><td class="qa-cell" data-extra="middle"></td></tr>
+                    <tr data-grade="6"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--teal-tint);color:var(--teal);">HA</div><div class="meta"><div class="n">Hassan Ali</div><div class="s">STU-20519</div></div></div></td><td>Grade 6B</td><td><span class="pill pill-success">Eagle House</span></td><td>General</td><td>76%</td><td>89%</td><td class="qa-cell" data-extra="middle"></td></tr>
+                    <tr data-grade="7"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--plum-tint);color:var(--plum);">FR</div><div class="meta"><div class="n">Fatima Raza</div><div class="s">STU-20520</div></div></div></td><td>Grade 7A</td><td><span class="pill pill-warn">Hawk House</span></td><td>Computer Science</td><td>88%</td><td>95%</td><td class="qa-cell" data-extra="middle"></td></tr>
+                    <tr data-grade="7"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--amber-tint);color:var(--amber-ink);">KS</div><div class="meta"><div class="n">Kashif Saleem</div><div class="s">STU-20521</div></div></div></td><td>Grade 7B</td><td><span class="pill pill-info">Falcon House</span></td><td>General</td><td>82%</td><td>93%</td><td class="qa-cell" data-extra="middle"></td></tr>
+                    <tr data-grade="8"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--teal-tint);color:var(--teal);">SN</div><div class="meta"><div class="n">Sarmad Nawaz</div><div class="s">STU-20522</div></div></div></td><td>Grade 8B</td><td><span class="pill pill-success">Eagle House</span></td><td>Computer Science</td><td>94%</td><td>96%</td><td class="qa-cell" data-extra="middle"></td></tr>
+                    <tr data-grade="8"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--danger-tint);color:var(--danger);">TA</div><div class="meta"><div class="n">Tania Ahmed</div><div class="s">STU-20485</div></div></div></td><td>Grade 8A</td><td><span class="pill pill-warn">Hawk House</span></td><td>General</td><td>79%</td><td>93%</td><td class="qa-cell" data-extra="middle"></td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="table-foot"><span>Showing 1–6 of 268 Middle Wing students</span></div>
+            </div>
+          </div>
+
+          <!-- ===== SECONDARY WING (MATRIC) ===== -->
+          <div class="wing-content" data-wing="secondary">
+            <div class="card">
+              <div class="card-pad" style="padding-bottom:0;">
+                <div class="toolbar">
+                  <div class="search" style="width:240px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/></svg> Search by name, ID or roll no…</div>
+                  <div class="mini-tabs" style="margin-left:auto;">
+                    <button class="mini-tab active" onclick="filterWingTable('secondaryTable','all', this)">All classes</button>
+                    <button class="mini-tab" onclick="filterWingTable('secondaryTable','9', this)">Class IX</button>
+                    <button class="mini-tab" onclick="filterWingTable('secondaryTable','10', this)">Class X</button>
+                  </div>
+                </div>
+              </div>
+              <div class="table-wrap">
+                <table id="secondaryTable">
+                  <thead><tr><th>Student</th><th>Section</th><th>Board reg.</th><th>Registration no.</th><th>SSC part</th><th>Practical group</th><th>Roll no.</th><th>Quick actions</th></tr></thead>
+                  <tbody>
+                    <tr data-grade="9"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--teal-tint);color:var(--teal);">ZM</div><div class="meta"><div class="n">Zoya Mirza</div><div class="s">STU-20483</div></div></div></td><td>Class IX-B</td><td><span class="pill pill-success">Registered</span></td><td style="font-family:var(--font-mono);">BISE-26-04471</td><td><span class="pill pill-info">SSC Part-I</span></td><td>Biology</td><td style="font-family:var(--font-mono);">4471</td><td class="qa-cell" data-extra="secondary"></td></tr>
+                    <tr data-grade="9"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--amber-tint);color:var(--amber-ink);">FS</div><div class="meta"><div class="n">Fahad Sheikh</div><div class="s">STU-20523</div></div></div></td><td>Class IX-A</td><td><span class="pill pill-warn">Pending</span></td><td style="font-family:var(--font-mono);">—</td><td><span class="pill pill-info">SSC Part-I</span></td><td>Computer Science</td><td style="font-family:var(--font-mono);">—</td><td class="qa-cell" data-extra="secondary"></td></tr>
+                    <tr data-grade="10"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--plum-tint);color:var(--plum);">BA</div><div class="meta"><div class="n">Bilal Anwar</div><div class="s">STU-20024</div></div></div></td><td>Class X-A</td><td><span class="pill pill-success">Registered</span></td><td style="font-family:var(--font-mono);">BISE-25-03108</td><td><span class="pill pill-success">SSC Part-II</span></td><td>Biology</td><td style="font-family:var(--font-mono);">3108</td><td class="qa-cell" data-extra="secondary"></td></tr>
+                    <tr data-grade="10"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--info-tint);color:var(--info);">IJ</div><div class="meta"><div class="n">Iman Jaffer</div><div class="s">STU-20025</div></div></div></td><td>Class X-B</td><td><span class="pill pill-success">Registered</span></td><td style="font-family:var(--font-mono);">BISE-25-03109</td><td><span class="pill pill-success">SSC Part-II</span></td><td>Computer Science</td><td style="font-family:var(--font-mono);">3109</td><td class="qa-cell" data-extra="secondary"></td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="table-foot"><span>Showing 1–4 of 249 Secondary Wing (Matric) students</span></div>
+            </div>
+          </div>
+        </div>
+        <!-- ===================== /ADMIN / STUDENT DIRECTORY ===================== -->
+
+        <!-- ===================== ADMIN / STUDENT PROFILE ===================== -->
+        <div class="admin-section" data-admin="profile">
+          <div class="page-head">
+            <div>
+              <h1>Student Profile</h1>
+              <p>Search any student by name or Student ID to open their complete, single-screen record.</p>
+            </div>
+          </div>
+
+          <div class="search-panel">
+            <div class="search-panel-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/></svg>
+            </div>
+            <div class="search-panel-body">
+              <h3>Open a student profile</h3>
+              <p>Enter the student's full name and/or their auto-generated Student ID to load their record below.</p>
+              <form class="search-panel-fields" onsubmit="event.preventDefault(); loadStudentProfile();">
+                <div class="field" style="margin:0;"><label for="profSearchName">Student full name</label><input id="profSearchName" type="text" placeholder="e.g. Amina Khan"></div>
+                <div class="field" style="margin:0;"><label for="profSearchId">Student ID No.</label><input id="profSearchId" type="text" placeholder="e.g. STU-20481"></div>
+                <button type="submit" class="btn btn-primary accent-admin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/></svg> Open Profile</button>
+              </form>
+            </div>
+          </div>
+
+          <div id="profileResult">
+            <p style="font-size:13.5px; color:var(--slate); margin-bottom:18px;">Showing record for <strong style="color:var(--ink);">Amina Khan</strong> · Student ID <strong style="color:var(--ink); font-family:var(--font-mono);">STU-20481</strong> · Grade 6A</p>
+
+            <div class="card card-pad">
+              <div class="profile-tabs" id="profileTabs">
+                <button class="profile-tab active" onclick="showPtab('personal', this)">Personal Information</button>
+                <button class="profile-tab" onclick="showPtab('academic', this)">Academic Details</button>
+                <button class="profile-tab" onclick="showPtab('fees', this)">Fees &amp; Other Dues</button>
+                <button class="profile-tab" onclick="showPtab('docs', this)">Documents &amp; Certificates</button>
+                <button class="profile-tab" onclick="showPtab('comms', this)">Communication Log</button>
+              </div>
+
+              <!-- ===== PAGE 1 — PERSONAL INFORMATION ===== -->
+              <div class="profile-panel active" id="ptab-personal">
+
+                <div class="subhead">Student details</div>
+                <div class="table-wrap"><table class="detail-table"><tbody>
+                  <tr><td>Student ID</td><td style="font-family:var(--font-mono);">STU-20481</td></tr>
+                  <tr><td>Full name</td><td>Amina Khan</td></tr>
+                  <tr><td>Date of birth</td><td>12 Mar 2015</td></tr>
+                  <tr><td>Gender</td><td>Female</td></tr>
+                  <tr><td>Class &amp; section</td><td>Grade 6A</td></tr>
+                  <tr><td>B-Form / CNIC</td><td style="font-family:var(--font-mono);">34101-1234567-8</td></tr>
+                  <tr><td>Blood group</td><td>O+</td></tr>
+                  <tr><td>Nationality</td><td>Pakistani</td></tr>
+                  <tr><td>Religion</td><td>Islam</td></tr>
+                  <tr><td>Admission date</td><td>3 Jul 2023</td></tr>
+                  <tr><td>Home address</td><td>House 12, Street 4, Gulshan-e-Iqbal, Karachi</td></tr>
+                </tbody></table></div>
+
+                <div class="subhead">Parents</div>
+                <div class="table-wrap"><table class="detail-table"><tbody>
+                  <tr><td>Father name</td><td>Farhan Khan</td></tr>
+                  <tr><td>Father CNIC</td><td style="font-family:var(--font-mono);">34101-7654321-2</td></tr>
+                  <tr><td>Father mobile</td><td>+92 300 111 2233</td></tr>
+                  <tr><td>Father email</td><td>farhan.khan@email.com</td></tr>
+                  <tr><td>Mother name</td><td>Ayesha Khan</td></tr>
+                  <tr><td>Mother CNIC</td><td style="font-family:var(--font-mono);">34101-7654322-3</td></tr>
+                  <tr><td>Mother mobile</td><td>+92 300 111 4455</td></tr>
+                  <tr><td>Mother email</td><td>ayesha.khan@email.com</td></tr>
+                </tbody></table></div>
+
+                <div class="subhead">Guardian</div>
+                <div class="table-wrap"><table class="detail-table"><tbody>
+                  <tr><td>Guardian name</td><td>Farhan Khan</td></tr>
+                  <tr><td>Relationship</td><td>Father (Primary Guardian)</td></tr>
+                  <tr><td>Contact</td><td>+92 300 111 2233</td></tr>
+                  <tr><td>Address same as student</td><td>Yes</td></tr>
+                </tbody></table></div>
+
+                <div class="subhead">Emergency contact</div>
+                <div class="table-wrap"><table class="detail-table"><tbody>
+                  <tr><td>Emergency contact</td><td>Father — Farhan Khan</td></tr>
+                  <tr><td>Emergency contact no. (auto-selected)</td><td style="font-family:var(--font-mono);">+92 300 111 2233</td></tr>
+                </tbody></table></div>
+
+                <div class="subhead">Medical</div>
+                <div class="table-wrap"><table class="detail-table"><tbody>
+                  <tr><td>Blood group</td><td>O+</td></tr>
+                  <tr><td>Allergies</td><td>None reported</td></tr>
+                  <tr><td>Chronic conditions</td><td>None reported</td></tr>
+                  <tr><td>Last checkup</td><td>14 Feb 2026</td></tr>
+                  <tr><td>Family doctor &amp; contact</td><td>Dr. Saima Aziz — +92 300 900 7788</td></tr>
+                </tbody></table></div>
+
+                <div class="subhead">Transport</div>
+                <div class="table-wrap"><table class="detail-table"><tbody>
+                  <tr><td>Route no.</td><td>Route 4 — Gulshan</td></tr>
+                  <tr><td>Bus no.</td><td>B-07</td></tr>
+                  <tr><td>Pickup point</td><td>Gulshan Chowrangi Stop 3</td></tr>
+                  <tr><td>Drop point</td><td>Gulshan Chowrangi Stop 3</td></tr>
+                  <tr><td>Driver name &amp; contact</td><td>Iqbal Masih — +92 300 900 1234</td></tr>
+                </tbody></table></div>
+
+              </div>
+
+              <!-- ===== PAGE 2 — ACADEMIC DETAILS ===== -->
+              <div class="profile-panel" id="ptab-academic">
+
+                <div class="subhead">Academic record</div>
+                <div class="table-wrap"><table>
+                  <thead><tr><th>Academic year</th><th>Class</th><th>Overall grade</th><th>Class position</th><th>Promoted</th></tr></thead>
+                  <tbody>
+                    <tr><td>2025 – 2026</td><td>Grade 6A</td><td><span class="pill pill-success">A</span></td><td>4 / 38</td><td>—</td></tr>
+                    <tr><td>2024 – 2025</td><td>Grade 5A</td><td><span class="pill pill-success">A</span></td><td>6 / 36</td><td><span class="pill pill-success">Yes</span></td></tr>
+                  </tbody>
+                </table></div>
+
+                <div class="subhead">Examination — Term 2</div>
+                <div class="table-wrap"><table>
+                  <thead><tr><th>Subject</th><th>Marks</th><th>Grade</th></tr></thead>
+                  <tbody>
+                    <tr><td>Mathematics</td><td>88 / 100</td><td><span class="pill pill-success">A-</span></td></tr>
+                    <tr><td>English</td><td>76 / 100</td><td><span class="pill pill-info">B</span></td></tr>
+                    <tr><td>Science</td><td>91 / 100</td><td><span class="pill pill-success">A</span></td></tr>
+                  </tbody>
+                </table></div>
+
+                <div class="subhead">Attendance summary</div>
+                <div class="table-wrap"><table class="detail-table"><tbody>
+                  <tr><td>This term</td><td>97%</td></tr>
+                  <tr><td>Days present</td><td>118</td></tr>
+                  <tr><td>Days absent</td><td>3</td></tr>
+                  <tr><td>Days late</td><td>2</td></tr>
+                </tbody></table></div>
+
+                <div class="subhead">Attendance record</div>
+                <div class="table-wrap"><table>
+                  <thead><tr><th>Date</th><th>Status</th></tr></thead>
+                  <tbody>
+                    <tr><td>7 Jul</td><td><span class="pill pill-success">Present</span></td></tr>
+                    <tr><td>6 Jul</td><td><span class="pill pill-success">Present</span></td></tr>
+                    <tr><td>5 Jul</td><td><span class="pill pill-warn">Late</span></td></tr>
+                    <tr><td>4 Jul</td><td><span class="pill pill-danger">Absent</span></td></tr>
+                  </tbody>
+                </table></div>
+
+                <div class="subhead">Discipline</div>
+                <div class="table-wrap"><table class="detail-table"><tbody>
+                  <tr><td>Disciplinary records</td><td>No records on file</td></tr>
+                </tbody></table></div>
+
+                <div class="subhead">Board registration</div>
+                <div class="table-wrap"><table class="detail-table"><tbody>
+                  <tr><td>Status</td><td>Not applicable — board registration begins in Class IX (Secondary Wing)</td></tr>
+                </tbody></table></div>
+
+                <div class="subhead">O Level registration</div>
+                <div class="table-wrap"><table class="detail-table"><tbody>
+                  <tr><td>Status</td><td>Not applicable — student is enrolled in the general (non O Level) track</td></tr>
+                </tbody></table></div>
+
+              </div>
+
+              <!-- ===== PAGE 3 — FEES & OTHER DUES ===== -->
+              <div class="profile-panel" id="ptab-fees">
+
+                <div class="subhead">Fee summary</div>
+                <div class="table-wrap"><table class="detail-table"><tbody>
+                  <tr><td>Total paid this year</td><td style="font-family:var(--font-mono);">Rs 84,000</td></tr>
+                  <tr><td>Outstanding</td><td style="font-family:var(--font-mono);">Rs 0</td></tr>
+                  <tr><td>Next due date</td><td>12 Sep</td></tr>
+                </tbody></table></div>
+
+                <div class="subhead">Fee ledger</div>
+                <div class="table-wrap"><table>
+                  <thead><tr><th>Term</th><th>Amount</th><th>Paid date</th><th>Status</th></tr></thead>
+                  <tbody>
+                    <tr><td>Term 1</td><td style="font-family:var(--font-mono);">Rs 42,000</td><td>10 Jan</td><td><span class="pill pill-success">Paid</span></td></tr>
+                    <tr><td>Term 2</td><td style="font-family:var(--font-mono);">Rs 42,000</td><td>3 Jul</td><td><span class="pill pill-success">Paid</span></td></tr>
+                  </tbody>
+                </table></div>
+
+                <div class="subhead">Library dues</div>
+                <div class="table-wrap"><table>
+                  <thead><tr><th>Book title</th><th>Issue date</th><th>Due date</th><th>Status</th><th>Fine</th></tr></thead>
+                  <tbody>
+                    <tr><td>Charlotte's Web</td><td>20 Jun</td><td>4 Jul</td><td><span class="pill pill-success">Returned</span></td><td>Rs 0</td></tr>
+                    <tr><td>The Number Devil</td><td>2 Jul</td><td>16 Jul</td><td><span class="pill pill-info">Issued</span></td><td>Rs 0</td></tr>
+                  </tbody>
+                </table></div>
+
+              </div>
+
+              <!-- ===== PAGE 4 — DOCUMENTS & CERTIFICATES ===== -->
+              <div class="profile-panel" id="ptab-docs">
+
+                <div class="subhead">Documents submitted</div>
+                <div class="table-wrap"><table class="detail-table"><tbody>
+                  <tr><td>Birth certificate / B-Form</td><td><span class="pill pill-success">Submitted</span></td></tr>
+                  <tr><td>School leaving certificate</td><td><span class="pill pill-success">Submitted</span></td></tr>
+                  <tr><td>Passport-size photographs</td><td><span class="pill pill-success">Submitted</span></td></tr>
+                  <tr><td>Guardian CNIC copy</td><td><span class="pill pill-success">Submitted</span></td></tr>
+                </tbody></table></div>
+
+                <div class="subhead">Certificates issued</div>
+                <div class="table-wrap"><table class="detail-table"><tbody>
+                  <tr><td>Certificates on file</td><td>None issued yet</td></tr>
+                </tbody></table></div>
+
+              </div>
+
+              <!-- ===== PAGE 5 — COMMUNICATION LOG ===== -->
+              <div class="profile-panel" id="ptab-comms">
+                <div class="table-wrap"><table>
+                  <thead><tr><th>Date</th><th>Channel</th><th>Subject</th><th>Status</th></tr></thead>
+                  <tbody>
+                    <tr><td>7 Jul</td><td>SMS</td><td>Term 2 fee reminder</td><td><span class="pill pill-success">Delivered</span></td></tr>
+                    <tr><td>3 Jul</td><td>Email</td><td>Report card — Term 2</td><td><span class="pill pill-success">Read</span></td></tr>
+                    <tr><td>28 Jun</td><td>Call</td><td>Parent-teacher meeting reminder</td><td><span class="pill pill-success">Answered</span></td></tr>
+                  </tbody>
+                </table></div>
+              </div>
+
+            </div>
+          </div>
+          </div>
+        </div>
+        <!-- ===================== /ADMIN / STUDENT PROFILE ===================== -->
+
+        <!-- ===================== ADMIN / STUDENT PROMOTION ===================== -->
+        <div class="admin-section" data-admin="promotion">
+          <div class="page-head"><div><h1>Student Promotion</h1><p>Promote students to the next grade at the end of an academic year.</p></div></div>
+          <div class="card card-pad" style="margin-bottom:18px;">
+            <div class="form-grid">
+              <div class="field"><label>Current class</label><select><option>Grade 4A</option><option>Grade 4B</option><option>Grade 8A</option></select></div>
+              <div class="field"><label>Promote to</label><select><option>Grade 5A</option><option>Grade 5B</option><option>Grade 9A</option></select></div>
+              <div class="field"><label>Academic year</label><select><option>2026 – 2027</option><option>2025 – 2026</option></select></div>
+              <div class="field"><label>Search student (optional)</label><input type="text" placeholder="Leave blank to promote entire class"></div>
+            </div>
+            <button class="btn btn-primary accent-admin">Promote Selected Students</button>
+          </div>
+          <div class="card">
+            <div class="card-head"><h3>Recent promotions</h3></div>
+            <div class="table-wrap"><table>
+              <thead><tr><th>Student</th><th>From</th><th>To</th><th>Date</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr><td>Tania Ahmed</td><td>Grade 7A</td><td>Grade 8A</td><td>1 Apr</td><td><span class="pill pill-success">Promoted</span></td></tr>
+                <tr><td>Zoya Mirza</td><td>Grade 8B</td><td>Grade 9B</td><td>1 Apr</td><td><span class="pill pill-success">Promoted</span></td></tr>
+              </tbody>
+            </table></div>
+          </div>
+        </div>
+        <!-- ===================== /ADMIN / STUDENT PROMOTION ===================== -->
+
+        <!-- ===================== ADMIN / TRANSFER CERTIFICATE ===================== -->
+        <div class="admin-section" data-admin="tc">
+          <div class="page-head"><div><h1>Transfer Certificate</h1><p>Generate a Transfer Certificate (TC) for a leaving student.</p></div></div>
+          <div class="card card-pad" style="margin-bottom:18px;">
+            <div class="form-grid">
+              <div class="field full"><label>Student</label><input type="text" placeholder="Search by name or Student ID…"></div>
+              <div class="field"><label>Last date of attendance</label><input type="date"></div>
+              <div class="field"><label>Issue date</label><input type="date"></div>
+              <div class="field full"><label>Reason for transfer</label><input type="text" placeholder="e.g. Relocation to another city"></div>
+            </div>
+            <button class="btn btn-primary accent-admin">Generate Transfer Certificate</button>
+          </div>
+          <div class="card">
+            <div class="card-head"><h3>Recently issued</h3></div>
+            <div class="table-wrap"><table>
+              <thead><tr><th>Student</th><th>Class</th><th>Issue date</th><th>Reference no.</th></tr></thead>
+              <tbody>
+                <tr><td>Bilal Anwar</td><td>Grade 10A</td><td>28 Jun</td><td>TC-2026-0142</td></tr>
+                <tr><td>Fatima Raza</td><td>Grade 6B</td><td>20 Jun</td><td>TC-2026-0141</td></tr>
+              </tbody>
+            </table></div>
+          </div>
+        </div>
+        <!-- ===================== /ADMIN / TRANSFER CERTIFICATE ===================== -->
+
+        <!-- ===================== ADMIN / STUDENT WITHDRAWAL ===================== -->
+        <div class="admin-section" data-admin="withdrawal">
+          <div class="page-head"><div><h1>Student Withdrawal</h1><p>Process a student's formal withdrawal from Cohort Academy.</p></div></div>
+          <div class="card card-pad" style="margin-bottom:18px;">
+            <div class="form-grid">
+              <div class="field full"><label>Student</label><input type="text" placeholder="Search by name or Student ID…"></div>
+              <div class="field"><label>Withdrawal date</label><input type="date"></div>
+              <div class="field"><label>Reason</label><select><option>Relocation</option><option>Financial</option><option>Medical</option><option>Other</option></select></div>
+              <div class="field full"><label>Notes</label><input type="text" placeholder="Optional notes for the record"></div>
+            </div>
+            <button class="btn btn-primary accent-admin">Process Withdrawal</button>
+          </div>
+          <div class="card">
+            <div class="card-head"><h3>Recent withdrawals</h3></div>
+            <div class="table-wrap"><table>
+              <thead><tr><th>Student</th><th>Class</th><th>Date</th><th>Reason</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr><td>Kashif Saleem</td><td>Grade 8B</td><td>15 Jun</td><td>Relocation</td><td><span class="pill pill-neutral">Processed</span></td></tr>
+              </tbody>
+            </table></div>
+          </div>
+        </div>
+        <!-- ===================== /ADMIN / STUDENT WITHDRAWAL ===================== -->
+
+        <!-- ===================== ADMIN / CHARACTER CERTIFICATE ===================== -->
+        <div class="admin-section" data-admin="charcert">
+          <div class="page-head"><div><h1>Character Certificate</h1><p>Generate a Character Certificate for a current or former student.</p></div></div>
+          <div class="card card-pad" style="margin-bottom:18px;">
+            <div class="form-grid">
+              <div class="field full"><label>Student</label><input type="text" placeholder="Search by name or Student ID…"></div>
+              <div class="field"><label>Purpose</label><select><option>School transfer</option><option>Scholarship application</option><option>Other</option></select></div>
+              <div class="field"><label>Issue date</label><input type="date"></div>
+            </div>
+            <button class="btn btn-primary accent-admin">Generate Character Certificate</button>
+          </div>
+          <div class="card">
+            <div class="card-head"><h3>Recently issued</h3></div>
+            <div class="table-wrap"><table>
+              <thead><tr><th>Student</th><th>Class</th><th>Purpose</th><th>Issue date</th></tr></thead>
+              <tbody>
+                <tr><td>Sana Riaz</td><td>Alumni · 2025</td><td>Scholarship application</td><td>18 Jun</td></tr>
+              </tbody>
+            </table></div>
+          </div>
+        </div>
+        <!-- ===================== /ADMIN / CHARACTER CERTIFICATE ===================== -->
+
+        <!-- ===================== ADMIN / BONAFIDE CERTIFICATE ===================== -->
+        <div class="admin-section" data-admin="bonafide">
+          <div class="page-head"><div><h1>Bonafide Certificate</h1><p>Confirm a student's current enrolment for visa, bank, or scholarship purposes.</p></div></div>
+          <div class="card card-pad" style="margin-bottom:18px;">
+            <div class="form-grid">
+              <div class="field full"><label>Student</label><input type="text" placeholder="Search by name or Student ID…"></div>
+              <div class="field"><label>Purpose</label><select><option>Visa application</option><option>Bank account</option><option>Scholarship</option><option>Other</option></select></div>
+              <div class="field"><label>Issue date</label><input type="date"></div>
+            </div>
+            <button class="btn btn-primary accent-admin">Generate Bonafide Certificate</button>
+          </div>
+          <div class="card">
+            <div class="card-head"><h3>Recently issued</h3></div>
+            <div class="table-wrap"><table>
+              <thead><tr><th>Student</th><th>Class</th><th>Purpose</th><th>Issue date</th></tr></thead>
+              <tbody>
+                <tr><td>Amina Khan</td><td>Grade 6A</td><td>Visa application</td><td>2 Jul</td></tr>
+              </tbody>
+            </table></div>
+          </div>
+        </div>
+        <!-- ===================== /ADMIN / BONAFIDE CERTIFICATE ===================== -->
+
+        <!-- ===================== ADMIN / STUDENT REPORTS ===================== -->
+        <div class="admin-section" data-admin="reports">
+          <div class="page-head"><div><h1>Student Reports</h1><p>Generate academic, attendance, and fee reports across classes and wings.</p></div></div>
+          <div class="grid grid-3">
+            <div class="card card-pad">
+              <div class="stat-icon" style="background:var(--info-tint); margin-bottom:12px;"><svg viewBox="0 0 24 24" fill="none" stroke="var(--info)" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.9-9.1"/><path d="M22 4L12 14.01l-3-3"/></svg></div>
+              <h3 style="font-size:14.5px; margin-bottom:4px;">Attendance Report</h3>
+              <p style="font-size:12.5px; color:var(--slate); margin-bottom:14px;">Daily, weekly, or termly attendance by class.</p>
+              <button class="btn btn-ghost btn-sm">Generate →</button>
+            </div>
+            <div class="card card-pad">
+              <div class="stat-icon" style="background:var(--success-tint); margin-bottom:12px;"><svg viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+              <h3 style="font-size:14.5px; margin-bottom:4px;">Result / Report Card</h3>
+              <p style="font-size:12.5px; color:var(--slate); margin-bottom:14px;">Individual or class-wide report cards.</p>
+              <button class="btn btn-ghost btn-sm">Generate →</button>
+            </div>
+            <div class="card card-pad">
+              <div class="stat-icon" style="background:var(--warn-tint); margin-bottom:12px;"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber-ink)" stroke-width="2"><path d="M2 7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7z"/><circle cx="12" cy="12" r="3"/><path d="M6 9h.01M18 15h.01"/></svg></div>
+              <h3 style="font-size:14.5px; margin-bottom:4px;">Fee Collection Report</h3>
+              <p style="font-size:12.5px; color:var(--slate); margin-bottom:14px;">Collected, pending, and overdue by class.</p>
+              <button class="btn btn-ghost btn-sm">Generate →</button>
+            </div>
+            <div class="card card-pad">
+              <div class="stat-icon" style="background:var(--amber-tint); margin-bottom:12px;"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber-ink)" stroke-width="2"><path d="M17 20v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/></svg></div>
+              <h3 style="font-size:14.5px; margin-bottom:4px;">Admission Report</h3>
+              <p style="font-size:12.5px; color:var(--slate); margin-bottom:14px;">Inquiries, conversions, and pipeline health.</p>
+              <button class="btn btn-ghost btn-sm">Generate →</button>
+            </div>
+            <div class="card card-pad">
+              <div class="stat-icon" style="background:var(--teal-tint); margin-bottom:12px;"><svg viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+              <h3 style="font-size:14.5px; margin-bottom:4px;">Class-wise Strength</h3>
+              <p style="font-size:12.5px; color:var(--slate); margin-bottom:14px;">Enrolment counts by grade and section.</p>
+              <button class="btn btn-ghost btn-sm">Generate →</button>
+            </div>
+            <div class="card card-pad">
+              <div class="stat-icon" style="background:var(--plum-tint); margin-bottom:12px;"><svg viewBox="0 0 24 24" fill="none" stroke="var(--plum)" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.9-9.1"/><path d="M22 4L12 14.01l-3-3"/></svg></div>
+              <h3 style="font-size:14.5px; margin-bottom:4px;">Alumni Report</h3>
+              <p style="font-size:12.5px; color:var(--slate); margin-bottom:14px;">Graduated students and leaving records.</p>
+              <button class="btn btn-ghost btn-sm">Generate →</button>
+            </div>
+          </div>
+        </div>
+        <!-- ===================== /ADMIN / STUDENT REPORTS ===================== -->
+
+        <!-- ===================== ADMIN / O LEVEL (separate module — not mixed with Matric) ===================== -->
+        <div class="admin-section" data-admin="olevel">
+          <div class="page-head">
+            <div>
+              <h1>O Level</h1>
+              <p>Cambridge O Level programme — a separate module, kept apart from the Matric (SSC) pipeline.</p>
+            </div>
+            <div class="stat-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/></svg> O Level Candidates <strong>156</strong></div>
+          </div>
+
+          <div class="card">
+            <div class="card-pad" style="padding-bottom:0;">
+              <div class="toolbar">
+                <div class="mini-tabs" style="flex-wrap:wrap;">
+                  <button class="mini-tab active" onclick="showAtab('olevel','registration',this)">Student Registration</button>
+                  <button class="mini-tab" onclick="showAtab('olevel','subjects',this)">Subject Selection</button>
+                  <button class="mini-tab" onclick="showAtab('olevel','cambridge',this)">Cambridge Registration</button>
+                  <button class="mini-tab" onclick="showAtab('olevel','soe',this)">SOE</button>
+                  <button class="mini-tab" onclick="showAtab('olevel','session',this)">Exam Session</button>
+                  <button class="mini-tab" onclick="showAtab('olevel','predicted',this)">Predicted Grades</button>
+                  <button class="mini-tab" onclick="showAtab('olevel','internal',this)">Internal Assessment</button>
+                  <button class="mini-tab" onclick="showAtab('olevel','admit',this)">Admit Card</button>
+                  <button class="mini-tab" onclick="showAtab('olevel','result',this)">Result</button>
+                  <button class="mini-tab" onclick="showAtab('olevel','certificates',this)">Certificates</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="atab-panel active" id="atab-olevel-registration">
+              <div class="table-wrap"><table>
+                <thead><tr><th>Student</th><th>Class</th><th>Candidate no.</th><th>Registration date</th><th>Status</th></tr></thead>
+                <tbody>
+                  <tr><td>Hamna Sheikh</td><td>O Level · X</td><td>CM-2026-1142</td><td>3 Feb</td><td><span class="pill pill-success">Registered</span></td></tr>
+                  <tr><td>Usman Farooq</td><td>O Level · X</td><td>CM-2026-1143</td><td>3 Feb</td><td><span class="pill pill-success">Registered</span></td></tr>
+                  <tr><td>Meher Fatima</td><td>O Level · IX</td><td>—</td><td>—</td><td><span class="pill pill-warn">Pending</span></td></tr>
+                </tbody>
+              </table></div>
+            </div>
+
+            <div class="atab-panel" id="atab-olevel-subjects">
+              <div class="table-wrap"><table>
+                <thead><tr><th>Student</th><th>Class</th><th>Subjects selected</th><th>No. of subjects</th><th>Status</th></tr></thead>
+                <tbody>
+                  <tr><td>Hamna Sheikh</td><td>O Level · X</td><td>Physics, Chemistry, Biology, Add Maths, English, Urdu, Pakistan Studies, Islamiyat</td><td>8</td><td><span class="pill pill-success">Confirmed</span></td></tr>
+                  <tr><td>Usman Farooq</td><td>O Level · X</td><td>Computer Science, Physics, Maths, English, Urdu, Pakistan Studies, Islamiyat</td><td>7</td><td><span class="pill pill-success">Confirmed</span></td></tr>
+                  <tr><td>Meher Fatima</td><td>O Level · IX</td><td>Biology, Chemistry, Physics, Maths, English</td><td>5</td><td><span class="pill pill-neutral">Draft</span></td></tr>
+                </tbody>
+              </table></div>
+            </div>
+
+            <div class="atab-panel" id="atab-olevel-cambridge">
+              <div class="table-wrap"><table>
+                <thead><tr><th>Student</th><th>Candidate no.</th><th>Centre no.</th><th>Cambridge ID</th><th>Status</th></tr></thead>
+                <tbody>
+                  <tr><td>Hamna Sheikh</td><td style="font-family:var(--font-mono);">CM-2026-1142</td><td style="font-family:var(--font-mono);">PK047</td><td style="font-family:var(--font-mono);">9047-1142</td><td><span class="pill pill-success">Active</span></td></tr>
+                  <tr><td>Usman Farooq</td><td style="font-family:var(--font-mono);">CM-2026-1143</td><td style="font-family:var(--font-mono);">PK047</td><td style="font-family:var(--font-mono);">9047-1143</td><td><span class="pill pill-success">Active</span></td></tr>
+                </tbody>
+              </table></div>
+            </div>
+
+            <div class="atab-panel" id="atab-olevel-soe">
+              <div class="table-wrap"><table>
+                <thead><tr><th>Student</th><th>Session</th><th>Subjects entered</th><th>SOE status</th><th>Issue date</th></tr></thead>
+                <tbody>
+                  <tr><td>Hamna Sheikh</td><td>May/June 2026</td><td>8</td><td><span class="pill pill-success">Issued</span></td><td>15 Mar</td></tr>
+                  <tr><td>Usman Farooq</td><td>May/June 2026</td><td>7</td><td><span class="pill pill-warn">Pending</span></td><td>—</td></tr>
+                </tbody>
+              </table></div>
+            </div>
+
+            <div class="atab-panel" id="atab-olevel-session">
+              <div class="table-wrap"><table>
+                <thead><tr><th>Session</th><th>Subjects offered</th><th>Candidates</th><th>Start date</th><th>Status</th></tr></thead>
+                <tbody>
+                  <tr><td>May/June 2026</td><td>14</td><td>92</td><td>4 May</td><td><span class="pill pill-info">Upcoming</span></td></tr>
+                  <tr><td>Oct/Nov 2025</td><td>12</td><td>64</td><td>3 Nov</td><td><span class="pill pill-success">Completed</span></td></tr>
+                </tbody>
+              </table></div>
+            </div>
+
+            <div class="atab-panel" id="atab-olevel-predicted">
+              <div class="table-wrap"><table>
+                <thead><tr><th>Student</th><th>Subject</th><th>Predicted grade</th><th>Submitted by</th><th>Date</th></tr></thead>
+                <tbody>
+                  <tr><td>Hamna Sheikh</td><td>Physics</td><td><span class="pill pill-success">A</span></td><td>Sadia Bano</td><td>20 Jan</td></tr>
+                  <tr><td>Hamna Sheikh</td><td>Add Maths</td><td><span class="pill pill-success">A*</span></td><td>Asad Raza</td><td>20 Jan</td></tr>
+                  <tr><td>Usman Farooq</td><td>Computer Science</td><td><span class="pill pill-info">B</span></td><td>Asad Raza</td><td>21 Jan</td></tr>
+                </tbody>
+              </table></div>
+            </div>
+
+            <div class="atab-panel" id="atab-olevel-internal">
+              <div class="table-wrap"><table>
+                <thead><tr><th>Student</th><th>Subject</th><th>Component</th><th>Marks</th><th>Grade</th></tr></thead>
+                <tbody>
+                  <tr><td>Hamna Sheikh</td><td>Biology</td><td>Coursework</td><td>47 / 50</td><td><span class="pill pill-success">A</span></td></tr>
+                  <tr><td>Usman Farooq</td><td>Physics</td><td>Practical</td><td>38 / 50</td><td><span class="pill pill-info">B</span></td></tr>
+                </tbody>
+              </table></div>
+            </div>
+
+            <div class="atab-panel" id="atab-olevel-admit">
+              <div class="table-wrap"><table>
+                <thead><tr><th>Student</th><th>Candidate no.</th><th>Exam session</th><th>Admit card status</th><th></th></tr></thead>
+                <tbody>
+                  <tr><td>Hamna Sheikh</td><td style="font-family:var(--font-mono);">CM-2026-1142</td><td>May/June 2026</td><td><span class="pill pill-success">Issued</span></td><td><button class="btn btn-ghost btn-sm">Download</button></td></tr>
+                  <tr><td>Usman Farooq</td><td style="font-family:var(--font-mono);">CM-2026-1143</td><td>May/June 2026</td><td><span class="pill pill-warn">Pending</span></td><td><button class="btn btn-ghost btn-sm" disabled>Download</button></td></tr>
+                </tbody>
+              </table></div>
+            </div>
+
+            <div class="atab-panel" id="atab-olevel-result">
+              <div class="table-wrap"><table>
+                <thead><tr><th>Student</th><th>Session</th><th>Subjects</th><th>Overall grade</th><th>Status</th></tr></thead>
+                <tbody>
+                  <tr><td>Fahad Sheikh</td><td>Oct/Nov 2025</td><td>7</td><td>5A · 2B</td><td><span class="pill pill-success">Published</span></td></tr>
+                  <tr><td>Hamna Sheikh</td><td>May/June 2026</td><td>8</td><td>—</td><td><span class="pill pill-neutral">Pending</span></td></tr>
+                </tbody>
+              </table></div>
+            </div>
+
+            <div class="atab-panel" id="atab-olevel-certificates">
+              <div class="table-wrap"><table>
+                <thead><tr><th>Student</th><th>Certificate type</th><th>Issue date</th><th>Reference no.</th></tr></thead>
+                <tbody>
+                  <tr><td>Fahad Sheikh</td><td>Cambridge O Level Certificate</td><td>18 Dec</td><td>CAIE-2025-0087</td></tr>
+                </tbody>
+              </table></div>
+            </div>
+          </div>
+        </div>
+        <!-- ===================== /ADMIN / O LEVEL ===================== -->
 
         <!-- ===================== ADMIN / STAFF ===================== -->
         <div class="admin-section" data-admin="staff">
@@ -1487,6 +2328,8 @@ document.addEventListener('keydown', function(e){
 });
 
 /* ---- Admin portal: Dashboard / Students / Staff switching ---- */
+const STUDENT_MODULE_SECTIONS = ['students','admission','directory','profile','promotion','tc','withdrawal','charcert','bonafide','reports'];
+
 function showAdmin(section, el){
   document.querySelectorAll('#view-admin .admin-section').forEach(s=>s.classList.remove('active'));
   document.querySelector('#view-admin .admin-section[data-admin="'+section+'"]').classList.add('active');
@@ -1494,8 +2337,89 @@ function showAdmin(section, el){
     n.classList.remove('current','accent-admin');
   });
   if(el){ el.classList.add('current','accent-admin'); }
+
+  if(STUDENT_MODULE_SECTIONS.includes(section)){
+    document.getElementById('studentsSubmenu').classList.add('open');
+    document.getElementById('studentsMenuToggle').classList.add('open');
+  }
   document.querySelector('#view-admin .content').scrollTo({top:0, behavior:'instant'});
 }
+function toggleStudentsMenu(){
+  document.getElementById('studentsSubmenu').classList.toggle('open');
+  document.getElementById('studentsMenuToggle').classList.toggle('open');
+}
+function showAtab(section, name, el){
+  const card = el.closest('.card');
+  card.querySelectorAll('.atab-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('atab-'+section+'-'+name).classList.add('active');
+  el.parentElement.querySelectorAll('.mini-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+}
+/* ---- Student Profile page ---- */
+function showPtab(name, el){
+  document.querySelectorAll('.profile-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('ptab-'+name).classList.add('active');
+  document.querySelectorAll('#profileTabs .profile-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+}
+function loadStudentProfile(){
+  // In a full build this would query the student record by name/ID.
+  // This demo always resolves to the sample profile below and brings it into view.
+  document.getElementById('profileResult').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function switchWing(wing, el){
+  document.querySelectorAll('.wing-content').forEach(c=>{
+    c.classList.toggle('active', c.dataset.wing === wing);
+  });
+  document.querySelectorAll('#wingRow .wing-pill').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+}
+function filterWingTable(tableId, grade, el){
+  document.querySelectorAll('#'+tableId+' tr[data-grade]').forEach(r=>{
+    r.style.display = (grade === 'all' || r.dataset.grade === grade) ? '' : 'none';
+  });
+  el.parentElement.querySelectorAll('.mini-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+}
+
+/* ---- Populate quick-action icons on every Student Directory row ---- */
+const QUICK_ACTIONS = [
+  { label:'Attendance', svg:'<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M9 15l2 2 4-4"/>' },
+  { label:'Homework', svg:'<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>' },
+  { label:'Fee', svg:'<path d="M2 7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7z"/><circle cx="12" cy="12" r="3"/><path d="M6 9h.01M18 15h.01"/>' },
+  { label:'Result', svg:'<path d="M18 20V10M12 20V4M6 20v-6"/>' },
+  { label:'Parent Contact', svg:'<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/>' },
+  { label:'Medical Record', svg:'<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.6z"/><path d="M12 8v5M9.5 10.5h5"/>' }
+];
+const MIDDLE_WING_EXTRA = [
+  { label:'Subject Selection', svg:'<path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>' },
+  { label:'House Assignment', svg:'<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/>' },
+  { label:'Exam Performance', svg:'<path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/>' }
+];
+const SECONDARY_WING_EXTRA = [
+  { label:'Board Registration', svg:'<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>' },
+  { label:'Registration Number', svg:'<line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/>' },
+  { label:'SSC Part-I', svg:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><text x="12" y="17" font-size="8" font-weight="700" text-anchor="middle" fill="currentColor" stroke="none">I</text>' },
+  { label:'SSC Part-II', svg:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><text x="12" y="17" font-size="7" font-weight="700" text-anchor="middle" fill="currentColor" stroke="none">II</text>' },
+  { label:'Practical Groups', svg:'<path d="M9 2v6.5L4 17a2 2 0 0 0 1.8 3h12.4a2 2 0 0 0 1.8-3l-5-8.5V2"/><path d="M8 2h8"/>' },
+  { label:'Roll Number', svg:'<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M15 8h4M15 12h4M7 16h10"/>' }
+];
+document.querySelectorAll('.qa-cell').forEach(cell=>{
+  const wrap = document.createElement('div');
+  wrap.className = 'quick-actions';
+  let actions = QUICK_ACTIONS.slice();
+  if(cell.dataset.extra === 'middle') actions = actions.concat(MIDDLE_WING_EXTRA);
+  if(cell.dataset.extra === 'secondary') actions = actions.concat(SECONDARY_WING_EXTRA);
+  actions.forEach(a=>{
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.title = a.label;
+    btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">'+a.svg+'</svg>';
+    wrap.appendChild(btn);
+  });
+  cell.appendChild(wrap);
+});
 
 /* ---- Login view interactions ---- */
 const roleAccent = { teacher:'accent-teacher', parent:'accent-parent', student:'' };
