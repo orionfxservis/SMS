@@ -419,37 +419,39 @@ tbody tr:hover{ background: var(--paper); }
 .notice .d{ font-size:12.5px; margin-top:2px; opacity:.85; }
 
 /* ---------- Login ---------- */
-.login-shell{ display:flex; min-height: calc(100vh - 45px); }
+.login-shell{ display:flex; height: calc(100vh - 45px); overflow:hidden; }
 .login-art{
   flex:1.15; position:relative; overflow:hidden;
   background: radial-gradient(120% 140% at 15% 15%, #24345C 0%, var(--ink) 55%, #0E1730 100%);
-  color:#fff; padding:56px; display:flex; flex-direction:column; justify-content:space-between;
+  color:#fff; padding:clamp(20px,4vh,44px) clamp(24px,4vw,48px); display:flex; flex-direction:column; justify-content:space-between;
 }
-.login-art .brand{ display:flex; align-items:center; gap:10px; font-family:var(--font-display); font-size:19px; font-weight:600; }
-.login-art .brand .mark{ width:26px; height:26px; border-radius:7px; background:linear-gradient(135deg, var(--amber), #C97F1F); flex-shrink:0; }
-.login-art h1{ font-family:var(--font-display); font-weight:500; font-size:38px; line-height:1.18; max-width:460px; margin:auto 0; }
+.login-art .brand{ display:flex; align-items:center; gap:10px; font-family:var(--font-display); font-size:17px; font-weight:600; flex-shrink:0; }
+.login-art .brand .mark{ width:24px; height:24px; border-radius:7px; background:linear-gradient(135deg, var(--amber), #C97F1F); flex-shrink:0; }
+.login-art h1{ font-family:var(--font-display); font-weight:500; font-size:clamp(22px,3.2vh,32px); line-height:1.18; max-width:440px; }
 .login-art h1 em{ font-style:italic; color:var(--amber); }
-.login-art .stats{ display:flex; gap:32px; }
-.login-art .stats .st .v{ font-family:var(--font-mono); font-size:22px; font-weight:600; }
-.login-art .stats .st .l{ font-size:12px; color:#9AA3BC; margin-top:2px; }
+.login-art .stats{ display:flex; gap:24px; flex-shrink:0; }
+.login-art .stats .st .v{ font-family:var(--font-mono); font-size:19px; font-weight:600; }
+.login-art .stats .st .l{ font-size:11.5px; color:#9AA3BC; margin-top:2px; }
 .login-art .orb{ position:absolute; border-radius:50%; filter:blur(2px); opacity:.35; }
 
-.login-panel{ flex:1; display:flex; align-items:center; justify-content:center; padding:40px 24px; background:var(--paper); }
-.login-card{ width:100%; max-width:392px; background:var(--surface); border:1px solid var(--line); border-radius:var(--r-lg); box-shadow:var(--shadow-card); padding:34px 30px; }
-.login-card .head{ margin-bottom:22px; }
-.login-card .head h2{ font-family:var(--font-display); font-size:24px; font-weight:500; }
-.login-card .head p{ font-size:13.5px; color:var(--slate); margin-top:4px; }
+.login-panel{ flex:1; display:flex; align-items:center; justify-content:center; padding:16px 24px; background:var(--paper); overflow-y:auto; }
+.login-card{ width:100%; max-width:380px; background:var(--surface); border:1px solid var(--line); border-radius:var(--r-lg); box-shadow:var(--shadow-card); padding:clamp(18px,3vh,28px) 26px; margin:auto; }
+.login-card .head{ margin-bottom:14px; }
+.login-card .head h2{ font-family:var(--font-display); font-size:21px; font-weight:500; }
+.login-card .head p{ font-size:13px; color:var(--slate); margin-top:3px; }
 
-.role-seg{ display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:20px; }
+.role-seg{ display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:14px; }
 .role-btn{
-  display:flex; flex-direction:column; align-items:center; gap:6px;
-  padding:12px 6px; border-radius:10px; border:1px solid var(--line); background:var(--surface);
-  font-size:12px; font-weight:700; color:var(--slate); transition:all .15s;
+  display:flex; flex-direction:column; align-items:center; gap:5px;
+  padding:8px 6px; border-radius:10px; border:1px solid var(--line); background:var(--surface);
+  font-size:11.5px; font-weight:700; color:var(--slate); transition:all .15s;
 }
-.role-btn svg{ width:18px; height:18px; }
+.role-btn svg{ width:16px; height:16px; }
 .role-btn.role-active[data-role="teacher"]{ background:var(--teal-tint); border-color:var(--teal); color:var(--teal); }
 .role-btn.role-active[data-role="parent"]{ background:var(--plum-tint); border-color:var(--plum); color:var(--plum); }
 .role-btn.role-active[data-role="student"]{ background:var(--info-tint); border-color:var(--info); color:var(--info); }
+
+.login-card .field{ margin-bottom:10px; }
 
 .pw-wrap{ position:relative; }
 .pw-wrap input{ width:100%; padding-right:42px; }
@@ -461,14 +463,14 @@ tbody tr:hover{ background: var(--paper); }
 .pw-toggle:hover{ background:var(--paper); color:var(--ink); }
 .pw-toggle svg{ width:17px; height:17px; }
 
-.login-row-between{ display:flex; justify-content:space-between; align-items:center; margin:-6px 0 18px; }
-.login-row-between label{ display:flex; align-items:center; gap:7px; font-size:12.5px; color:var(--slate); }
-.login-row-between a{ font-size:12.5px; font-weight:600; color:var(--info); }
+.login-row-between{ display:flex; justify-content:space-between; align-items:center; margin:-2px 0 12px; }
+.login-row-between label{ display:flex; align-items:center; gap:7px; font-size:12px; color:var(--slate); }
+.login-row-between a{ font-size:12px; font-weight:600; color:var(--info); }
 
-.btn-login{ width:100%; justify-content:center; padding:12px; font-size:14px; }
+.btn-login{ width:100%; justify-content:center; padding:10px; font-size:13.5px; }
 .admin-note{
-  margin-top:22px; padding-top:18px; border-top:1px solid var(--line);
-  font-size:12px; color:var(--slate-dim); line-height:1.6; text-align:center;
+  margin-top:14px; padding-top:12px; border-top:1px solid var(--line);
+  font-size:11px; color:var(--slate-dim); line-height:1.5; text-align:center;
 }
 .admin-note code{ font-family:var(--font-mono); background:var(--paper); padding:2px 6px; border-radius:5px; color:var(--slate); }
 
@@ -559,6 +561,8 @@ tbody tr:hover{ background: var(--paper); }
 .step-line.done{ background:var(--success); }
 .admission-step{ display:none; }
 .admission-step.active{ display:block; }
+.wizard-step{ display:none; }
+.wizard-step.active{ display:block; }
 
 /* ---------- Responsive shell ---------- */
 .mobile-topbar{ display:none; }
@@ -767,7 +771,30 @@ tbody tr:hover{ background: var(--paper); }
           </div>
         </div>
         <a class="navlink" data-admin-nav="olevel" onclick="showAdmin('olevel', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/><path d="M22 10v6"/></svg> O Level</a>
-        <a class="navlink" data-admin-nav="staff" onclick="showAdmin('staff', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 20v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M22 20v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> Staff</a>
+        <div class="nav-collapsible">
+          <a class="navlink nav-parent" id="staffMenuToggle" onclick="toggleStaffMenu()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 20v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M22 20v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <span style="flex:1;">Staff</span>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+          </a>
+          <div class="nav-submenu" id="staffSubmenu">
+            <a class="navlink sub" data-admin-nav="staffdash" onclick="showAdmin('staffdash', this)">Dashboard</a>
+            <a class="navlink sub" data-admin-nav="staffdirectory" onclick="showAdmin('staffdirectory', this)">Employee Directory</a>
+            <a class="navlink sub" data-admin-nav="staffteaching" onclick="showAdmin('staffdirectory', this); filterStaffDirectory('teaching', document.querySelector('#staffCategoryPills .wing-pill[data-cat=teaching]'));">Teaching Staff</a>
+            <a class="navlink sub" data-admin-nav="staffadminstaff" onclick="showAdmin('staffdirectory', this); filterStaffDirectory('administration', document.querySelector('#staffCategoryPills .wing-pill[data-cat=administration]'));">Administrative Staff</a>
+            <a class="navlink sub" data-admin-nav="staffsupport" onclick="showAdmin('staffdirectory', this); filterStaffDirectory('support', document.querySelector('#staffCategoryPills .wing-pill[data-cat=support]'));">Support Staff</a>
+            <a class="navlink sub" data-admin-nav="staffprofile" onclick="showAdmin('staffprofile', this)">Employee Profile</a>
+            <a class="navlink sub" data-admin-nav="staffattendance" onclick="showAdmin('staffattendance', this)">Attendance</a>
+            <a class="navlink sub" data-admin-nav="staffleave" onclick="showAdmin('staffleave', this)">Leave Management</a>
+            <a class="navlink sub" data-admin-nav="staffpayroll" onclick="showAdmin('staffpayroll', this)">Payroll</a>
+            <a class="navlink sub" data-admin-nav="staffperformance" onclick="showAdmin('staffperformance', this)">Performance</a>
+            <a class="navlink sub" data-admin-nav="staffdocuments" onclick="showAdmin('staffdocuments', this)">Documents</a>
+            <a class="navlink sub" data-admin-nav="staffidcards" onclick="showAdmin('staffidcards', this)">ID Cards</a>
+            <a class="navlink sub" data-admin-nav="staffaccounts" onclick="showAdmin('staffaccounts', this)">User Accounts</a>
+            <a class="navlink sub" data-admin-nav="staffreports" onclick="showAdmin('staffreports', this)">Reports</a>
+            <a class="navlink sub" data-admin-nav="staffsettings" onclick="showAdmin('staffsettings', this)">Settings</a>
+          </div>
+        </div>
         <a class="navlink" data-admin-nav="accounts" onclick="showAdmin('accounts', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7z"/><circle cx="12" cy="12" r="3"/><path d="M6 9h.01M18 15h.01"/></svg> Accounts</a>
         <a class="navlink"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg> Timetable</a>
         <a class="navlink"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7z"/><circle cx="12" cy="12" r="3"/><path d="M6 9h.01M18 15h.01"/></svg> Fees</a>
@@ -1758,75 +1785,518 @@ tbody tr:hover{ background: var(--paper); }
         </div>
         <!-- ===================== /ADMIN / O LEVEL ===================== -->
 
-        <!-- ===================== ADMIN / STAFF ===================== -->
-        <div class="admin-section" data-admin="staff">
+        <!-- ===================== ADMIN / STAFF DASHBOARD ===================== -->
+        <div class="admin-section" data-admin="staffdash">
           <div class="page-head">
             <div>
-              <h1>Staff</h1>
-              <p>86 teaching and non-teaching staff members.</p>
+              <h1>Staff Dashboard</h1>
+              <p>A snapshot of everyone who works at Cohort Academy.</p>
             </div>
-            <div style="display:flex; gap:10px; align-items:center;">
-              <div class="stat-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg> Total Staff <strong>86</strong></div>
-              <button class="btn btn-primary accent-admin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg> Add Staff</button>
-            </div>
+            <button class="btn btn-primary accent-admin" onclick="openEmployeeModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg> Add Employee</button>
           </div>
 
           <div class="grid grid-4" style="margin-bottom:18px;">
-            <div class="card stat-card compact">
-              <div class="stat-icon" style="background:var(--amber-tint);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber-ink)" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg></div>
-              <div class="txt"><div class="stat-value">86</div><div class="stat-label">Total staff</div></div>
+            <div class="card stat-card compact"><div class="stat-icon" style="background:var(--amber-tint);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber-ink)" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div class="txt"><div class="stat-value">142</div><div class="stat-label">Total employees</div></div></div>
+            <div class="card stat-card compact"><div class="stat-icon" style="background:var(--info-tint);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--info)" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div><div class="txt"><div class="stat-value">86</div><div class="stat-label">Teachers</div></div></div>
+            <div class="card stat-card compact"><div class="stat-icon" style="background:var(--plum-tint);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--plum)" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div><div class="txt"><div class="stat-value">24</div><div class="stat-label">Admin staff</div></div></div>
+            <div class="card stat-card compact"><div class="stat-icon" style="background:var(--teal-tint);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div><div class="txt"><div class="stat-value">32</div><div class="stat-label">Support staff</div></div></div>
+          </div>
+          <div class="grid grid-4" style="margin-bottom:18px;">
+            <div class="card stat-card compact"><div class="stat-icon" style="background:var(--success-tint);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></div><div class="txt"><div class="stat-value">134</div><div class="stat-label">Present today</div></div></div>
+            <div class="card stat-card compact"><div class="stat-icon" style="background:var(--warn-tint);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber-ink)" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div><div class="txt"><div class="stat-value">5</div><div class="stat-label">On leave</div></div></div>
+            <div class="card stat-card compact"><div class="stat-icon" style="background:var(--info-tint);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--info)" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div><div class="txt"><div class="stat-value">8</div><div class="stat-label">Probation</div></div></div>
+            <div class="card stat-card compact"><div class="stat-icon" style="background:var(--danger-tint);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--danger)" stroke-width="2"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg></div><div class="txt"><div class="stat-value">3</div><div class="stat-label">Contracts expiring</div></div></div>
+          </div>
+          <div class="grid grid-3">
+            <div class="card stat-card compact"><div class="stat-icon" style="background:var(--plum-tint);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--plum)" stroke-width="2"><path d="M20 12v9H4v-9"/><path d="M2 7h20v5H2z"/><path d="M12 22V7"/><path d="M12 7C10 2 5 3 5 6.5S9 8 12 7zM12 7c2-5 7-4 7-.5S15 8 12 7z"/></svg></div><div class="txt"><div class="stat-value">6</div><div class="stat-label">Birthdays this month</div></div></div>
+            <div class="card stat-card compact"><div class="stat-icon" style="background:var(--success-tint);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2"><circle cx="9" cy="7" r="4"/><path d="M2 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><path d="M19 8v6M22 11h-6"/></svg></div><div class="txt"><div class="stat-value">4</div><div class="stat-label">New joinings</div></div></div>
+            <div class="card stat-card compact"><div class="stat-icon" style="background:var(--danger-tint);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--danger)" stroke-width="2"><circle cx="9" cy="7" r="4"/><path d="M2 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><path d="M17 11h6"/></svg></div><div class="txt"><div class="stat-value">2</div><div class="stat-label">Resignations</div></div></div>
+          </div>
+        </div>
+        <!-- ===================== /ADMIN / STAFF DASHBOARD ===================== -->
+
+        <!-- ===================== ADMIN / EMPLOYEE DIRECTORY ===================== -->
+        <div class="admin-section" data-admin="staffdirectory">
+          <div class="page-head">
+            <div>
+              <h1>Employee Directory</h1>
+              <p>Every employee, categorized by department instead of one long list.</p>
             </div>
-            <div class="card stat-card compact">
-              <div class="stat-icon" style="background:var(--info-tint);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--info)" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
-              <div class="txt"><div class="stat-value">62</div><div class="stat-label">Teaching staff</div></div>
-            </div>
-            <div class="card stat-card compact">
-              <div class="stat-icon" style="background:var(--success-tint);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2"><path d="M17 20v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/></svg></div>
-              <div class="txt"><div class="stat-value">24</div><div class="stat-label">Non-teaching staff</div></div>
-            </div>
-            <div class="card stat-card compact">
-              <div class="stat-icon" style="background:var(--warn-tint);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber-ink)" stroke-width="2"><path d="M2 7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7z"/><circle cx="12" cy="12" r="3"/><path d="M6 9h.01M18 15h.01"/></svg></div>
-              <div class="txt"><div class="stat-value">Rs 6.4M</div><div class="stat-label">Monthly payroll</div></div>
-            </div>
+            <div class="stat-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg> Total Employees <strong>142</strong></div>
+          </div>
+
+          <div class="wing-row" id="staffCategoryPills">
+            <button type="button" class="wing-pill active" data-cat="all" onclick="filterStaffDirectory('all', this)">All</button>
+            <button type="button" class="wing-pill" data-cat="leadership" onclick="filterStaffDirectory('leadership', this)">Leadership</button>
+            <button type="button" class="wing-pill" data-cat="teaching" onclick="filterStaffDirectory('teaching', this)">Teaching Staff</button>
+            <button type="button" class="wing-pill" data-cat="administration" onclick="filterStaffDirectory('administration', this)">Administration</button>
+            <button type="button" class="wing-pill" data-cat="it" onclick="filterStaffDirectory('it', this)">IT Department</button>
+            <button type="button" class="wing-pill" data-cat="library" onclick="filterStaffDirectory('library', this)">Library</button>
+            <button type="button" class="wing-pill" data-cat="transport" onclick="filterStaffDirectory('transport', this)">Transport</button>
+            <button type="button" class="wing-pill" data-cat="security" onclick="filterStaffDirectory('security', this)">Security</button>
+            <button type="button" class="wing-pill" data-cat="maintenance" onclick="filterStaffDirectory('maintenance', this)">Maintenance</button>
+            <button type="button" class="wing-pill" data-cat="housekeeping" onclick="filterStaffDirectory('housekeeping', this)">Housekeeping</button>
+            <button type="button" class="wing-pill" data-cat="cafeteria" onclick="filterStaffDirectory('cafeteria', this)">Cafeteria</button>
           </div>
 
           <div class="card">
             <div class="card-pad" style="padding-bottom:0;">
               <div class="toolbar">
                 <div class="search" style="width:260px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/></svg> Search by name or ID…</div>
-                <div class="field" style="margin:0; width:170px;"><select><option>All departments</option><option>Mathematics</option><option>Science</option><option>Administration</option></select></div>
-                <div class="field" style="margin:0; width:160px;"><select><option>Salary — any</option><option>Below Rs 50k</option><option>Rs 50k – 100k</option><option>Above Rs 100k</option></select></div>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table id="staffDirectoryTable">
+                <thead><tr><th>Employee</th><th>Designation</th><th>Track / area</th><th>Contact</th><th>Status</th></tr></thead>
+                <tbody>
+                  <tr data-cat="leadership"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--amber-tint);color:var(--amber-ink);">RH</div><div class="meta"><div class="n">Rina Haque</div><div class="s">EMP-0001</div></div></div></td><td>Principal</td><td>—</td><td>+92 300 800 0001</td><td><span class="pill pill-success">Active</span></td></tr>
+                  <tr data-cat="leadership"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--amber-tint);color:var(--amber-ink);">FZ</div><div class="meta"><div class="n">Farrukh Zaman</div><div class="s">EMP-0002</div></div></div></td><td>Vice Principal</td><td>—</td><td>+92 300 800 0002</td><td><span class="pill pill-success">Active</span></td></tr>
+                  <tr data-cat="leadership"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--amber-tint);color:var(--amber-ink);">SA</div><div class="meta"><div class="n">Saima Aziz</div><div class="s">EMP-0003</div></div></div></td><td>Academic Coordinator</td><td>—</td><td>+92 300 800 0003</td><td><span class="pill pill-success">Active</span></td></tr>
+                  <tr data-cat="leadership"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--amber-tint);color:var(--amber-ink);">BS</div><div class="meta"><div class="n">Bilal Sattar</div><div class="s">EMP-0004</div></div></div></td><td>Section Coordinator</td><td>Primary Wing</td><td>+92 300 800 0004</td><td><span class="pill pill-success">Active</span></td></tr>
+
+                  <tr data-cat="teaching"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--teal-tint);color:var(--teal);">MF</div><div class="meta"><div class="n">Mehreen Farooq</div><div class="s">EMP-T8021</div></div></div></td><td>Class Teacher</td><td>Middle Teacher</td><td>+92 300 900 1122</td><td><span class="pill pill-success">Active</span></td></tr>
+                  <tr data-cat="teaching"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--info-tint);color:var(--info);">AR</div><div class="meta"><div class="n">Asad Raza</div><div class="s">EMP-T7744</div></div></div></td><td>Subject Teacher</td><td>Matric Teacher</td><td>+92 301 900 2233</td><td><span class="pill pill-success">Active</span></td></tr>
+                  <tr data-cat="teaching"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--plum-tint);color:var(--plum);">SB</div><div class="meta"><div class="n">Sadia Bano</div><div class="s">EMP-T6698</div></div></div></td><td>Subject Teacher</td><td>Primary Teacher</td><td>+92 302 900 3344</td><td><span class="pill pill-warn">On leave</span></td></tr>
+                  <tr data-cat="teaching"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--info-tint);color:var(--info);">HS</div><div class="meta"><div class="n">Hamna Sheikh</div><div class="s">EMP-T5521</div></div></div></td><td>Chemistry Teacher</td><td>O Level Teacher</td><td>+92 303 900 4455</td><td><span class="pill pill-success">Active</span></td></tr>
+                  <tr data-cat="teaching"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--success-tint);color:var(--success);">WA</div><div class="meta"><div class="n">Waqas Ahmed</div><div class="s">EMP-T5522</div></div></div></td><td>PT Instructor</td><td>Subject Specialist</td><td>+92 304 900 5566</td><td><span class="pill pill-success">Active</span></td></tr>
+                  <tr data-cat="teaching"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--teal-tint);color:var(--teal);">NK</div><div class="meta"><div class="n">Nida Kamal</div><div class="s">EMP-T5523</div></div></div></td><td>Computer Teacher</td><td>Subject Specialist</td><td>+92 305 900 6677</td><td><span class="pill pill-success">Active</span></td></tr>
+
+                  <tr data-cat="administration"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--info-tint);color:var(--info);">KJ</div><div class="meta"><div class="n">Kamran Javed</div><div class="s">EMP-A1120</div></div></div></td><td>Accountant</td><td>—</td><td>+92 303 900 4455</td><td><span class="pill pill-success">Active</span></td></tr>
+                  <tr data-cat="administration"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--info-tint);color:var(--info);">FI</div><div class="meta"><div class="n">Farah Iqbal</div><div class="s">EMP-A1121</div></div></div></td><td>HR Officer</td><td>—</td><td>+92 303 900 4488</td><td><span class="pill pill-success">Active</span></td></tr>
+                  <tr data-cat="administration"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--info-tint);color:var(--info);">IS</div><div class="meta"><div class="n">Imran Sheikh</div><div class="s">EMP-A1122</div></div></div></td><td>Admission Officer</td><td>—</td><td>+92 303 900 4499</td><td><span class="pill pill-success">Active</span></td></tr>
+
+                  <tr data-cat="it"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--plum-tint);color:var(--plum);">TM</div><div class="meta"><div class="n">Tariq Mehmood</div><div class="s">EMP-IT301</div></div></div></td><td>IT Manager</td><td>—</td><td>+92 306 900 7788</td><td><span class="pill pill-success">Active</span></td></tr>
+                  <tr data-cat="it"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--plum-tint);color:var(--plum);">OA</div><div class="meta"><div class="n">Ovais Anwar</div><div class="s">EMP-IT302</div></div></div></td><td>Network Administrator</td><td>—</td><td>+92 306 900 7799</td><td><span class="pill pill-success">Active</span></td></tr>
+
+                  <tr data-cat="library"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--amber-tint);color:var(--amber-ink);">SP</div><div class="meta"><div class="n">Shazia Parveen</div><div class="s">EMP-L401</div></div></div></td><td>Librarian</td><td>—</td><td>+92 307 900 8811</td><td><span class="pill pill-success">Active</span></td></tr>
+
+                  <tr data-cat="transport"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--success-tint);color:var(--success);">IM</div><div class="meta"><div class="n">Iqbal Masih</div><div class="s">EMP-TR501</div></div></div></td><td>Driver</td><td>Route 4 — Gulshan</td><td>+92 300 900 1234</td><td><span class="pill pill-success">Active</span></td></tr>
+
+                  <tr data-cat="security"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--danger-tint);color:var(--danger);">NA</div><div class="meta"><div class="n">Naveed Aslam</div><div class="s">EMP-SC601</div></div></div></td><td>Security Supervisor</td><td>—</td><td>+92 308 900 9911</td><td><span class="pill pill-success">Active</span></td></tr>
+
+                  <tr data-cat="maintenance"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--warn-tint);color:var(--amber-ink);">RA</div><div class="meta"><div class="n">Rashid Ali</div><div class="s">EMP-M701</div></div></div></td><td>Electrician</td><td>—</td><td>+92 309 900 1010</td><td><span class="pill pill-success">Active</span></td></tr>
+
+                  <tr data-cat="housekeeping"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--teal-tint);color:var(--teal);">BB</div><div class="meta"><div class="n">Bushra Bibi</div><div class="s">EMP-H801</div></div></div></td><td>Aya</td><td>—</td><td>+92 310 900 1111</td><td><span class="pill pill-success">Active</span></td></tr>
+
+                  <tr data-cat="cafeteria"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--info-tint);color:var(--info);">ZI</div><div class="meta"><div class="n">Zafar Iqbal</div><div class="s">EMP-C901</div></div></div></td><td>Cook</td><td>—</td><td>+92 311 900 1212</td><td><span class="pill pill-success">Active</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="table-foot"><span>Showing 21 of 142 employees</span></div>
+          </div>
+        </div>
+        <!-- ===================== /ADMIN / EMPLOYEE DIRECTORY ===================== -->
+
+        <!-- ===================== ADMIN / EMPLOYEE PROFILE ===================== -->
+        <div class="admin-section" data-admin="staffprofile">
+          <div class="page-head">
+            <div>
+              <h1>Employee Profile</h1>
+              <p>Search any employee by name or Employee ID to open their complete record.</p>
+            </div>
+          </div>
+
+          <div class="search-panel">
+            <div class="search-panel-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/></svg></div>
+            <div class="search-panel-body">
+              <h3>Open an employee profile</h3>
+              <p>Enter the employee's full name and/or their Employee ID to load their record below.</p>
+              <form class="search-panel-fields" onsubmit="event.preventDefault(); loadEmployeeProfile();">
+                <div class="field" style="margin:0;"><label for="empSearchName">Employee full name</label><input id="empSearchName" type="text" placeholder="e.g. Mehreen Farooq"></div>
+                <div class="field" style="margin:0;"><label for="empSearchId">Employee ID No.</label><input id="empSearchId" type="text" placeholder="e.g. EMP-T8021"></div>
+                <button type="submit" class="btn btn-primary accent-admin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/></svg> Open Profile</button>
+              </form>
+            </div>
+          </div>
+
+          <div id="employeeResult">
+            <p style="font-size:13.5px; color:var(--slate); margin-bottom:18px;">Showing record for <strong style="color:var(--ink);">Mehreen Farooq</strong> · Employee ID <strong style="color:var(--ink); font-family:var(--font-mono);">EMP-T8021</strong> · Class Teacher, Grade 8</p>
+
+            <div class="card card-pad">
+              <div class="profile-tabs" id="employeeTabs">
+                <button class="profile-tab active" onclick="showEmpTab('personal', this)">Personal Information</button>
+                <button class="profile-tab" onclick="showEmpTab('employment', this)">Employment Details</button>
+                <button class="profile-tab" onclick="showEmpTab('salary', this)">Salary &amp; Payroll</button>
+                <button class="profile-tab" onclick="showEmpTab('attendance', this)">Attendance &amp; Leave</button>
+                <button class="profile-tab" onclick="showEmpTab('performance', this)">Performance &amp; Training</button>
+              </div>
+
+              <!-- PAGE 1 — PERSONAL INFORMATION -->
+              <div class="profile-panel active" id="etab-personal">
+                <div class="subhead">Personal information</div>
+                <div class="table-wrap"><table class="detail-table"><tbody>
+                  <tr><td>Employee ID</td><td style="font-family:var(--font-mono);">EMP-T8021</td></tr>
+                  <tr><td>Full name</td><td>Mehreen Farooq</td></tr>
+                  <tr><td>Father / spouse name</td><td>Tariq Farooq</td></tr>
+                  <tr><td>CNIC</td><td style="font-family:var(--font-mono);">34101-5566778-4</td></tr>
+                  <tr><td>Gender</td><td>Female</td></tr>
+                  <tr><td>Date of birth</td><td>18 May 1991</td></tr>
+                  <tr><td>Mobile</td><td>+92 300 900 1122</td></tr>
+                  <tr><td>Email</td><td>mehreen.farooq@cohortacademy.edu.pk</td></tr>
+                  <tr><td>Address</td><td>House 7, Street 2, DHA Phase 5, Karachi</td></tr>
+                </tbody></table></div>
+
+                <div class="subhead">Qualification</div>
+                <div class="table-wrap"><table class="detail-table"><tbody>
+                  <tr><td>Highest qualification</td><td>M.Ed — Education</td></tr>
+                  <tr><td>University</td><td>University of Karachi</td></tr>
+                  <tr><td>Passing year</td><td>2013</td></tr>
+                  <tr><td>Professional certificates</td><td>Cambridge Teaching Certificate</td></tr>
+                  <tr><td>Teaching license</td><td>Not applicable</td></tr>
+                </tbody></table></div>
+
+                <div class="subhead">Experience</div>
+                <div class="table-wrap"><table>
+                  <thead><tr><th>Organization</th><th>Role</th><th>Duration</th></tr></thead>
+                  <tbody>
+                    <tr><td>Bright Future School</td><td>Subject Teacher</td><td>2013 – 2018</td></tr>
+                    <tr><td>Cohort Academy</td><td>Class Teacher, Grade 8</td><td>2018 – Present</td></tr>
+                  </tbody>
+                </table></div>
+
+                <div class="subhead">Emergency contact</div>
+                <div class="table-wrap"><table class="detail-table"><tbody>
+                  <tr><td>Contact name</td><td>Tariq Farooq (Spouse)</td></tr>
+                  <tr><td>Contact number</td><td style="font-family:var(--font-mono);">+92 300 900 9988</td></tr>
+                </tbody></table></div>
+              </div>
+
+              <!-- PAGE 2 — EMPLOYMENT DETAILS -->
+              <div class="profile-panel" id="etab-employment">
+                <div class="subhead">Employment details</div>
+                <div class="table-wrap"><table class="detail-table"><tbody>
+                  <tr><td>Department</td><td>Teaching Staff</td></tr>
+                  <tr><td>Designation</td><td>Class Teacher</td></tr>
+                  <tr><td>Section</td><td>Middle Wing</td></tr>
+                  <tr><td>Campus</td><td>Main Campus</td></tr>
+                  <tr><td>Reporting manager</td><td>Saima Aziz — Academic Coordinator</td></tr>
+                  <tr><td>Joining date</td><td>1 Aug 2018</td></tr>
+                  <tr><td>Employment type</td><td>Permanent</td></tr>
+                  <tr><td>Status</td><td><span class="pill pill-success">Active</span></td></tr>
+                  <tr><td>Shift</td><td>Morning (7:30 AM – 2:30 PM)</td></tr>
+                </tbody></table></div>
+
+                <div class="subhead">Documents</div>
+                <div class="table-wrap"><table class="detail-table"><tbody>
+                  <tr><td>CNIC</td><td><span class="pill pill-success">Submitted</span></td></tr>
+                  <tr><td>Degrees</td><td><span class="pill pill-success">Submitted</span></td></tr>
+                  <tr><td>Experience certificates</td><td><span class="pill pill-success">Submitted</span></td></tr>
+                  <tr><td>Police verification</td><td><span class="pill pill-success">Submitted</span></td></tr>
+                  <tr><td>Medical certificate</td><td><span class="pill pill-success">Submitted</span></td></tr>
+                  <tr><td>Appointment letter</td><td><span class="pill pill-success">Submitted</span></td></tr>
+                  <tr><td>Contract</td><td><span class="pill pill-success">Submitted</span></td></tr>
+                </tbody></table></div>
+
+                <div class="subhead">Login permissions</div>
+                <div class="table-wrap"><table class="detail-table"><tbody>
+                  <tr><td>Username</td><td style="font-family:var(--font-mono);">mehreen.farooq</td></tr>
+                  <tr><td>Role</td><td>Teacher Portal — Full Access</td></tr>
+                  <tr><td>Access level</td><td>Own classes only</td></tr>
+                  <tr><td>Account status</td><td><span class="pill pill-success">Active</span></td></tr>
+                </tbody></table></div>
+
+                <div class="subhead">Activity log</div>
+                <div class="table-wrap"><table>
+                  <thead><tr><th>Date</th><th>Activity</th></tr></thead>
+                  <tbody>
+                    <tr><td>7 Jul</td><td>Submitted attendance for Grade 8B</td></tr>
+                    <tr><td>6 Jul</td><td>Updated gradebook — Quiz 4</td></tr>
+                  </tbody>
+                </table></div>
+              </div>
+
+              <!-- PAGE 3 — SALARY & PAYROLL -->
+              <div class="profile-panel" id="etab-salary">
+                <div class="subhead">Salary structure</div>
+                <div class="table-wrap"><table class="detail-table"><tbody>
+                  <tr><td>Basic salary</td><td style="font-family:var(--font-mono);">Rs 70,000</td></tr>
+                  <tr><td>House rent allowance</td><td style="font-family:var(--font-mono);">Rs 15,000</td></tr>
+                  <tr><td>Fuel allowance</td><td style="font-family:var(--font-mono);">Rs 6,000</td></tr>
+                  <tr><td>Medical allowance</td><td style="font-family:var(--font-mono);">Rs 4,000</td></tr>
+                  <tr><td>Bonus</td><td style="font-family:var(--font-mono);">Rs 0</td></tr>
+                  <tr><td>Deductions</td><td style="font-family:var(--font-mono);">Rs 0</td></tr>
+                  <tr><td>Net salary / month</td><td style="font-family:var(--font-mono); font-weight:700;">Rs 95,000</td></tr>
+                </tbody></table></div>
+
+                <div class="subhead">Payroll history</div>
+                <div class="table-wrap"><table>
+                  <thead><tr><th>Month</th><th>Net paid</th><th>Paid date</th><th>Status</th></tr></thead>
+                  <tbody>
+                    <tr><td>June 2026</td><td style="font-family:var(--font-mono);">Rs 95,000</td><td>1 Jul</td><td><span class="pill pill-success">Paid</span></td></tr>
+                    <tr><td>May 2026</td><td style="font-family:var(--font-mono);">Rs 95,000</td><td>1 Jun</td><td><span class="pill pill-success">Paid</span></td></tr>
+                  </tbody>
+                </table></div>
+
+                <div class="subhead">Bank details</div>
+                <div class="table-wrap"><table class="detail-table"><tbody>
+                  <tr><td>Bank name</td><td>Habib Bank Limited</td></tr>
+                  <tr><td>Account number</td><td style="font-family:var(--font-mono);">0122-7890123-01</td></tr>
+                </tbody></table></div>
+              </div>
+
+              <!-- PAGE 4 — ATTENDANCE & LEAVE -->
+              <div class="profile-panel" id="etab-attendance">
+                <div class="subhead">Attendance summary</div>
+                <div class="table-wrap"><table class="detail-table"><tbody>
+                  <tr><td>This month</td><td>98%</td></tr>
+                  <tr><td>Days present</td><td>21</td></tr>
+                  <tr><td>Days absent</td><td>0</td></tr>
+                  <tr><td>Days late</td><td>1</td></tr>
+                </tbody></table></div>
+
+                <div class="subhead">Leave balance &amp; history</div>
+                <div class="table-wrap"><table>
+                  <thead><tr><th>Leave type</th><th>From</th><th>To</th><th>Days</th><th>Status</th></tr></thead>
+                  <tbody>
+                    <tr><td>Casual leave</td><td>12 May</td><td>12 May</td><td>1</td><td><span class="pill pill-success">Approved</span></td></tr>
+                    <tr><td>Sick leave</td><td>3 Mar</td><td>4 Mar</td><td>2</td><td><span class="pill pill-success">Approved</span></td></tr>
+                  </tbody>
+                </table></div>
+              </div>
+
+              <!-- PAGE 5 — PERFORMANCE & TRAINING -->
+              <div class="profile-panel" id="etab-performance">
+                <div class="subhead">Performance reviews</div>
+                <div class="table-wrap"><table>
+                  <thead><tr><th>Review period</th><th>Rating</th><th>Reviewer</th><th>Status</th></tr></thead>
+                  <tbody>
+                    <tr><td>Jan – Jun 2026</td><td><span class="pill pill-success">4.6 / 5</span></td><td>Saima Aziz</td><td><span class="pill pill-success">Completed</span></td></tr>
+                    <tr><td>Jul – Dec 2025</td><td><span class="pill pill-success">4.4 / 5</span></td><td>Saima Aziz</td><td><span class="pill pill-success">Completed</span></td></tr>
+                  </tbody>
+                </table></div>
+
+                <div class="subhead">Training &amp; workshops</div>
+                <div class="table-wrap"><table>
+                  <thead><tr><th>Training</th><th>Date</th><th>Status</th></tr></thead>
+                  <tbody>
+                    <tr><td>Cambridge Assessment Workshop</td><td>14 Feb 2026</td><td><span class="pill pill-success">Completed</span></td></tr>
+                    <tr><td>Classroom Technology Training</td><td>20 Aug 2025</td><td><span class="pill pill-success">Completed</span></td></tr>
+                  </tbody>
+                </table></div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <!-- ===================== /ADMIN / EMPLOYEE PROFILE ===================== -->
+
+        <!-- ===================== ADMIN / STAFF ATTENDANCE ===================== -->
+        <div class="admin-section" data-admin="staffattendance">
+          <div class="page-head"><div><h1>Staff Attendance</h1><p>Daily attendance across all departments.</p></div></div>
+          <div class="card">
+            <div class="card-pad" style="padding-bottom:0;">
+              <div class="toolbar">
+                <div class="search" style="width:240px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/></svg> Search employee…</div>
                 <div class="mini-tabs" style="margin-left:auto;">
                   <button class="mini-tab active">All</button>
-                  <button class="mini-tab">Teaching</button>
-                  <button class="mini-tab">Non-teaching</button>
+                  <button class="mini-tab">Present</button>
+                  <button class="mini-tab">Absent</button>
                   <button class="mini-tab">On leave</button>
                 </div>
               </div>
             </div>
-            <div class="table-wrap">
-              <table>
-                <thead><tr><th>Staff member</th><th>Role</th><th>Department</th><th>Contact</th><th>Salary / month</th><th>Status</th><th></th></tr></thead>
-                <tbody>
-                  <tr><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--teal-tint);color:var(--teal);">MF</div><div class="meta"><div class="n">Mehreen Farooq</div><div class="s">ID T-8021</div></div></div></td><td>Class Teacher</td><td>Grade 8</td><td>+92 300 900 1122</td><td style="font-family:var(--font-mono);">Rs 95,000</td><td><span class="pill pill-success">Active</span></td><td><button class="btn btn-ghost btn-sm">View</button></td></tr>
-                  <tr><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--info-tint);color:var(--info);">AR</div><div class="meta"><div class="n">Asad Raza</div><div class="s">ID T-7744</div></div></div></td><td>Subject Teacher</td><td>Mathematics</td><td>+92 301 900 2233</td><td style="font-family:var(--font-mono);">Rs 88,000</td><td><span class="pill pill-success">Active</span></td><td><button class="btn btn-ghost btn-sm">View</button></td></tr>
-                  <tr><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--plum-tint);color:var(--plum);">SB</div><div class="meta"><div class="n">Sadia Bano</div><div class="s">ID T-6698</div></div></div></td><td>Subject Teacher</td><td>Science</td><td>+92 302 900 3344</td><td style="font-family:var(--font-mono);">Rs 82,000</td><td><span class="pill pill-warn">On leave</span></td><td><button class="btn btn-ghost btn-sm">View</button></td></tr>
-                  <tr><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--amber-tint);color:var(--amber-ink);">KJ</div><div class="meta"><div class="n">Kamran Javed</div><div class="s">ID S-1120</div></div></div></td><td>Accountant</td><td>Administration</td><td>+92 303 900 4455</td><td style="font-family:var(--font-mono);">Rs 68,000</td><td><span class="pill pill-success">Active</span></td><td><button class="btn btn-ghost btn-sm">View</button></td></tr>
-                </tbody>
-              </table>
+            <div class="table-wrap"><table>
+              <thead><tr><th>Employee</th><th>Department</th><th>Time in</th><th>Time out</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr><td>Mehreen Farooq</td><td>Teaching Staff</td><td>7:26 AM</td><td>2:31 PM</td><td><span class="pill pill-success">Present</span></td></tr>
+                <tr><td>Sadia Bano</td><td>Teaching Staff</td><td>—</td><td>—</td><td><span class="pill pill-warn">On leave</span></td></tr>
+                <tr><td>Kamran Javed</td><td>Administration</td><td>8:58 AM</td><td>4:32 PM</td><td><span class="pill pill-success">Present</span></td></tr>
+                <tr><td>Iqbal Masih</td><td>Transport</td><td>6:40 AM</td><td>3:15 PM</td><td><span class="pill pill-success">Present</span></td></tr>
+              </tbody>
+            </table></div>
+          </div>
+        </div>
+        <!-- ===================== /ADMIN / STAFF ATTENDANCE ===================== -->
+
+        <!-- ===================== ADMIN / LEAVE MANAGEMENT ===================== -->
+        <div class="admin-section" data-admin="staffleave">
+          <div class="page-head"><div><h1>Leave Management</h1><p>Review and approve staff leave requests.</p></div><button class="btn btn-primary accent-admin">+ Apply Leave</button></div>
+          <div class="grid grid-3" style="margin-bottom:18px;">
+            <div class="card stat-card compact"><div class="stat-icon" style="background:var(--warn-tint);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber-ink)" stroke-width="2"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg></div><div class="txt"><div class="stat-value">6</div><div class="stat-label">Pending requests</div></div></div>
+            <div class="card stat-card compact"><div class="stat-icon" style="background:var(--success-tint);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></div><div class="txt"><div class="stat-value">14</div><div class="stat-label">Approved this month</div></div></div>
+            <div class="card stat-card compact"><div class="stat-icon" style="background:var(--info-tint);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--info)" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div><div class="txt"><div class="stat-value">5</div><div class="stat-label">On leave today</div></div></div>
+          </div>
+          <div class="card">
+            <div class="table-wrap"><table>
+              <thead><tr><th>Employee</th><th>Leave type</th><th>From</th><th>To</th><th>Days</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr><td>Sadia Bano</td><td>Sick leave</td><td>7 Jul</td><td>9 Jul</td><td>3</td><td><span class="pill pill-warn">Pending</span></td></tr>
+                <tr><td>Naveed Aslam</td><td>Casual leave</td><td>10 Jul</td><td>10 Jul</td><td>1</td><td><span class="pill pill-success">Approved</span></td></tr>
+                <tr><td>Farah Iqbal</td><td>Annual leave</td><td>15 Jul</td><td>19 Jul</td><td>5</td><td><span class="pill pill-warn">Pending</span></td></tr>
+              </tbody>
+            </table></div>
+          </div>
+        </div>
+        <!-- ===================== /ADMIN / LEAVE MANAGEMENT ===================== -->
+
+        <!-- ===================== ADMIN / STAFF PAYROLL ===================== -->
+        <div class="admin-section" data-admin="staffpayroll">
+          <div class="page-head"><div><h1>Payroll</h1><p>Monthly payroll run across all departments.</p></div><button class="btn btn-primary accent-admin">Run Payroll</button></div>
+          <div class="grid grid-3" style="margin-bottom:18px;">
+            <div class="card stat-card compact"><div class="stat-icon" style="background:var(--warn-tint);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber-ink)" stroke-width="2"><path d="M2 7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7z"/><circle cx="12" cy="12" r="3"/></svg></div><div class="txt"><div class="stat-value">Rs 12.6M</div><div class="stat-label">Total payroll — July</div></div></div>
+            <div class="card stat-card compact"><div class="stat-icon" style="background:var(--success-tint);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></div><div class="txt"><div class="stat-value">128</div><div class="stat-label">Processed</div></div></div>
+            <div class="card stat-card compact"><div class="stat-icon" style="background:var(--danger-tint);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--danger)" stroke-width="2"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg></div><div class="txt"><div class="stat-value">14</div><div class="stat-label">Pending</div></div></div>
+          </div>
+          <div class="card">
+            <div class="table-wrap"><table>
+              <thead><tr><th>Employee</th><th>Basic</th><th>Allowances</th><th>Deductions</th><th>Net salary</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr><td>Mehreen Farooq</td><td style="font-family:var(--font-mono);">Rs 70,000</td><td style="font-family:var(--font-mono);">Rs 25,000</td><td style="font-family:var(--font-mono);">Rs 0</td><td style="font-family:var(--font-mono); font-weight:700;">Rs 95,000</td><td><span class="pill pill-success">Paid</span></td></tr>
+                <tr><td>Kamran Javed</td><td style="font-family:var(--font-mono);">Rs 55,000</td><td style="font-family:var(--font-mono);">Rs 13,000</td><td style="font-family:var(--font-mono);">Rs 0</td><td style="font-family:var(--font-mono); font-weight:700;">Rs 68,000</td><td><span class="pill pill-warn">Pending</span></td></tr>
+              </tbody>
+            </table></div>
+          </div>
+        </div>
+        <!-- ===================== /ADMIN / STAFF PAYROLL ===================== -->
+
+        <!-- ===================== ADMIN / STAFF PERFORMANCE ===================== -->
+        <div class="admin-section" data-admin="staffperformance">
+          <div class="page-head"><div><h1>Performance</h1><p>Review cycles and ratings across staff.</p></div></div>
+          <div class="card">
+            <div class="table-wrap"><table>
+              <thead><tr><th>Employee</th><th>Review period</th><th>Rating</th><th>Reviewer</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr><td>Mehreen Farooq</td><td>Jan – Jun 2026</td><td><span class="pill pill-success">4.6 / 5</span></td><td>Saima Aziz</td><td><span class="pill pill-success">Completed</span></td></tr>
+                <tr><td>Asad Raza</td><td>Jan – Jun 2026</td><td><span class="pill pill-success">4.2 / 5</span></td><td>Saima Aziz</td><td><span class="pill pill-success">Completed</span></td></tr>
+                <tr><td>Kamran Javed</td><td>Jan – Jun 2026</td><td>—</td><td>Farah Iqbal</td><td><span class="pill pill-warn">Scheduled</span></td></tr>
+              </tbody>
+            </table></div>
+          </div>
+        </div>
+        <!-- ===================== /ADMIN / STAFF PERFORMANCE ===================== -->
+
+        <!-- ===================== ADMIN / STAFF DOCUMENTS ===================== -->
+        <div class="admin-section" data-admin="staffdocuments">
+          <div class="page-head"><div><h1>Documents</h1><p>Track document submission status across staff.</p></div></div>
+          <div class="card">
+            <div class="table-wrap"><table>
+              <thead><tr><th>Employee</th><th>Document type</th><th>Status</th><th>Expiry</th></tr></thead>
+              <tbody>
+                <tr><td>Mehreen Farooq</td><td>Police Verification</td><td><span class="pill pill-success">Submitted</span></td><td>—</td></tr>
+                <tr><td>Iqbal Masih</td><td>Driving License</td><td><span class="pill pill-warn">Expiring soon</span></td><td>30 Aug 2026</td></tr>
+                <tr><td>Naveed Aslam</td><td>Security Clearance</td><td><span class="pill pill-success">Submitted</span></td><td>12 Dec 2026</td></tr>
+              </tbody>
+            </table></div>
+          </div>
+        </div>
+        <!-- ===================== /ADMIN / STAFF DOCUMENTS ===================== -->
+
+        <!-- ===================== ADMIN / ID CARDS ===================== -->
+        <div class="admin-section" data-admin="staffidcards">
+          <div class="page-head"><div><h1>ID Cards</h1><p>Track and generate employee ID cards.</p></div><button class="btn btn-primary accent-admin">Generate ID Card</button></div>
+          <div class="card">
+            <div class="table-wrap"><table>
+              <thead><tr><th>Employee</th><th>ID card no.</th><th>Issue date</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr><td>Mehreen Farooq</td><td style="font-family:var(--font-mono);">IDC-T8021</td><td>1 Aug 2023</td><td><span class="pill pill-success">Issued</span></td></tr>
+                <tr><td>Hamna Sheikh</td><td style="font-family:var(--font-mono);">—</td><td>—</td><td><span class="pill pill-warn">Pending</span></td></tr>
+              </tbody>
+            </table></div>
+          </div>
+        </div>
+        <!-- ===================== /ADMIN / ID CARDS ===================== -->
+
+        <!-- ===================== ADMIN / USER ACCOUNTS ===================== -->
+        <div class="admin-section" data-admin="staffaccounts">
+          <div class="page-head"><div><h1>User Accounts</h1><p>Login access and permission levels for staff portal accounts.</p></div></div>
+          <div class="card">
+            <div class="table-wrap"><table>
+              <thead><tr><th>Employee</th><th>Username</th><th>Role</th><th>Access level</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr><td>Mehreen Farooq</td><td style="font-family:var(--font-mono);">mehreen.farooq</td><td>Teacher Portal</td><td>Own classes only</td><td><span class="pill pill-success">Active</span></td></tr>
+                <tr><td>Kamran Javed</td><td style="font-family:var(--font-mono);">kamran.javed</td><td>Admin Portal — Accounts</td><td>Fees &amp; payroll</td><td><span class="pill pill-success">Active</span></td></tr>
+                <tr><td>Rina Haque</td><td style="font-family:var(--font-mono);">rina.haque</td><td>Admin Portal — Full</td><td>All modules</td><td><span class="pill pill-success">Active</span></td></tr>
+              </tbody>
+            </table></div>
+          </div>
+        </div>
+        <!-- ===================== /ADMIN / USER ACCOUNTS ===================== -->
+
+        <!-- ===================== ADMIN / STAFF REPORTS ===================== -->
+        <div class="admin-section" data-admin="staffreports">
+          <div class="page-head"><div><h1>Reports</h1><p>Generate reports across the entire staff module.</p></div></div>
+          <div class="grid grid-3">
+            <div class="card card-pad">
+              <div class="stat-icon" style="background:var(--info-tint); margin-bottom:12px;"><svg viewBox="0 0 24 24" fill="none" stroke="var(--info)" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.9-9.1"/><path d="M22 4L12 14.01l-3-3"/></svg></div>
+              <h3 style="font-size:14.5px; margin-bottom:4px;">Attendance Report</h3>
+              <p style="font-size:12.5px; color:var(--slate); margin-bottom:14px;">Monthly attendance across departments.</p>
+              <button class="btn btn-ghost btn-sm">Generate →</button>
             </div>
-            <div class="table-foot">
-              <span>Showing 1–4 of 86 staff</span>
-              <div class="pager">
-                <button class="btn btn-ghost btn-sm" disabled>Prev</button>
-                <button class="btn btn-ghost btn-sm" style="background:var(--ink); color:#fff;">1</button>
-                <button class="btn btn-ghost btn-sm">2</button>
-                <button class="btn btn-ghost btn-sm">Next</button>
-              </div>
+            <div class="card card-pad">
+              <div class="stat-icon" style="background:var(--warn-tint); margin-bottom:12px;"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber-ink)" stroke-width="2"><path d="M2 7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7z"/><circle cx="12" cy="12" r="3"/></svg></div>
+              <h3 style="font-size:14.5px; margin-bottom:4px;">Payroll Report</h3>
+              <p style="font-size:12.5px; color:var(--slate); margin-bottom:14px;">Monthly payroll summary and history.</p>
+              <button class="btn btn-ghost btn-sm">Generate →</button>
+            </div>
+            <div class="card card-pad">
+              <div class="stat-icon" style="background:var(--success-tint); margin-bottom:12px;"><svg viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
+              <h3 style="font-size:14.5px; margin-bottom:4px;">Leave Report</h3>
+              <p style="font-size:12.5px; color:var(--slate); margin-bottom:14px;">Leave balances and usage by employee.</p>
+              <button class="btn btn-ghost btn-sm">Generate →</button>
+            </div>
+            <div class="card card-pad">
+              <div class="stat-icon" style="background:var(--teal-tint); margin-bottom:12px;"><svg viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.9-9.1"/><path d="M22 4L12 14.01l-3-3"/></svg></div>
+              <h3 style="font-size:14.5px; margin-bottom:4px;">Performance Report</h3>
+              <p style="font-size:12.5px; color:var(--slate); margin-bottom:14px;">Ratings and review completion status.</p>
+              <button class="btn btn-ghost btn-sm">Generate →</button>
+            </div>
+            <div class="card card-pad">
+              <div class="stat-icon" style="background:var(--plum-tint); margin-bottom:12px;"><svg viewBox="0 0 24 24" fill="none" stroke="var(--plum)" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
+              <h3 style="font-size:14.5px; margin-bottom:4px;">Directory Export</h3>
+              <p style="font-size:12.5px; color:var(--slate); margin-bottom:14px;">Full employee directory as a spreadsheet.</p>
+              <button class="btn btn-ghost btn-sm">Generate →</button>
+            </div>
+            <div class="card card-pad">
+              <div class="stat-icon" style="background:var(--danger-tint); margin-bottom:12px;"><svg viewBox="0 0 24 24" fill="none" stroke="var(--danger)" stroke-width="2"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg></div>
+              <h3 style="font-size:14.5px; margin-bottom:4px;">Contract Expiry Report</h3>
+              <p style="font-size:12.5px; color:var(--slate); margin-bottom:14px;">Contracts and probation periods ending soon.</p>
+              <button class="btn btn-ghost btn-sm">Generate →</button>
             </div>
           </div>
         </div>
-        <!-- ===================== /ADMIN / STAFF ===================== -->
+        <!-- ===================== /ADMIN / STAFF REPORTS ===================== -->
+
+        <!-- ===================== ADMIN / STAFF SETTINGS ===================== -->
+        <div class="admin-section" data-admin="staffsettings">
+          <div class="page-head"><div><h1>Settings</h1><p>Manage departments and designations used across the Staff module.</p></div></div>
+          <div class="grid grid-2">
+            <div class="card card-pad">
+              <h3 style="font-size:14px; margin-bottom:12px;">Departments</h3>
+              <div class="form-grid"><div class="field full"><label>Add department</label><input type="text" placeholder="e.g. Cafeteria"></div></div>
+              <button class="btn btn-ghost btn-sm">+ Add</button>
+              <div class="table-wrap" style="margin-top:14px;"><table>
+                <tbody>
+                  <tr><td>Teaching Staff</td></tr>
+                  <tr><td>Administration</td></tr>
+                  <tr><td>IT Department</td></tr>
+                  <tr><td>Library</td></tr>
+                  <tr><td>Transport</td></tr>
+                  <tr><td>Security</td></tr>
+                  <tr><td>Maintenance</td></tr>
+                  <tr><td>Housekeeping</td></tr>
+                  <tr><td>Cafeteria</td></tr>
+                </tbody>
+              </table></div>
+            </div>
+            <div class="card card-pad">
+              <h3 style="font-size:14px; margin-bottom:12px;">Designations</h3>
+              <div class="form-grid"><div class="field full"><label>Add designation</label><input type="text" placeholder="e.g. Lab Assistant"></div></div>
+              <button class="btn btn-ghost btn-sm">+ Add</button>
+              <div class="table-wrap" style="margin-top:14px;"><table>
+                <tbody>
+                  <tr><td>Class Teacher</td></tr>
+                  <tr><td>Subject Teacher</td></tr>
+                  <tr><td>Accountant</td></tr>
+                  <tr><td>Librarian</td></tr>
+                  <tr><td>Driver</td></tr>
+                  <tr><td>Security Guard</td></tr>
+                </tbody>
+              </table></div>
+            </div>
+          </div>
+        </div>
+        <!-- ===================== /ADMIN / STAFF SETTINGS ===================== -->
+
 
         <!-- ===================== ADMIN / ACCOUNTS ===================== -->
         <div class="admin-section" data-admin="accounts">
@@ -2232,6 +2702,145 @@ tbody tr:hover{ background: var(--paper); }
   </div>
 </div>
 
+<!-- ============================================================
+     ADD EMPLOYEE MODAL
+     Opened from "Add Employee" on the Staff Dashboard.
+     ============================================================ -->
+<div class="modal-overlay" id="employeeModal" onclick="if(event.target===this) closeEmployeeModal()">
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="employeeModalTitle">
+    <div class="modal-head">
+      <div>
+        <h2 id="employeeModalTitle">Add Employee</h2>
+        <p>Onboard a new employee at Cohort Academy.</p>
+      </div>
+      <button type="button" class="modal-close" onclick="closeEmployeeModal()" aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    <div class="stepper" id="employeeStepper">
+      <div class="step-item active" data-estep-item="1"><span class="dot">1</span><span class="lbl">Personal</span></div>
+      <div class="step-line" data-estep-line="1"></div>
+      <div class="step-item" data-estep-item="2"><span class="dot">2</span><span class="lbl">Employment</span></div>
+      <div class="step-line" data-estep-line="2"></div>
+      <div class="step-item" data-estep-item="3"><span class="dot">3</span><span class="lbl">Academic</span></div>
+      <div class="step-line" data-estep-line="3"></div>
+      <div class="step-item" data-estep-item="4"><span class="dot">4</span><span class="lbl">Salary</span></div>
+      <div class="step-line" data-estep-line="4"></div>
+      <div class="step-item" data-estep-item="5"><span class="dot">5</span><span class="lbl">Documents</span></div>
+    </div>
+
+    <form id="employeeForm" onsubmit="handleEmployeeSubmit(event)" novalidate>
+      <div class="modal-body">
+
+        <div class="success-banner" id="employeeSuccess">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.9-9.1"/><path d="M22 4L12 14.01l-3-3"/></svg>
+          Employee added successfully.
+        </div>
+
+        <!-- STEP 1 — PERSONAL INFORMATION -->
+        <div class="wizard-step active" data-estep="1">
+          <div class="form-section-title first">Personal information</div>
+          <div class="form-grid">
+            <div class="field"><label for="empFullName">Full name</label><input id="empFullName" type="text" placeholder="e.g. Hamna Sheikh" required></div>
+            <div class="field"><label for="empId">Employee ID <span style="color:var(--slate-dim); font-weight:600; text-transform:none; letter-spacing:0;">(auto-generated)</span></label><input id="empId" type="text" readonly></div>
+            <div class="field"><label for="empParentName">Father / spouse name</label><input id="empParentName" type="text" placeholder="e.g. Anwar Sheikh"></div>
+            <div class="field"><label for="empCnic">CNIC</label><input id="empCnic" type="text" placeholder="XXXXX-XXXXXXX-X"></div>
+            <div class="field"><label for="empGender">Gender</label>
+              <select id="empGender" required><option value="">Select…</option><option>Female</option><option>Male</option><option>Other</option></select>
+            </div>
+            <div class="field"><label for="empDob">Date of birth</label><input id="empDob" type="date"></div>
+            <div class="field"><label for="empMobile">Mobile</label><input id="empMobile" type="tel" placeholder="+92 3XX XXX XXXX" required></div>
+            <div class="field"><label for="empEmail">Email</label><input id="empEmail" type="email" placeholder="name@cohortacademy.edu.pk"></div>
+            <div class="field full"><label for="empAddress">Address</label><input id="empAddress" type="text" placeholder="House no., street, area, city"></div>
+            <div class="field full"><label for="empPhoto">Photograph</label><input id="empPhoto" type="file" accept="image/*"></div>
+          </div>
+        </div>
+
+        <!-- STEP 2 — EMPLOYMENT INFORMATION -->
+        <div class="wizard-step" data-estep="2">
+          <div class="form-section-title first">Employment information</div>
+          <div class="form-grid">
+            <div class="field"><label for="empDept">Department</label>
+              <select id="empDept" required>
+                <option value="">Select…</option>
+                <option>Teaching Staff</option><option>Administration</option><option>IT Department</option>
+                <option>Library</option><option>Transport</option><option>Security</option>
+                <option>Maintenance</option><option>Housekeeping</option><option>Cafeteria</option>
+              </select>
+            </div>
+            <div class="field"><label for="empDesignation">Designation</label><input id="empDesignation" type="text" placeholder="e.g. Subject Teacher" required></div>
+            <div class="field"><label for="empSection">Section</label>
+              <select id="empSection"><option>Not applicable</option><option>Primary Wing</option><option>Middle Wing</option><option>Secondary Wing (Matric)</option><option>O Level Wing</option></select>
+            </div>
+            <div class="field"><label for="empCampus">Campus</label><select id="empCampus"><option>Main Campus</option><option>North Campus</option></select></div>
+            <div class="field"><label for="empManager">Reporting manager</label><input id="empManager" type="text" placeholder="e.g. Saima Aziz"></div>
+            <div class="field"><label for="empJoinDate">Joining date</label><input id="empJoinDate" type="date"></div>
+            <div class="field"><label for="empType">Employment type</label>
+              <select id="empType"><option>Permanent</option><option>Contract</option><option>Visiting</option><option>Part-Time</option><option>Daily Wage</option></select>
+            </div>
+            <div class="field"><label for="empStatus">Status</label>
+              <select id="empStatus"><option>Active</option><option>On Leave</option><option>Suspended</option><option>Resigned</option></select>
+            </div>
+            <div class="field"><label for="empShift">Shift</label><select id="empShift"><option>Morning (7:30 AM – 2:30 PM)</option><option>Evening (1:00 PM – 7:00 PM)</option></select></div>
+          </div>
+        </div>
+
+        <!-- STEP 3 — ACADEMIC DETAILS -->
+        <div class="wizard-step" data-estep="3">
+          <div class="form-section-title first">Academic details</div>
+          <div class="form-grid">
+            <div class="field"><label for="empQualification">Highest qualification</label><input id="empQualification" type="text" placeholder="e.g. M.Ed — Education"></div>
+            <div class="field"><label for="empUniversity">University</label><input id="empUniversity" type="text" placeholder="e.g. University of Karachi"></div>
+            <div class="field"><label for="empPassingYear">Passing year</label><input id="empPassingYear" type="text" placeholder="e.g. 2013"></div>
+            <div class="field"><label for="empCerts">Professional certificates</label><input id="empCerts" type="text" placeholder="e.g. Cambridge Teaching Certificate"></div>
+            <div class="field full"><label for="empLicense">Teaching license <span style="color:var(--slate-dim); font-weight:600; text-transform:none; letter-spacing:0;">(if applicable)</span></label><input id="empLicense" type="text" placeholder="License number, if any"></div>
+          </div>
+        </div>
+
+        <!-- STEP 4 — SALARY INFORMATION -->
+        <div class="wizard-step" data-estep="4">
+          <div class="form-section-title first">Salary information</div>
+          <div class="form-grid">
+            <div class="field"><label for="empBasic">Basic salary</label><input id="empBasic" type="text" placeholder="Rs 70,000"></div>
+            <div class="field"><label for="empAllowances">Allowances (general)</label><input id="empAllowances" type="text" placeholder="Rs 0"></div>
+            <div class="field"><label for="empFuel">Fuel allowance</label><input id="empFuel" type="text" placeholder="Rs 0"></div>
+            <div class="field"><label for="empMedical">Medical allowance</label><input id="empMedical" type="text" placeholder="Rs 0"></div>
+            <div class="field"><label for="empHouseRent">House rent allowance</label><input id="empHouseRent" type="text" placeholder="Rs 0"></div>
+            <div class="field"><label for="empBonus">Bonus</label><input id="empBonus" type="text" placeholder="Rs 0"></div>
+            <div class="field"><label for="empDeductions">Deductions</label><input id="empDeductions" type="text" placeholder="Rs 0"></div>
+            <div class="field"><label for="empBankName">Bank name</label><input id="empBankName" type="text" placeholder="e.g. Habib Bank Limited"></div>
+            <div class="field full"><label for="empAccountNo">Account number</label><input id="empAccountNo" type="text" placeholder="XXXX-XXXXXXX-XX"></div>
+          </div>
+        </div>
+
+        <!-- STEP 5 — DOCUMENTS -->
+        <div class="wizard-step" data-estep="5">
+          <div class="form-section-title first">Documents</div>
+          <div class="checklist">
+            <label><input type="checkbox"> CNIC</label>
+            <label><input type="checkbox"> Degrees</label>
+            <label><input type="checkbox"> Experience certificates</label>
+            <label><input type="checkbox"> Police verification</label>
+            <label><input type="checkbox"> Medical certificate</label>
+            <label><input type="checkbox"> Appointment letter</label>
+            <label><input type="checkbox"> Contract</label>
+            <label><input type="checkbox"> Passport-size photo</label>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="modal-foot">
+        <button type="button" class="btn btn-ghost" id="employeeBackBtn" onclick="employeeStep(-1)" style="display:none;">Back</button>
+        <button type="button" class="btn btn-ghost" onclick="closeEmployeeModal()">Cancel</button>
+        <button type="button" class="btn btn-primary accent-admin" id="employeeNextBtn" onclick="employeeStep(1)">Next</button>
+        <button type="submit" class="btn btn-primary accent-admin" id="employeeSubmitBtn" style="display:none;">Add Employee</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <script>
 function showView(name){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
@@ -2324,11 +2933,84 @@ function handleAdmissionSubmit(e){
   setTimeout(closeAdmissionModal, 1800);
 }
 document.addEventListener('keydown', function(e){
-  if(e.key === 'Escape'){ closeAdmissionModal(); }
+  if(e.key === 'Escape'){ closeAdmissionModal(); closeEmployeeModal(); }
 });
+
+/* ---- Add Employee modal (5-step wizard) ---- */
+let employeeCurrentStep = 1;
+const EMPLOYEE_TOTAL_STEPS = 5;
+let nextEmployeeIdSeq = 1201;
+
+function generateEmployeeId(){
+  const id = 'EMP-' + nextEmployeeIdSeq;
+  document.getElementById('empId').value = id;
+  return id;
+}
+function openEmployeeModal(){
+  document.getElementById('employeeModal').classList.add('open');
+  document.getElementById('employeeSuccess').classList.remove('show');
+  document.body.style.overflow = 'hidden';
+  goToEmployeeStep(1);
+  generateEmployeeId();
+}
+function closeEmployeeModal(){
+  const modal = document.getElementById('employeeModal');
+  if(!modal || !modal.classList.contains('open')) return;
+  modal.classList.remove('open');
+  document.body.style.overflow = '';
+  document.getElementById('employeeForm').reset();
+  document.getElementById('employeeSuccess').classList.remove('show');
+  goToEmployeeStep(1);
+}
+function employeeStep(direction){
+  if(direction > 0){
+    const current = document.querySelector('#employeeModal .wizard-step[data-estep="'+employeeCurrentStep+'"]');
+    const requiredFields = current.querySelectorAll('[required]');
+    for(const f of requiredFields){
+      if(!f.value){ f.reportValidity(); return; }
+    }
+  }
+  goToEmployeeStep(employeeCurrentStep + direction);
+}
+function goToEmployeeStep(step){
+  step = Math.max(1, Math.min(EMPLOYEE_TOTAL_STEPS, step));
+  employeeCurrentStep = step;
+
+  document.querySelectorAll('#employeeModal .wizard-step').forEach(s=>{
+    s.classList.toggle('active', Number(s.dataset.estep) === step);
+  });
+  document.querySelectorAll('#employeeModal [data-estep-item]').forEach(el=>{
+    const n = Number(el.dataset.estepItem);
+    el.classList.toggle('active', n === step);
+    el.classList.toggle('done', n < step);
+  });
+  document.querySelectorAll('#employeeModal [data-estep-line]').forEach(el=>{
+    el.classList.toggle('done', Number(el.dataset.estepLine) < step);
+  });
+
+  document.getElementById('employeeBackBtn').style.display = step === 1 ? 'none' : 'inline-flex';
+  document.getElementById('employeeNextBtn').style.display = step === EMPLOYEE_TOTAL_STEPS ? 'none' : 'inline-flex';
+  document.getElementById('employeeSubmitBtn').style.display = step === EMPLOYEE_TOTAL_STEPS ? 'inline-flex' : 'none';
+
+  document.querySelector('#employeeModal .modal-body').scrollTo({top:0, behavior:'smooth'});
+}
+function handleEmployeeSubmit(e){
+  e.preventDefault();
+  const name = document.getElementById('empFullName').value || 'The employee';
+  const dept = document.getElementById('empDept').value || 'their department';
+  const eid = document.getElementById('empId').value;
+  const banner = document.getElementById('employeeSuccess');
+  banner.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.9-9.1"/><path d="M22 4L12 14.01l-3-3"/></svg> Employee added — '+name+' ('+eid+') has been added to '+dept+'.';
+  banner.classList.add('show');
+  nextEmployeeIdSeq++;
+  goToEmployeeStep(1);
+  document.querySelector('#employeeModal .modal-body').scrollTo({top:0, behavior:'smooth'});
+  setTimeout(closeEmployeeModal, 1800);
+}
 
 /* ---- Admin portal: Dashboard / Students / Staff switching ---- */
 const STUDENT_MODULE_SECTIONS = ['students','admission','directory','profile','promotion','tc','withdrawal','charcert','bonafide','reports'];
+const STAFF_MODULE_SECTIONS = ['staffdash','staffdirectory','staffteaching','staffadminstaff','staffsupport','staffprofile','staffattendance','staffleave','staffpayroll','staffperformance','staffdocuments','staffidcards','staffaccounts','staffreports','staffsettings'];
 
 function showAdmin(section, el){
   document.querySelectorAll('#view-admin .admin-section').forEach(s=>s.classList.remove('active'));
@@ -2342,11 +3024,19 @@ function showAdmin(section, el){
     document.getElementById('studentsSubmenu').classList.add('open');
     document.getElementById('studentsMenuToggle').classList.add('open');
   }
+  if(STAFF_MODULE_SECTIONS.includes(section) || el && el.dataset.adminNav && el.dataset.adminNav.startsWith('staff')){
+    document.getElementById('staffSubmenu').classList.add('open');
+    document.getElementById('staffMenuToggle').classList.add('open');
+  }
   document.querySelector('#view-admin .content').scrollTo({top:0, behavior:'instant'});
 }
 function toggleStudentsMenu(){
   document.getElementById('studentsSubmenu').classList.toggle('open');
   document.getElementById('studentsMenuToggle').classList.toggle('open');
+}
+function toggleStaffMenu(){
+  document.getElementById('staffSubmenu').classList.toggle('open');
+  document.getElementById('staffMenuToggle').classList.toggle('open');
 }
 function showAtab(section, name, el){
   const card = el.closest('.card');
@@ -2375,6 +3065,31 @@ function switchWing(wing, el){
   document.querySelectorAll('#wingRow .wing-pill').forEach(p=>p.classList.remove('active'));
   el.classList.add('active');
 }
+const SUPPORT_STAFF_CATEGORIES = ['it','library','transport','security','maintenance','housekeeping','cafeteria'];
+function filterStaffDirectory(category, el){
+  document.querySelectorAll('#staffDirectoryTable tr[data-cat]').forEach(r=>{
+    const cat = r.dataset.cat;
+    let show = (category === 'all') || (cat === category);
+    if(category === 'support' && SUPPORT_STAFF_CATEGORIES.includes(cat)) show = true;
+    r.style.display = show ? '' : 'none';
+  });
+  if(el){
+    document.querySelectorAll('#staffCategoryPills .wing-pill').forEach(p=>p.classList.remove('active'));
+    el.classList.add('active');
+  }
+}
+
+/* ---- Employee Profile page ---- */
+function showEmpTab(name, el){
+  document.querySelectorAll('#etab-personal, #etab-employment, #etab-salary, #etab-attendance, #etab-performance').forEach(p=>p.classList.remove('active'));
+  document.getElementById('etab-'+name).classList.add('active');
+  document.querySelectorAll('#employeeTabs .profile-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+}
+function loadEmployeeProfile(){
+  document.getElementById('employeeResult').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
 function filterWingTable(tableId, grade, el){
   document.querySelectorAll('#'+tableId+' tr[data-grade]').forEach(r=>{
     r.style.display = (grade === 'all' || r.dataset.grade === grade) ? '' : 'none';
