@@ -121,30 +121,30 @@ button:focus-visible, a:focus-visible, input:focus-visible, .navlink:focus-visib
 .shell{ display:flex; min-height: calc(100vh - 45px); }
 
 .sidebar{
-  width:248px; flex-shrink:0;
+  width:162px; flex-shrink:0;
   background: var(--ink);
   color:#fff;
-  padding:22px 14px;
-  display:flex; flex-direction:column; gap:22px;
+  padding:20px 10px;
+  display:flex; flex-direction:column; gap:20px;
   position:sticky; top:45px; height:calc(100vh - 45px);
 }
 .sidebar .id-ribbon{
-  height:4px; border-radius:4px; margin:-22px -14px 0;
+  height:4px; border-radius:4px; margin:-20px -10px 0;
 }
-.sidebar .lockup{ display:flex; align-items:center; gap:10px; padding:0 6px;}
-.sidebar .lockup .mark{ width:30px; height:30px; border-radius:8px; flex-shrink:0; }
-.sidebar .lockup .name{ font-family:var(--font-display); font-weight:600; font-size:18px; }
-.sidebar .lockup .role{ font-size:11px; color:#9AA3BC; text-transform:uppercase; letter-spacing:.06em; }
+.sidebar .lockup{ display:flex; align-items:center; gap:8px; padding:0 4px;}
+.sidebar .lockup .mark{ width:26px; height:26px; border-radius:7px; flex-shrink:0; }
+.sidebar .lockup .name{ font-family:var(--font-display); font-weight:600; font-size:16px; }
+.sidebar .lockup .role{ font-size:10px; color:#9AA3BC; text-transform:uppercase; letter-spacing:.06em; }
 
 .nav-group{ display:flex; flex-direction:column; gap:2px; }
-.nav-label{ font-size:11px; color:#7C86A3; text-transform:uppercase; letter-spacing:.08em; padding:10px 12px 6px; }
+.nav-label{ font-size:10px; color:#7C86A3; text-transform:uppercase; letter-spacing:.07em; padding:9px 8px 5px; }
 .navlink{
-  display:flex; align-items:center; gap:11px;
-  padding:10px 12px; border-radius:10px;
-  color:#C6CCE0; font-size:14px; font-weight:500;
+  display:flex; align-items:center; gap:8px;
+  padding:9px 8px; border-radius:9px;
+  color:#C6CCE0; font-size:12.5px; font-weight:500;
   transition: background .15s, color .15s;
 }
-.navlink svg{ width:18px; height:18px; flex-shrink:0; opacity:.85; }
+.navlink svg{ width:16px; height:16px; flex-shrink:0; opacity:.85; }
 .navlink:hover{ background: rgba(255,255,255,0.06); color:#fff; }
 .navlink.current{ background: rgba(255,255,255,0.1); color:#fff; }
 .navlink.current.accent-admin{ background: var(--amber); color: var(--ink); font-weight:700;}
@@ -153,11 +153,11 @@ button:focus-visible, a:focus-visible, input:focus-visible, .navlink:focus-visib
 
 /* ---- Collapsible sidebar submenu (Students module) ---- */
 .nav-parent{ cursor:pointer; }
-.nav-parent .chev{ width:14px; height:14px; flex-shrink:0; transition:transform .18s; }
+.nav-parent .chev{ width:13px; height:13px; flex-shrink:0; transition:transform .18s; }
 .nav-parent.open .chev{ transform:rotate(90deg); }
 .nav-submenu{ max-height:0; overflow:hidden; transition:max-height .2s ease; display:flex; flex-direction:column; gap:1px; }
 .nav-submenu.open{ max-height:400px; }
-.navlink.sub{ padding-left:38px; font-size:13px; }
+.navlink.sub{ padding-left:22px; font-size:11.5px; }
 .navlink.sub.current{ background: rgba(255,255,255,0.1); color:#fff; font-weight:700; }
 .navlink.sub.current.accent-admin{ background: var(--amber); color: var(--ink); }
 
@@ -257,7 +257,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, .navlink:focus-visib
 .icon-btn svg{ width:17px; height:17px; color:var(--slate); }
 .icon-btn .dot{ position:absolute; top:7px; right:7px; width:7px; height:7px; border-radius:50%; background:var(--danger); border:1.5px solid #fff;}
 
-.content{ padding:28px; max-width:1360px; }
+.content{ padding:28px 28px 28px 32px; max-width:1360px; }
 
 .page-head{ display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:24px; gap:16px; flex-wrap:wrap;}
 .page-head h1{ font-family:var(--font-display); font-weight:500; font-size:26px; }
@@ -570,7 +570,7 @@ tbody tr:hover{ background: var(--paper); }
   .sidebar{ position:fixed; left:0; top:45px; z-index:40; transform:translateX(-100%); transition:transform .2s; box-shadow:var(--shadow-pop); }
   .sidebar.open{ transform:translateX(0); }
   .search{ display:none; }
-  .content{ padding:18px 16px; }
+  .content{ padding:18px 16px 18px 18px; }
   .page-head{ align-items:flex-start; }
   .mobile-topbar{ display:flex; }
   .grid-2{ grid-template-columns:1fr; }
@@ -1860,29 +1860,50 @@ tbody tr:hover{ background: var(--paper); }
                   <tr data-cat="teaching"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--info-tint);color:var(--info);">HS</div><div class="meta"><div class="n">Hamna Sheikh</div><div class="s">EMP-T5521</div></div></div></td><td>Chemistry Teacher</td><td>O Level Teacher</td><td>+92 303 900 4455</td><td><span class="pill pill-success">Active</span></td></tr>
                   <tr data-cat="teaching"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--success-tint);color:var(--success);">WA</div><div class="meta"><div class="n">Waqas Ahmed</div><div class="s">EMP-T5522</div></div></div></td><td>PT Instructor</td><td>Subject Specialist</td><td>+92 304 900 5566</td><td><span class="pill pill-success">Active</span></td></tr>
                   <tr data-cat="teaching"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--teal-tint);color:var(--teal);">NK</div><div class="meta"><div class="n">Nida Kamal</div><div class="s">EMP-T5523</div></div></div></td><td>Computer Teacher</td><td>Subject Specialist</td><td>+92 305 900 6677</td><td><span class="pill pill-success">Active</span></td></tr>
+                  <tr data-cat="teaching"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--amber-tint);color:var(--amber-ink);">RS</div><div class="meta"><div class="n">Rabia Sultan</div><div class="s">EMP-T5524</div></div></div></td><td>Art Teacher</td><td>Subject Specialist</td><td>+92 305 900 6688</td><td><span class="pill pill-success">Active</span></td></tr>
+                  <tr data-cat="teaching"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--info-tint);color:var(--info);">YI</div><div class="meta"><div class="n">Yusuf Ibrahim</div><div class="s">EMP-T5525</div></div></div></td><td>Music Teacher</td><td>Subject Specialist</td><td>+92 305 900 6699</td><td><span class="pill pill-success">Active</span></td></tr>
+                  <tr data-cat="teaching"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--success-tint);color:var(--success);">AR</div><div class="meta"><div class="n">Abdul Rehman</div><div class="s">EMP-T5526</div></div></div></td><td>Islamic Studies Teacher</td><td>Subject Specialist</td><td>+92 305 900 6700</td><td><span class="pill pill-success">Active</span></td></tr>
 
                   <tr data-cat="administration"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--info-tint);color:var(--info);">KJ</div><div class="meta"><div class="n">Kamran Javed</div><div class="s">EMP-A1120</div></div></div></td><td>Accountant</td><td>—</td><td>+92 303 900 4455</td><td><span class="pill pill-success">Active</span></td></tr>
                   <tr data-cat="administration"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--info-tint);color:var(--info);">FI</div><div class="meta"><div class="n">Farah Iqbal</div><div class="s">EMP-A1121</div></div></div></td><td>HR Officer</td><td>—</td><td>+92 303 900 4488</td><td><span class="pill pill-success">Active</span></td></tr>
                   <tr data-cat="administration"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--info-tint);color:var(--info);">IS</div><div class="meta"><div class="n">Imran Sheikh</div><div class="s">EMP-A1122</div></div></div></td><td>Admission Officer</td><td>—</td><td>+92 303 900 4499</td><td><span class="pill pill-success">Active</span></td></tr>
+                  <tr data-cat="administration"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--info-tint);color:var(--info);">NA</div><div class="meta"><div class="n">Nasreen Akhtar</div><div class="s">EMP-A1123</div></div></div></td><td>Examination Officer</td><td>—</td><td>+92 303 900 4500</td><td><span class="pill pill-success">Active</span></td></tr>
+                  <tr data-cat="administration"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--plum-tint);color:var(--plum);">MT</div><div class="meta"><div class="n">Mahwish Tariq</div><div class="s">EMP-A1124</div></div></div></td><td>Receptionist</td><td>—</td><td>+92 303 900 4511</td><td><span class="pill pill-success">Active</span></td></tr>
+                  <tr data-cat="administration"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--amber-tint);color:var(--amber-ink);">SM</div><div class="meta"><div class="n">Shahid Mehmood</div><div class="s">EMP-A1125</div></div></div></td><td>Clerk</td><td>—</td><td>+92 303 900 4522</td><td><span class="pill pill-success">Active</span></td></tr>
+                  <tr data-cat="administration"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--teal-tint);color:var(--teal);">RA</div><div class="meta"><div class="n">Rizwan Ahmed</div><div class="s">EMP-A1126</div></div></div></td><td>Office Assistant</td><td>—</td><td>+92 303 900 4533</td><td><span class="pill pill-success">Active</span></td></tr>
 
                   <tr data-cat="it"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--plum-tint);color:var(--plum);">TM</div><div class="meta"><div class="n">Tariq Mehmood</div><div class="s">EMP-IT301</div></div></div></td><td>IT Manager</td><td>—</td><td>+92 306 900 7788</td><td><span class="pill pill-success">Active</span></td></tr>
                   <tr data-cat="it"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--plum-tint);color:var(--plum);">OA</div><div class="meta"><div class="n">Ovais Anwar</div><div class="s">EMP-IT302</div></div></div></td><td>Network Administrator</td><td>—</td><td>+92 306 900 7799</td><td><span class="pill pill-success">Active</span></td></tr>
+                  <tr data-cat="it"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--amber-tint);color:var(--amber-ink);">DI</div><div class="meta"><div class="n">Danish Iqbal</div><div class="s">EMP-IT303</div></div></div></td><td>Software Operator</td><td>—</td><td>+92 306 900 7810</td><td><span class="pill pill-success">Active</span></td></tr>
+                  <tr data-cat="it"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--success-tint);color:var(--success);">UH</div><div class="meta"><div class="n">Uzma Hanif</div><div class="s">EMP-IT304</div></div></div></td><td>Lab Assistant</td><td>—</td><td>+92 306 900 7821</td><td><span class="pill pill-success">Active</span></td></tr>
 
                   <tr data-cat="library"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--amber-tint);color:var(--amber-ink);">SP</div><div class="meta"><div class="n">Shazia Parveen</div><div class="s">EMP-L401</div></div></div></td><td>Librarian</td><td>—</td><td>+92 307 900 8811</td><td><span class="pill pill-success">Active</span></td></tr>
+                  <tr data-cat="library"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--info-tint);color:var(--info);">FY</div><div class="meta"><div class="n">Farzana Yousuf</div><div class="s">EMP-L402</div></div></div></td><td>Assistant Librarian</td><td>—</td><td>+92 307 900 8822</td><td><span class="pill pill-success">Active</span></td></tr>
 
                   <tr data-cat="transport"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--success-tint);color:var(--success);">IM</div><div class="meta"><div class="n">Iqbal Masih</div><div class="s">EMP-TR501</div></div></div></td><td>Driver</td><td>Route 4 — Gulshan</td><td>+92 300 900 1234</td><td><span class="pill pill-success">Active</span></td></tr>
+                  <tr data-cat="transport"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--plum-tint);color:var(--plum);">AP</div><div class="meta"><div class="n">Aslam Pervez</div><div class="s">EMP-TR502</div></div></div></td><td>Transport Manager</td><td>—</td><td>+92 300 900 1245</td><td><span class="pill pill-success">Active</span></td></tr>
+                  <tr data-cat="transport"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--teal-tint);color:var(--teal);">GN</div><div class="meta"><div class="n">Ghulam Nabi</div><div class="s">EMP-TR503</div></div></div></td><td>Helper</td><td>Route 4 — Gulshan</td><td>+92 300 900 1256</td><td><span class="pill pill-success">Active</span></td></tr>
 
                   <tr data-cat="security"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--danger-tint);color:var(--danger);">NA</div><div class="meta"><div class="n">Naveed Aslam</div><div class="s">EMP-SC601</div></div></div></td><td>Security Supervisor</td><td>—</td><td>+92 308 900 9911</td><td><span class="pill pill-success">Active</span></td></tr>
+                  <tr data-cat="security"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--danger-tint);color:var(--danger);">MH</div><div class="meta"><div class="n">Manzoor Hussain</div><div class="s">EMP-SC602</div></div></div></td><td>Guard</td><td>Main Gate</td><td>+92 308 900 9922</td><td><span class="pill pill-success">Active</span></td></tr>
 
                   <tr data-cat="maintenance"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--warn-tint);color:var(--amber-ink);">RA</div><div class="meta"><div class="n">Rashid Ali</div><div class="s">EMP-M701</div></div></div></td><td>Electrician</td><td>—</td><td>+92 309 900 1010</td><td><span class="pill pill-success">Active</span></td></tr>
+                  <tr data-cat="maintenance"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--warn-tint);color:var(--amber-ink);">SK</div><div class="meta"><div class="n">Sher Khan</div><div class="s">EMP-M702</div></div></div></td><td>Plumber</td><td>—</td><td>+92 309 900 1021</td><td><span class="pill pill-success">Active</span></td></tr>
+                  <tr data-cat="maintenance"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--info-tint);color:var(--info);">YB</div><div class="meta"><div class="n">Younis Baig</div><div class="s">EMP-M703</div></div></div></td><td>Carpenter</td><td>—</td><td>+92 309 900 1032</td><td><span class="pill pill-success">Active</span></td></tr>
+                  <tr data-cat="maintenance"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--success-tint);color:var(--success);">FK</div><div class="meta"><div class="n">Faisal Karim</div><div class="s">EMP-M704</div></div></div></td><td>Technician</td><td>—</td><td>+92 309 900 1043</td><td><span class="pill pill-success">Active</span></td></tr>
 
                   <tr data-cat="housekeeping"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--teal-tint);color:var(--teal);">BB</div><div class="meta"><div class="n">Bushra Bibi</div><div class="s">EMP-H801</div></div></div></td><td>Aya</td><td>—</td><td>+92 310 900 1111</td><td><span class="pill pill-success">Active</span></td></tr>
+                  <tr data-cat="housekeeping"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--teal-tint);color:var(--teal);">RB</div><div class="meta"><div class="n">Rukhsana Bibi</div><div class="s">EMP-H802</div></div></div></td><td>Cleaner</td><td>—</td><td>+92 310 900 1122</td><td><span class="pill pill-success">Active</span></td></tr>
+                  <tr data-cat="housekeeping"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--amber-tint);color:var(--amber-ink);">AA</div><div class="meta"><div class="n">Akram Ali</div><div class="s">EMP-H803</div></div></div></td><td>Peon</td><td>—</td><td>+92 310 900 1133</td><td><span class="pill pill-success">Active</span></td></tr>
+                  <tr data-cat="housekeeping"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--info-tint);color:var(--info);">NH</div><div class="meta"><div class="n">Nasir Hussain</div><div class="s">EMP-H804</div></div></div></td><td>Office Boy</td><td>—</td><td>+92 310 900 1144</td><td><span class="pill pill-success">Active</span></td></tr>
 
                   <tr data-cat="cafeteria"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--info-tint);color:var(--info);">ZI</div><div class="meta"><div class="n">Zafar Iqbal</div><div class="s">EMP-C901</div></div></div></td><td>Cook</td><td>—</td><td>+92 311 900 1212</td><td><span class="pill pill-success">Active</span></td></tr>
+                  <tr data-cat="cafeteria"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--plum-tint);color:var(--plum);">SY</div><div class="meta"><div class="n">Salman Yousuf</div><div class="s">EMP-C902</div></div></div></td><td>Manager</td><td>—</td><td>+92 311 900 1223</td><td><span class="pill pill-success">Active</span></td></tr>
+                  <tr data-cat="cafeteria"><td><div class="cell-person"><div class="avatar" style="width:30px;height:30px;font-size:11px;background:var(--success-tint);color:var(--success);">RB</div><div class="meta"><div class="n">Rehmat Bibi</div><div class="s">EMP-C903</div></div></div></td><td>Helper</td><td>—</td><td>+92 311 900 1234</td><td><span class="pill pill-success">Active</span></td></tr>
                 </tbody>
               </table>
             </div>
-            <div class="table-foot"><span>Showing 21 of 142 employees</span></div>
+            <div class="table-foot"><span>Showing 42 of 142 employees</span></div>
           </div>
         </div>
         <!-- ===================== /ADMIN / EMPLOYEE DIRECTORY ===================== -->
@@ -1976,16 +1997,52 @@ tbody tr:hover{ background: var(--paper); }
                   <tr><td>Shift</td><td>Morning (7:30 AM – 2:30 PM)</td></tr>
                 </tbody></table></div>
 
-                <div class="subhead">Documents</div>
+                <div class="subhead">Teaching details <span style="color:var(--slate-dim); font-weight:600; text-transform:none; letter-spacing:0;">(teaching staff only)</span></div>
                 <div class="table-wrap"><table class="detail-table"><tbody>
-                  <tr><td>CNIC</td><td><span class="pill pill-success">Submitted</span></td></tr>
-                  <tr><td>Degrees</td><td><span class="pill pill-success">Submitted</span></td></tr>
-                  <tr><td>Experience certificates</td><td><span class="pill pill-success">Submitted</span></td></tr>
-                  <tr><td>Police verification</td><td><span class="pill pill-success">Submitted</span></td></tr>
-                  <tr><td>Medical certificate</td><td><span class="pill pill-success">Submitted</span></td></tr>
-                  <tr><td>Appointment letter</td><td><span class="pill pill-success">Submitted</span></td></tr>
-                  <tr><td>Contract</td><td><span class="pill pill-success">Submitted</span></td></tr>
+                  <tr><td>Subjects</td><td>English</td></tr>
+                  <tr><td>Assigned classes</td><td>Grade 8A, Grade 8B</td></tr>
+                  <tr><td>Assigned sections</td><td>A, B</td></tr>
+                  <tr><td>Class teacher</td><td>Grade 8B</td></tr>
+                  <tr><td>Timetable</td><td>Mon–Fri · 6 periods/day</td></tr>
+                  <tr><td>Periods</td><td>28 periods / week</td></tr>
+                  <tr><td>Weekly load</td><td>28 periods</td></tr>
+                  <tr><td>Examination duties</td><td>Mid-Term Invigilator — Grade 9</td></tr>
+                  <tr><td>Result entry</td><td><span class="pill pill-success">Term 2 — Submitted</span></td></tr>
+                  <tr><td>Homework</td><td>3 assignments posted this week</td></tr>
                 </tbody></table></div>
+
+                <div class="subhead">Academic details</div>
+                <div class="table-wrap"><table class="detail-table"><tbody>
+                  <tr><td>Highest qualification</td><td>M.Ed — Education</td></tr>
+                  <tr><td>University</td><td>University of Karachi</td></tr>
+                  <tr><td>Passing year</td><td>2016</td></tr>
+                  <tr><td>Professional certificates</td><td>Cambridge PDQ, TEFL Certified</td></tr>
+                  <tr><td>Teaching license (if applicable)</td><td>PTC License — Sindh Board</td></tr>
+                </tbody></table></div>
+
+                <div class="subhead">Experience</div>
+                <div class="table-wrap"><table>
+                  <thead><tr><th>Organization</th><th>Designation</th><th>Duration</th></tr></thead>
+                  <tbody>
+                    <tr><td>Cohort Academy</td><td>Class Teacher</td><td>Aug 2018 – Present</td></tr>
+                    <tr><td>Bright Future School</td><td>Subject Teacher</td><td>Jun 2014 – Jul 2018</td></tr>
+                  </tbody>
+                </table></div>
+
+                <div class="subhead">Documents <span style="color:var(--slate-dim); font-weight:600; text-transform:none; letter-spacing:0;">(upload / replace)</span></div>
+                <div class="table-wrap"><table>
+                  <thead><tr><th>Document</th><th>Status</th><th></th></tr></thead>
+                  <tbody>
+                    <tr><td>CNIC</td><td><span class="pill pill-success">Submitted</span></td><td><button type="button" class="btn btn-ghost btn-sm">Replace</button></td></tr>
+                    <tr><td>Degrees</td><td><span class="pill pill-success">Submitted</span></td><td><button type="button" class="btn btn-ghost btn-sm">Replace</button></td></tr>
+                    <tr><td>Experience certificates</td><td><span class="pill pill-success">Submitted</span></td><td><button type="button" class="btn btn-ghost btn-sm">Replace</button></td></tr>
+                    <tr><td>Police verification</td><td><span class="pill pill-success">Submitted</span></td><td><button type="button" class="btn btn-ghost btn-sm">Replace</button></td></tr>
+                    <tr><td>Medical certificate</td><td><span class="pill pill-success">Submitted</span></td><td><button type="button" class="btn btn-ghost btn-sm">Replace</button></td></tr>
+                    <tr><td>Appointment letter</td><td><span class="pill pill-success">Submitted</span></td><td><button type="button" class="btn btn-ghost btn-sm">Replace</button></td></tr>
+                    <tr><td>Contract</td><td><span class="pill pill-success">Submitted</span></td><td><button type="button" class="btn btn-ghost btn-sm">Replace</button></td></tr>
+                    <tr><td>Passport-size photo</td><td><span class="pill pill-warn">Not uploaded</span></td><td><button type="button" class="btn btn-ghost btn-sm">Upload</button></td></tr>
+                  </tbody>
+                </table></div>
 
                 <div class="subhead">Login permissions</div>
                 <div class="table-wrap"><table class="detail-table"><tbody>
@@ -2007,14 +2064,17 @@ tbody tr:hover{ background: var(--paper); }
 
               <!-- PAGE 3 — SALARY & PAYROLL -->
               <div class="profile-panel" id="etab-salary">
-                <div class="subhead">Salary structure</div>
+                <div class="subhead">Salary information</div>
                 <div class="table-wrap"><table class="detail-table"><tbody>
                   <tr><td>Basic salary</td><td style="font-family:var(--font-mono);">Rs 70,000</td></tr>
-                  <tr><td>House rent allowance</td><td style="font-family:var(--font-mono);">Rs 15,000</td></tr>
+                  <tr><td>Allowances</td><td style="font-family:var(--font-mono);">Rs 25,000</td></tr>
                   <tr><td>Fuel allowance</td><td style="font-family:var(--font-mono);">Rs 6,000</td></tr>
-                  <tr><td>Medical allowance</td><td style="font-family:var(--font-mono);">Rs 4,000</td></tr>
+                  <tr><td>Medical</td><td style="font-family:var(--font-mono);">Rs 4,000</td></tr>
+                  <tr><td>House rent</td><td style="font-family:var(--font-mono);">Rs 15,000</td></tr>
                   <tr><td>Bonus</td><td style="font-family:var(--font-mono);">Rs 0</td></tr>
                   <tr><td>Deductions</td><td style="font-family:var(--font-mono);">Rs 0</td></tr>
+                  <tr><td>Bank name</td><td>Habib Bank Limited</td></tr>
+                  <tr><td>Account number</td><td style="font-family:var(--font-mono);">0122-7890123-01</td></tr>
                   <tr><td>Net salary / month</td><td style="font-family:var(--font-mono); font-weight:700;">Rs 95,000</td></tr>
                 </tbody></table></div>
 
@@ -2026,12 +2086,6 @@ tbody tr:hover{ background: var(--paper); }
                     <tr><td>May 2026</td><td style="font-family:var(--font-mono);">Rs 95,000</td><td>1 Jun</td><td><span class="pill pill-success">Paid</span></td></tr>
                   </tbody>
                 </table></div>
-
-                <div class="subhead">Bank details</div>
-                <div class="table-wrap"><table class="detail-table"><tbody>
-                  <tr><td>Bank name</td><td>Habib Bank Limited</td></tr>
-                  <tr><td>Account number</td><td style="font-family:var(--font-mono);">0122-7890123-01</td></tr>
-                </tbody></table></div>
               </div>
 
               <!-- PAGE 4 — ATTENDANCE & LEAVE -->
@@ -2083,6 +2137,15 @@ tbody tr:hover{ background: var(--paper); }
         <!-- ===================== ADMIN / STAFF ATTENDANCE ===================== -->
         <div class="admin-section" data-admin="staffattendance">
           <div class="page-head"><div><h1>Staff Attendance</h1><p>Daily attendance across all departments.</p></div></div>
+
+          <div class="wing-row">
+            <span class="wing-pill active" style="cursor:default;">Manual Attendance</span>
+            <span class="wing-pill active" style="cursor:default;">Biometric Integration</span>
+            <span class="wing-pill active" style="cursor:default;">QR Code Check-in</span>
+            <span class="wing-pill active" style="cursor:default;">RFID Cards</span>
+            <span class="wing-pill" style="cursor:default;">Mobile Attendance · optional</span>
+          </div>
+
           <div class="card">
             <div class="card-pad" style="padding-bottom:0;">
               <div class="toolbar">
@@ -2090,18 +2153,23 @@ tbody tr:hover{ background: var(--paper); }
                 <div class="mini-tabs" style="margin-left:auto;">
                   <button class="mini-tab active">All</button>
                   <button class="mini-tab">Present</button>
+                  <button class="mini-tab">Late</button>
+                  <button class="mini-tab">Half day</button>
+                  <button class="mini-tab">Leave</button>
                   <button class="mini-tab">Absent</button>
-                  <button class="mini-tab">On leave</button>
                 </div>
               </div>
             </div>
             <div class="table-wrap"><table>
-              <thead><tr><th>Employee</th><th>Department</th><th>Time in</th><th>Time out</th><th>Status</th></tr></thead>
+              <thead><tr><th>Employee</th><th>Department</th><th>Check-in method</th><th>Time in</th><th>Time out</th><th>Status</th></tr></thead>
               <tbody>
-                <tr><td>Mehreen Farooq</td><td>Teaching Staff</td><td>7:26 AM</td><td>2:31 PM</td><td><span class="pill pill-success">Present</span></td></tr>
-                <tr><td>Sadia Bano</td><td>Teaching Staff</td><td>—</td><td>—</td><td><span class="pill pill-warn">On leave</span></td></tr>
-                <tr><td>Kamran Javed</td><td>Administration</td><td>8:58 AM</td><td>4:32 PM</td><td><span class="pill pill-success">Present</span></td></tr>
-                <tr><td>Iqbal Masih</td><td>Transport</td><td>6:40 AM</td><td>3:15 PM</td><td><span class="pill pill-success">Present</span></td></tr>
+                <tr><td>Mehreen Farooq</td><td>Teaching Staff</td><td>Biometric</td><td>7:26 AM</td><td>2:31 PM</td><td><span class="pill pill-success">Present</span></td></tr>
+                <tr><td>Asad Raza</td><td>Teaching Staff</td><td>RFID Card</td><td>7:52 AM</td><td>2:29 PM</td><td><span class="pill pill-warn">Late</span></td></tr>
+                <tr><td>Sadia Bano</td><td>Teaching Staff</td><td>—</td><td>—</td><td>—</td><td><span class="pill pill-info">Leave</span></td></tr>
+                <tr><td>Kamran Javed</td><td>Administration</td><td>QR Code</td><td>8:58 AM</td><td>4:32 PM</td><td><span class="pill pill-success">Present</span></td></tr>
+                <tr><td>Farah Iqbal</td><td>Administration</td><td>Manual</td><td>9:05 AM</td><td>1:10 PM</td><td><span class="pill pill-neutral">Half Day</span></td></tr>
+                <tr><td>Iqbal Masih</td><td>Transport</td><td>Manual</td><td>6:40 AM</td><td>3:15 PM</td><td><span class="pill pill-success">Present</span></td></tr>
+                <tr><td>Naveed Aslam</td><td>Security</td><td>—</td><td>—</td><td>—</td><td><span class="pill pill-danger">Absent</span></td></tr>
               </tbody>
             </table></div>
           </div>
@@ -2111,18 +2179,45 @@ tbody tr:hover{ background: var(--paper); }
         <!-- ===================== ADMIN / LEAVE MANAGEMENT ===================== -->
         <div class="admin-section" data-admin="staffleave">
           <div class="page-head"><div><h1>Leave Management</h1><p>Review and approve staff leave requests.</p></div><button class="btn btn-primary accent-admin">+ Apply Leave</button></div>
+
           <div class="grid grid-3" style="margin-bottom:18px;">
             <div class="card stat-card compact"><div class="stat-icon" style="background:var(--warn-tint);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber-ink)" stroke-width="2"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg></div><div class="txt"><div class="stat-value">6</div><div class="stat-label">Pending requests</div></div></div>
             <div class="card stat-card compact"><div class="stat-icon" style="background:var(--success-tint);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></div><div class="txt"><div class="stat-value">14</div><div class="stat-label">Approved this month</div></div></div>
             <div class="card stat-card compact"><div class="stat-icon" style="background:var(--info-tint);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--info)" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div><div class="txt"><div class="stat-value">5</div><div class="stat-label">On leave today</div></div></div>
           </div>
+
+          <div class="card card-pad" style="margin-bottom:18px;">
+            <div class="subhead first">Leave types</div>
+            <div class="component-demo" style="padding:0; border:none; box-shadow:none;">
+              <span class="pill pill-info">Casual Leave</span>
+              <span class="pill pill-info">Sick Leave</span>
+              <span class="pill pill-info">Annual Leave</span>
+              <span class="pill pill-info">Maternity Leave</span>
+              <span class="pill pill-info">Paternity Leave</span>
+              <span class="pill pill-info">Emergency Leave</span>
+              <span class="pill pill-info">Without Pay</span>
+            </div>
+            <div class="subhead">Approval flow</div>
+            <div style="display:flex; align-items:center; gap:0; flex-wrap:wrap;">
+              <span class="pill pill-neutral" style="padding:8px 14px;">Employee</span>
+              <span style="color:var(--slate-dim); padding:0 8px;">→</span>
+              <span class="pill pill-neutral" style="padding:8px 14px;">Department Head</span>
+              <span style="color:var(--slate-dim); padding:0 8px;">→</span>
+              <span class="pill pill-neutral" style="padding:8px 14px;">HR</span>
+              <span style="color:var(--slate-dim); padding:0 8px;">→</span>
+              <span class="pill pill-success" style="padding:8px 14px;">Principal</span>
+            </div>
+          </div>
+
           <div class="card">
             <div class="table-wrap"><table>
-              <thead><tr><th>Employee</th><th>Leave type</th><th>From</th><th>To</th><th>Days</th><th>Status</th></tr></thead>
+              <thead><tr><th>Employee</th><th>Leave type</th><th>From</th><th>To</th><th>Days</th><th>Current stage</th><th>Status</th></tr></thead>
               <tbody>
-                <tr><td>Sadia Bano</td><td>Sick leave</td><td>7 Jul</td><td>9 Jul</td><td>3</td><td><span class="pill pill-warn">Pending</span></td></tr>
-                <tr><td>Naveed Aslam</td><td>Casual leave</td><td>10 Jul</td><td>10 Jul</td><td>1</td><td><span class="pill pill-success">Approved</span></td></tr>
-                <tr><td>Farah Iqbal</td><td>Annual leave</td><td>15 Jul</td><td>19 Jul</td><td>5</td><td><span class="pill pill-warn">Pending</span></td></tr>
+                <tr><td>Sadia Bano</td><td>Sick Leave</td><td>7 Jul</td><td>9 Jul</td><td>3</td><td>Department Head</td><td><span class="pill pill-warn">Pending</span></td></tr>
+                <tr><td>Naveed Aslam</td><td>Casual Leave</td><td>10 Jul</td><td>10 Jul</td><td>1</td><td>Principal</td><td><span class="pill pill-success">Approved</span></td></tr>
+                <tr><td>Farah Iqbal</td><td>Annual Leave</td><td>15 Jul</td><td>19 Jul</td><td>5</td><td>HR</td><td><span class="pill pill-warn">Pending</span></td></tr>
+                <tr><td>Rabia Sultan</td><td>Maternity Leave</td><td>1 Aug</td><td>25 Oct</td><td>90</td><td>Principal</td><td><span class="pill pill-success">Approved</span></td></tr>
+                <tr><td>Danish Iqbal</td><td>Without Pay</td><td>20 Jul</td><td>22 Jul</td><td>3</td><td>Department Head</td><td><span class="pill pill-warn">Pending</span></td></tr>
               </tbody>
             </table></div>
           </div>
@@ -2131,20 +2226,63 @@ tbody tr:hover{ background: var(--paper); }
 
         <!-- ===================== ADMIN / STAFF PAYROLL ===================== -->
         <div class="admin-section" data-admin="staffpayroll">
-          <div class="page-head"><div><h1>Payroll</h1><p>Monthly payroll run across all departments.</p></div><button class="btn btn-primary accent-admin">Run Payroll</button></div>
+          <div class="page-head"><div><h1>Payroll</h1><p>Monthly salary slips, advances, loans, bonuses &amp; increments.</p></div><button class="btn btn-primary accent-admin">Run Payroll</button></div>
+
           <div class="grid grid-3" style="margin-bottom:18px;">
             <div class="card stat-card compact"><div class="stat-icon" style="background:var(--warn-tint);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber-ink)" stroke-width="2"><path d="M2 7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7z"/><circle cx="12" cy="12" r="3"/></svg></div><div class="txt"><div class="stat-value">Rs 12.6M</div><div class="stat-label">Total payroll — July</div></div></div>
             <div class="card stat-card compact"><div class="stat-icon" style="background:var(--success-tint);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></div><div class="txt"><div class="stat-value">128</div><div class="stat-label">Processed</div></div></div>
             <div class="card stat-card compact"><div class="stat-icon" style="background:var(--danger-tint);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--danger)" stroke-width="2"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg></div><div class="txt"><div class="stat-value">14</div><div class="stat-label">Pending</div></div></div>
           </div>
+
           <div class="card">
-            <div class="table-wrap"><table>
-              <thead><tr><th>Employee</th><th>Basic</th><th>Allowances</th><th>Deductions</th><th>Net salary</th><th>Status</th></tr></thead>
-              <tbody>
-                <tr><td>Mehreen Farooq</td><td style="font-family:var(--font-mono);">Rs 70,000</td><td style="font-family:var(--font-mono);">Rs 25,000</td><td style="font-family:var(--font-mono);">Rs 0</td><td style="font-family:var(--font-mono); font-weight:700;">Rs 95,000</td><td><span class="pill pill-success">Paid</span></td></tr>
-                <tr><td>Kamran Javed</td><td style="font-family:var(--font-mono);">Rs 55,000</td><td style="font-family:var(--font-mono);">Rs 13,000</td><td style="font-family:var(--font-mono);">Rs 0</td><td style="font-family:var(--font-mono); font-weight:700;">Rs 68,000</td><td><span class="pill pill-warn">Pending</span></td></tr>
-              </tbody>
-            </table></div>
+            <div class="card-pad" style="padding-bottom:0;">
+              <div class="toolbar" id="atabs-payroll">
+                <div class="mini-tabs">
+                  <button class="mini-tab active" onclick="showAtab('payroll','slips',this)">Salary Slips</button>
+                  <button class="mini-tab" onclick="showAtab('payroll','advance',this)">Advance Salary</button>
+                  <button class="mini-tab" onclick="showAtab('payroll','loans',this)">Salary Loans</button>
+                  <button class="mini-tab" onclick="showAtab('payroll','bonuses',this)">Bonuses &amp; Increments</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="atab-panel active" id="atab-payroll-slips">
+              <div class="table-wrap"><table>
+                <thead><tr><th>Employee</th><th>Basic</th><th>Allowances</th><th>Overtime</th><th>Deductions</th><th>Tax</th><th>Provident fund</th><th>Net salary</th><th>Status</th><th></th></tr></thead>
+                <tbody>
+                  <tr><td>Mehreen Farooq</td><td style="font-family:var(--font-mono);">Rs 70,000</td><td style="font-family:var(--font-mono);">Rs 25,000</td><td style="font-family:var(--font-mono);">Rs 0</td><td style="font-family:var(--font-mono);">Rs 0</td><td style="font-family:var(--font-mono);">Rs 2,800</td><td style="font-family:var(--font-mono);">Rs 3,500</td><td style="font-family:var(--font-mono); font-weight:700;">Rs 88,700</td><td><span class="pill pill-success">Paid</span></td><td><button class="btn btn-ghost btn-sm">View Slip</button></td></tr>
+                  <tr><td>Kamran Javed</td><td style="font-family:var(--font-mono);">Rs 55,000</td><td style="font-family:var(--font-mono);">Rs 13,000</td><td style="font-family:var(--font-mono);">Rs 4,000</td><td style="font-family:var(--font-mono);">Rs 0</td><td style="font-family:var(--font-mono);">Rs 1,900</td><td style="font-family:var(--font-mono);">Rs 2,750</td><td style="font-family:var(--font-mono); font-weight:700;">Rs 67,350</td><td><span class="pill pill-warn">Pending</span></td><td><button class="btn btn-ghost btn-sm">View Slip</button></td></tr>
+                </tbody>
+              </table></div>
+            </div>
+
+            <div class="atab-panel" id="atab-payroll-advance">
+              <div class="table-wrap"><table>
+                <thead><tr><th>Employee</th><th>Amount</th><th>Date requested</th><th>Recovery plan</th><th>Status</th></tr></thead>
+                <tbody>
+                  <tr><td>Asad Raza</td><td style="font-family:var(--font-mono);">Rs 30,000</td><td>2 Jul</td><td>2 installments</td><td><span class="pill pill-success">Approved</span></td></tr>
+                </tbody>
+              </table></div>
+            </div>
+
+            <div class="atab-panel" id="atab-payroll-loans">
+              <div class="table-wrap"><table>
+                <thead><tr><th>Employee</th><th>Loan amount</th><th>Monthly installment</th><th>Remaining balance</th><th>Status</th></tr></thead>
+                <tbody>
+                  <tr><td>Iqbal Masih</td><td style="font-family:var(--font-mono);">Rs 100,000</td><td style="font-family:var(--font-mono);">Rs 8,333</td><td style="font-family:var(--font-mono);">Rs 66,664</td><td><span class="pill pill-info">Active</span></td></tr>
+                </tbody>
+              </table></div>
+            </div>
+
+            <div class="atab-panel" id="atab-payroll-bonuses">
+              <div class="table-wrap"><table>
+                <thead><tr><th>Employee</th><th>Type</th><th>Amount</th><th>Effective date</th></tr></thead>
+                <tbody>
+                  <tr><td>Mehreen Farooq</td><td><span class="pill pill-success">Increment</span></td><td style="font-family:var(--font-mono);">Rs 5,000</td><td>1 Jul 2026</td></tr>
+                  <tr><td>Kamran Javed</td><td><span class="pill pill-info">Bonus</span></td><td style="font-family:var(--font-mono);">Rs 20,000</td><td>Eid Bonus — 2026</td></tr>
+                </tbody>
+              </table></div>
+            </div>
           </div>
         </div>
         <!-- ===================== /ADMIN / STAFF PAYROLL ===================== -->
